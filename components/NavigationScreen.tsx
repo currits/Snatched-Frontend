@@ -121,13 +121,37 @@ function NavigationScreen() {
   return (
     <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack.Navigator>
-        <Stack.Screen options={{headerShown: false, gestureEnabled: false}} name="WelcomeScreen" component={WelcomeScreen} />
-        <Stack.Screen options={{headerShown: false, gestureEnabled: false}} name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="SignupScreen" component={SignupScreen} />
-        <Stack.Screen options={{headerShown: false, gestureEnabled: false}} name="Snatched" component={MainDrawer} />
-        <Stack.Screen name="MyListingDetailScreen" component={MyListingDetailScreen} />
-        <Stack.Screen name="MyListingEditScreen" component={MyListingEditScreen} />
-        <Stack.Screen name="MyListingAddScreen" component={MyListingAddScreen} />
+        <Stack.Screen options={{
+            title: "Welcome",
+            headerShown: false, gestureEnabled: false
+          }} name="WelcomeScreen" component={WelcomeScreen}
+        />
+        <Stack.Screen options={{
+            title: "Login",
+            headerShown: false, gestureEnabled: false
+          }} name="LoginScreen" component={LoginScreen}
+        />
+        <Stack.Screen options={{
+            title: "Sign up",
+          }} name="SignupScreen" component={SignupScreen}
+        />
+        <Stack.Screen options={{
+            title: "Snatched",
+            headerShown: false, gestureEnabled: false
+          }} name="Snatched" component={MainDrawer}
+        />
+        <Stack.Screen options={{
+            title: "Listing Details",
+          }} name="MyListingDetailScreen" component={MyListingDetailScreen}
+        />
+        <Stack.Screen options={{
+            title: "Edit Listing",
+          }} name="MyListingEditScreen" component={MyListingEditScreen}
+        />
+        <Stack.Screen options={{
+            title: "Create New Listing",
+          }} name="MyListingAddScreen" component={MyListingAddScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )

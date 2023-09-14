@@ -4,10 +4,6 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 const MyListingEditScreen = ({ route, navigation }) => {
   const { item } = route.params;
-  
-  React.useEffect(() => {
-    navigation.setOptions({ title: "Edit Listing" })
-  }, [navigation]);
 
   return (
     <View style={styles.container}>

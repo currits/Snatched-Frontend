@@ -9,10 +9,6 @@ import {
 } from 'react-native';
 
 const LoginScreen = ({ route, navigation }) => {
-  React.useEffect(() => {
-    navigation.setOptions({ title: "Login" })
-  }, [navigation]);
-
   return (
     <View style={styles.container}>
       <Text style={styles.caption}>Log into your Account</Text>

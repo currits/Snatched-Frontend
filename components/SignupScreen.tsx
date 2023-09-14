@@ -9,10 +9,6 @@ import {
 } from 'react-native';
 
 const SignupScreen = ({ route, navigation }) => {
-  React.useEffect(() => {
-    navigation.setOptions({ title: "Sign up" })
-  }, [navigation]);
-
   return (
     <View style={styles.container}>
       <Text style={styles.caption}>Create your Account</Text>

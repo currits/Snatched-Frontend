@@ -3,10 +3,6 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 const MyListingAddScreen = ({ route, navigation }) => {
-  React.useEffect(() => {
-    navigation.setOptions({ title: "Create New Listing" })
-  }, [navigation]);
-
   return (
     <View style={styles.container}>
       <Text style={styles.caption}>Title/Name of Listing *</Text>
