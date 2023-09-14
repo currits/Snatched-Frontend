@@ -7,11 +7,10 @@
 
 import React from 'react';
 
-import { NavigationContainer } from '@react-navigation/native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { useColorScheme } from 'react-native';
 
-import { MainDrawer } from './components/navigation'
+import { Navigation } from './components/NavigationDrawer'
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -21,9 +20,7 @@ function App(): JSX.Element {
   };
 
   return (
-    <NavigationContainer>
-      <MainDrawer/>
-    </NavigationContainer>
+    <Navigation />
   );
 }
 

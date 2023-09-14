@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView,
   DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
@@ -17,9 +18,17 @@ import {
   Button,
 } from 'react-native';
 
-import {Home, Search, MyListings} from './screens'
+import { HomeScreen } from './HomeScreen'
+import { Search } from './Search'
+import { MyListingsScreen } from './MyListingsScreen'
+
+// Sub screens
+import { MyListingDetailScreen } from './MyListingDetailScreen'
+import { MyListingEditScreen } from './MyListingEditScreen'
+import { MyListingAddScreen } from './MyListingAddScreen'
 
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
 function CustomDrawerContent(props) {
   return (
@@ -60,7 +69,7 @@ function MainDrawer() {
     <Drawer.Navigator initialRouteName="Home" drawerContent={CustomDrawerContent}>
       <Drawer.Screen
         name="Home"
-        component={Home}
+        component={HomeScreen}
         options={{
           drawerLabel: 'Home',
           drawerIcon: icon=({ name, color, size }) => <Icon color={color} size={size} name="home" />
@@ -76,7 +85,7 @@ function MainDrawer() {
       />
       <Drawer.Screen
         name="My Listings"
-        component={MyListings}
+        component={MyListingsScreen}
         options={{
           drawerLabel: 'My Listings',
           drawerIcon: icon=({ name, color, size }) => <Icon color={color} size={size} name="list" />
@@ -86,4 +95,17 @@ function MainDrawer() {
   );
 }
 
-export { MainDrawer }
+function Navigation() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen options={{headerShown: false}} name="Snatched" component={MainDrawer} />
+        <Stack.Screen name="MyListingDetailScreen" component={MyListingDetailScreen} />
+        <Stack.Screen name="MyListingEditScreen" component={MyListingEditScreen} />
+        <Stack.Screen name="MyListingAddScreen" component={MyListingAddScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
+
+export { Navigation }
