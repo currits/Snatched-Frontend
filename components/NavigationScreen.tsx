@@ -25,6 +25,7 @@ import {
 import { HomeScreen } from './HomeScreen'
 import { Search } from './Search'
 import { MyListingsScreen } from './MyListingsScreen'
+import { SettingsScreen } from './SettingsScreen'
 
 // Sub screens
 import { MyListingDetailScreen } from './MyListingDetailScreen'
@@ -36,7 +37,7 @@ const Stack = createNativeStackNavigator();
 
 function CustomDrawerContent(props) {
   return (
-    <SafeAreaView style={{flex: 1}} edges={[]} forceInset={{top: "always", horizontal: "never"}}>
+    <SafeAreaView style={{flex: 1}}>
       <View
         style={{
           height: 80,
@@ -53,16 +54,16 @@ function CustomDrawerContent(props) {
       </DrawerContentScrollView>
       
       <View>
-          <DrawerItem
-        icon={({ name, color, size }) => <Icon color={color} size={size} name="settings" /> }
-        label="Settings"
-        onPress={() => alert('Settings thing')}
-      />
-      <DrawerItem
-        icon={({ name, color, size }) => <Icon color={color} size={size} name="logout" /> }
-        label="Log Out"
-        onPress={() => alert('Log out thing')}
-      />
+        <DrawerItem
+          icon={({ name, color, size }) => <Icon color={color} size={size} name="settings" /> }
+          label="Settings"
+          onPress={() => { props.navigation.navigate('SettingsScreen'); }}
+        />
+        <DrawerItem
+            icon={({ name, color, size }) => <Icon color={color} size={size} name="logout" /> }
+            label="Log Out"
+            onPress={() => alert('Log out thing')}
+          />
       </View>
     </SafeAreaView>
   );
@@ -93,6 +94,16 @@ function MainDrawer() {
         options={{
           drawerLabel: 'My Listings',
           drawerIcon: icon=({ name, color, size }) => <Icon color={color} size={size} name="list" />
+        }}
+      />
+      {/* Bit of a hack for now */}
+      <Drawer.Screen
+        name="SettingsScreen"
+        component={SettingsScreen}
+        options={{
+          drawerItemStyle: {
+            display: 'none'
+          }
         }}
       />
     </Drawer.Navigator>
