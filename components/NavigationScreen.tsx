@@ -1,7 +1,11 @@
 import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme,
+} from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView,
   DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
@@ -95,9 +99,13 @@ function MainDrawer() {
   );
 }
 
-function Navigation() {
+function NavigationScreen() {
+  var theme = useColorScheme();
+  // for now cause it's slightly buggy aye
+  theme = 'light';
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack.Navigator>
         <Stack.Screen options={{headerShown: false}} name="Snatched" component={MainDrawer} />
         <Stack.Screen name="MyListingDetailScreen" component={MyListingDetailScreen} />
@@ -108,4 +116,4 @@ function Navigation() {
   )
 }
 
-export { Navigation }
+export { NavigationScreen }

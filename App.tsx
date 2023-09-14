@@ -7,20 +7,11 @@
 
 import React from 'react';
 
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { useColorScheme } from 'react-native';
-
-import { Navigation } from './components/NavigationDrawer'
+import { NavigationScreen } from './components/NavigationScreen'
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <Navigation />
+    <NavigationScreen />
   );
 }
 
