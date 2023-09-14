@@ -1,18 +1,20 @@
 import React from 'react';
 
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet
+} from 'react-native';
 
-const SettingsScreen = ({ route, navigation }) => {
-  React.useEffect(() => {
-    navigation.setOptions({ title: "Settings" })
-  }, [navigation]);
-
+const WelcomeScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.caption}>My account</Text>
-      <Text>Placeholder</Text>
-      <Text style={styles.caption}>App Settings</Text>
-      <Text>Placeholder</Text>
+      <Text style={styles.caption}>SNATCHED</Text>
+      <Button
+        title="Let's get started"
+        onPress={() => navigation.push('LoginScreen')}
+      />
       {/* Add more details here */}
     </View>
   );
@@ -21,12 +23,12 @@ const SettingsScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-  },
+    justifyContent: 'center',
+    alignItems: 'center',  },
   caption: {
     fontSize: 16,
     fontWeight: 'bold',
   },
 });
 
-export { SettingsScreen }
+export { WelcomeScreen }

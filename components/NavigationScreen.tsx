@@ -22,6 +22,9 @@ import {
   Button,
 } from 'react-native';
 
+import { WelcomeScreen } from './WelcomeScreen'
+import { LoginScreen } from './LoginScreen'
+import { SignupScreen } from './SignupScreen'
 import { HomeScreen } from './HomeScreen'
 import { Search } from './Search'
 import { MyListingsScreen } from './MyListingsScreen'
@@ -118,6 +121,9 @@ function NavigationScreen() {
   return (
     <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack.Navigator>
+        <Stack.Screen options={{headerShown: false}} name="WelcomeScreen" component={WelcomeScreen} />
+        <Stack.Screen options={{headerShown: false}} name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="SignupScreen" component={SignupScreen} />
         <Stack.Screen options={{headerShown: false}} name="Snatched" component={MainDrawer} />
         <Stack.Screen name="MyListingDetailScreen" component={MyListingDetailScreen} />
         <Stack.Screen name="MyListingEditScreen" component={MyListingEditScreen} />
