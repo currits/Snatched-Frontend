@@ -6,12 +6,14 @@
  */
 
 import React from 'react';
-
+import { AuthProvider } from './contexts/AuthContext';
 import { NavigationScreen } from './components/NavigationScreen'
 
 function App(): JSX.Element {
   return (
-    <NavigationScreen />
+    <AuthProvider>
+      <NavigationScreen />
+    </AuthProvider>
   );
 }
 

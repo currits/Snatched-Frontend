@@ -8,7 +8,11 @@ import {
   StyleSheet
 } from 'react-native';
 
+import { useAuth } from '../contexts/AuthContext';
+
 const LoginScreen = ({ route, navigation }) => {
+  const { isLoggedIn, login, logout } = useAuth();
+
   return (
     <View style={styles.container}>
       <Text style={styles.caption}>Log into your Account</Text>
@@ -21,7 +25,7 @@ const LoginScreen = ({ route, navigation }) => {
 
       <Button
         title="Sign in"
-        onPress={() => navigation.push('Snatched')}
+        onPress={() => login()}
       />
 
       <Button

@@ -20,7 +20,10 @@ import {
   useColorScheme,
   View,
   Button,
+  Alert
 } from 'react-native';
+
+import { useAuth } from '../contexts/AuthContext';
 
 import { WelcomeScreen } from './WelcomeScreen'
 import { LoginScreen } from './LoginScreen'
@@ -39,6 +42,28 @@ const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 function CustomDrawerContent(props) {
+  const { isLoggedIn, login, logout } = useAuth();
+
+  const showLogoutConfirmDialog = () => {
+    return Alert.alert(
+      "Are you sure?",
+      "Are you sure you want to log out?",
+      [
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "Cancel",
+        },
+        {
+          text: "Log out",
+          style: 'destructive',
+          onPress: () => {
+            logout();
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View
@@ -65,7 +90,7 @@ function CustomDrawerContent(props) {
         <DrawerItem
             icon={({ name, color, size }) => <Icon color={color} size={size} name="logout" /> }
             label="Log Out"
-            onPress={() => alert('Log out thing')}
+            onPress={() => showLogoutConfirmDialog()}
           />
       </View>
     </SafeAreaView>
@@ -118,40 +143,49 @@ function NavigationScreen() {
   // for now cause it's slightly buggy aye
   theme = 'light';
 
+  const { isLoggedIn, login, logout } = useAuth();
+
   return (
     <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack.Navigator>
-        <Stack.Screen options={{
-            title: "Welcome",
-            headerShown: false, gestureEnabled: false
-          }} name="WelcomeScreen" component={WelcomeScreen}
-        />
-        <Stack.Screen options={{
-            title: "Login",
-            headerShown: false, gestureEnabled: false
-          }} name="LoginScreen" component={LoginScreen}
-        />
-        <Stack.Screen options={{
-            title: "Sign up",
-          }} name="SignupScreen" component={SignupScreen}
-        />
-        <Stack.Screen options={{
-            title: "Snatched",
-            headerShown: false, gestureEnabled: false
-          }} name="Snatched" component={MainDrawer}
-        />
-        <Stack.Screen options={{
-            title: "Listing Details",
-          }} name="MyListingDetailScreen" component={MyListingDetailScreen}
-        />
-        <Stack.Screen options={{
-            title: "Edit Listing",
-          }} name="MyListingEditScreen" component={MyListingEditScreen}
-        />
-        <Stack.Screen options={{
-            title: "Create New Listing",
-          }} name="MyListingAddScreen" component={MyListingAddScreen}
-        />
+        {!isLoggedIn ? (
+          <>
+            <Stack.Screen options={{
+                title: "Welcome",
+                headerShown: false, gestureEnabled: false
+              }} name="WelcomeScreen" component={WelcomeScreen}
+            />
+            <Stack.Screen options={{
+                title: "Login",
+                headerShown: false, gestureEnabled: false
+              }} name="LoginScreen" component={LoginScreen}
+            />
+            <Stack.Screen options={{
+                title: "Sign up",
+              }} name="SignupScreen" component={SignupScreen}
+            />
+          </> 
+        ) : (
+          <>
+            <Stack.Screen options={{
+                title: "Snatched",
+                headerShown: false, gestureEnabled: false
+              }} name="Snatched" component={MainDrawer}
+            />
+            <Stack.Screen options={{
+                title: "Listing Details",
+              }} name="MyListingDetailScreen" component={MyListingDetailScreen}
+            />
+            <Stack.Screen options={{
+                title: "Edit Listing",
+              }} name="MyListingEditScreen" component={MyListingEditScreen}
+            />
+            <Stack.Screen options={{
+                title: "Create New Listing",
+              }} name="MyListingAddScreen" component={MyListingAddScreen}
+            />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   )

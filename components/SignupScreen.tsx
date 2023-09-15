@@ -8,7 +8,11 @@ import {
   StyleSheet
 } from 'react-native';
 
+import { useAuth } from '../contexts/AuthContext';
+
 const SignupScreen = ({ route, navigation }) => {
+  const { isLoggedIn, login, logout } = useAuth();
+  
   return (
     <View style={styles.container}>
       <Text style={styles.caption}>Create your Account</Text>
@@ -21,7 +25,7 @@ const SignupScreen = ({ route, navigation }) => {
 
       <Button
         title="Sign up"
-        onPress={() => navigation.push('Snatched')}
+        onPress={() => login()}
       />
       {/* Add more details here */}
     </View>

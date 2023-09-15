@@ -13,7 +13,7 @@ const WelcomeScreen = ({ route, navigation }) => {
       <Text style={styles.caption}>SNATCHED</Text>
       <Button
         title="Let's get started"
-        onPress={() => navigation.push('LoginScreen')}
+        onPress={() => navigation.replace('LoginScreen')}
       />
       {/* Add more details here */}
     </View>
