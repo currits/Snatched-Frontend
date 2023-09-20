@@ -13,38 +13,13 @@ import {
 } from 'react-native';
 
 import { MyListingDetailScreen } from './MyListingDetailScreen';
-
-const dummyList = [
-  {
-    id: 1,
-    name: 'Apples',
-    description: 'Fresh and crisp apples'
-  },
-  {
-    id: 2,
-    name: 'Bananas',
-    description: 'Ripe and yellow bananas'
-  },
-  {
-    id: 3,
-    name: 'Oranges',
-    description: 'Juicy and sweet oranges'
-  },
-  {
-    id: 4,
-    name: 'Strawberries',
-    description: 'Plump and red strawberries'
-  },
-  {
-    id: 5,
-    name: 'Grapes',
-    description: 'Seedless green grapes'
-  },
-];
+import { useDummyList } from '../contexts/DummyContext';
 
 const Stack = createNativeStackNavigator();
 
 const MyListingsScreen = ({ navigation }) => {
+  const { dummyList } = useDummyList();
+
   return (
     <View>
       <FlatList

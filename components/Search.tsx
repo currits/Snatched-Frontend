@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Text,
+  TextInput,
   View
 } from 'react-native';
 
 function Search() {
+  const [searchText, setSearchText] = useState('');
+
+  const handleSearch = (text) => {
+    // Handle search logic here
+    console.log('Search Text:', text);
+  };
+  
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Map with search overlaid</Text>
+    <View>
+      <TextInput
+        placeholder="Search..."
+        onChangeText={setSearchText}
+        value={searchText}
+        onSubmitEditing={() => handleSearch(searchText)}
+      />
     </View>
   );
 }
