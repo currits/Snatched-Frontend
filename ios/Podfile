@@ -34,7 +34,9 @@ target 'Snatched' do
   use_react_native!(
     :path => config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.
+    # DEBUG/DEVELOPMENT: set to false so debugging is easier
     :hermes_enabled => flags[:hermes_enabled],
+    #:hermes_enabled => false,
     :fabric_enabled => flags[:fabric_enabled],
     # Enables Flipper.
     #

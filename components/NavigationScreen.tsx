@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   NavigationContainer,
   DarkTheme,
   DefaultTheme,
+  useNavigation
 } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerContentScrollView,
   DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
@@ -20,8 +21,13 @@ import {
   useColorScheme,
   View,
   Button,
-  Alert
+  Alert,
 } from 'react-native';
+
+import {
+  HeaderButtons,
+  Item,
+} from 'react-navigation-header-buttons';
 
 import { useAuth } from '../contexts/AuthContext';
 
@@ -78,15 +84,15 @@ function CustomDrawerContent(props) {
         </Text>
       </View>
       <DrawerContentScrollView {...props} contentContainerStyle={{ paddingTop: 0 }}>
-          <DrawerItemList {...props} />
+          <DrawerItemList {...props} footer={true}/>
       </DrawerContentScrollView>
       
       <View>
         <DrawerItem
-          icon={({ name, color, size }) => <Icon color={color} size={size} name="settings" /> }
-          label="Settings"
-          onPress={() => { props.navigation.navigate('SettingsScreen'); }}
-        />
+            icon={({ name, color, size }) => <Icon color={color} size={size} name="settings" /> }
+            label="Settings"
+            onPress={() => { props.navigation.navigate('Settings'); }}
+          />
         <DrawerItem
             icon={({ name, color, size }) => <Icon color={color} size={size} name="logout" /> }
             label="Log Out"
@@ -98,6 +104,8 @@ function CustomDrawerContent(props) {
 }
 
 function MainDrawer() {
+  const navigation = useNavigation();
+
   return (
     <Drawer.Navigator initialRouteName="Home" drawerContent={CustomDrawerContent}>
       <Drawer.Screen
@@ -105,7 +113,17 @@ function MainDrawer() {
         component={HomeScreen}
         options={{
           drawerLabel: 'Home',
-          drawerIcon: icon=({ name, color, size }) => <Icon color={color} size={size} name="home" />
+          drawerIcon: icon=({ name, color, size }) => <Icon color={color} size={size} name="home" />,
+          headerRight: ({props}) => (
+            <HeaderButtons>
+              <Item
+                IconComponent={Icon} iconSize={23}
+                title="search"
+                iconName="search"
+                onPress={() => { navigation.navigate('Search') }}
+              />
+            </HeaderButtons>
+          ),
         }}
       />
       <Drawer.Screen
@@ -124,9 +142,8 @@ function MainDrawer() {
           drawerIcon: icon=({ name, color, size }) => <Icon color={color} size={size} name="list" />
         }}
       />
-      {/* Bit of a hack for now */}
       <Drawer.Screen
-        name="SettingsScreen"
+        name="Settings"
         component={SettingsScreen}
         options={{
           drawerItemStyle: {
@@ -141,6 +158,7 @@ function MainDrawer() {
 function NavigationScreen() {
   var theme = useColorScheme();
   // for now cause it's slightly buggy aye
+  // textbox outlines, snatched header and other heading text
   theme = 'light';
 
   const { isLoggedIn, login, logout } = useAuth();
