@@ -5,29 +5,34 @@ const DummyListContext = createContext();
 export const DummyListProvider = ({ children }) => {
   const [dummyList, setDummyList] = useState([
     {
-      id: 1,
+      name: 'Cabbages',
+      description: 'Fresh Cabbages - Free to Share!',
+      distance: 0.2
+    },
+    {
       name: 'Apples',
-      description: 'Fresh and crisp apples'
+      description: 'Fresh and crisp apples',
+      distance: 0.5
     },
     {
-      id: 2,
       name: 'Bananas',
-      description: 'Ripe and yellow bananas'
+      description: 'Ripe and yellow bananas',
+      distance: 0.5
     },
     {
-      id: 3,
       name: 'Oranges',
-      description: 'Juicy and sweet oranges'
+      description: 'Juicy and sweet oranges',
+      distance: 0.5
     },
     {
-      id: 4,
       name: 'Strawberries',
-      description: 'Plump and red strawberries'
+      description: 'Plump and red strawberries',
+      distance: 0.5
     },
     {
-      id: 5,
       name: 'Grapes',
-      description: 'Seedless green grapes'
+      description: 'Seedless green grapes',
+      distance: 0.5
     },
   ]);
 

@@ -24,7 +24,6 @@ const MyListingsScreen = ({ navigation }) => {
     <View>
       <FlatList
         data={dummyList}
-        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <MyListing item={item} navigation={navigation} />} // Use the component here
       />
       <Button

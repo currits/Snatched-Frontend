@@ -184,6 +184,9 @@ function NavigationScreen() {
             />
           </> 
         ) : (
+          // This is where all other screens are added in besides any drawer items
+          // Any drawer items that want to navigate to another screen should add the
+          // screens in here
           <>
             <Stack.Screen options={{
                 title: "Snatched",
