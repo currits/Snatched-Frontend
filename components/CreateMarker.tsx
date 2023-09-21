@@ -27,7 +27,7 @@ function CreateMarker(listing) {
     </Marker>)
     //we will need to decide if we want to have text floating above markers, saying what the listing is, when they are drwan or have to make the user
     //click on each one.
-    //if we do, we'll need to do our own marker SVG (any addition of text means replacing default marker graphics with custom SVG + the text)
+    //if we do, we'll need to do our own marker SVG (any addition of text means replacing default marker graphics with custom SVG + the text) <- this will be easiest i imagine
     //nonetheless, should look at instead finding a way to call showCallout() on marker list to make them show their callouts. would need to be able to handle: markers moving off and back on screen, markers outside the screen coming onto the screen (isVisible flag? how in react?)
 }
 
