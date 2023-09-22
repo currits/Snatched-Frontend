@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import MapView, { Callout, Marker } from 'react-native-maps';
 
-function CreateMarker(listing) {
+function CreateMarker(listing, displayListingInfo) {
     //this is barebones for now and subject to change
     //operates on the assumption that each marker will be created by being passed in a JSON array with the details from the DB
     //and that it will have fields lat, long, title, desc, and a unique key (used to make a request to the DB for viewing the listing in detail, and for react to identify array siblings)
@@ -16,8 +16,8 @@ function CreateMarker(listing) {
         coordinate={{latitude: listing.latitude, longitude: listing.longitude}}
         title={listing.title}
         //this for now just logs the marker (or text above) being pressed. later this can be used as the call to go to the listing details for this marker.
-        onCalloutPress={e =>(console.log(e.nativeEvent))}
-        onPress={e =>(console.log(e.nativeEvent))}
+        onCalloutPress={e =>(displayListingInfo(listing.title, listing.desc))}
+        onPress={e =>(displayListingInfo(listing.title, listing.desc))}
         key={listing.id}>
         <Callout>
             <View>
