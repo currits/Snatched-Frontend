@@ -5,7 +5,9 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import {
   StyleSheet,
   View,
-  Text
+  Text,
+  Button,
+  Alert
 } from 'react-native';
 
 import MapView, { Marker } from 'react-native-maps';
@@ -47,8 +49,8 @@ function HomeScreen() {
     <View style={styles.contentContainer}>
       <Text>{title}</Text>
       <Text>{desc}</Text>
-      <button>More Info</button>
-      <button>Snatch!</button>
+      <Button title="More Info" onPress={() => Alert.alert('More info pressed')}></Button>
+      <Button title="Snatch!" onPress={() => Alert.alert('Snatched pressed')}></Button>
     </View>
 
     );
@@ -108,7 +110,7 @@ function HomeScreen() {
      </MapView>
      <BottomSheet
         ref={bottomSheetRef}
-        index={-1}
+        index={0}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
       >
