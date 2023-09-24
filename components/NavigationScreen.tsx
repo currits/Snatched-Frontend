@@ -35,7 +35,7 @@ import { WelcomeScreen } from './WelcomeScreen'
 import { LoginScreen } from './LoginScreen'
 import { SignupScreen } from './SignupScreen'
 import { HomeScreen } from './HomeScreen'
-import { Search } from './Search'
+import { SearchScreen } from './SearchScreen'
 import { MyListingsScreen } from './MyListingsScreen'
 import { SettingsScreen } from './SettingsScreen'
 
@@ -129,7 +129,7 @@ function MainDrawer() {
       />
       <Drawer.Screen
         name="Search"
-        component={Search}
+        component={SearchScreen}
         options={{
           drawerLabel: 'Search',
           drawerIcon: icon=({ name, color, size }) => <Icon color={color} size={size} name="search" />
@@ -185,6 +185,9 @@ function NavigationScreen() {
             />
           </> 
         ) : (
+          // This is where all other screens are added in besides any drawer items
+          // Any drawer items that want to navigate to another screen should add the
+          // screens in here
           <>
             <Stack.Screen options={{
                 title: "Snatched",

@@ -28,7 +28,6 @@ const MyListingsScreen = ({ navigation }) => {
       <View style={ListItemStyles.listWrapper}>
         <FlatList
           data={dummyList}
-          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <MyListing item={item} navigation={navigation} />} // Use the component here
         />
       </View>
