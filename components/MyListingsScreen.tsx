@@ -53,6 +53,9 @@ const ListItemStyles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    marginHorizontal: 20,
+    marginVertical: 8,
+    elevation: 1
   },
   textContainer: {
     flex: 10,

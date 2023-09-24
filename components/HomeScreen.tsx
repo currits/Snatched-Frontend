@@ -6,9 +6,8 @@ import {
   StyleSheet,
   View,
   Text,
-  Button,
-  Alert,
-  Pressable
+  Pressable,
+  Modal
 } from 'react-native';
 
 import MapView, { Marker } from 'react-native-maps';
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     height: '75%',
   },
-  button1: {
+  buttonMoreInfo: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'darkgray',
     marginHorizontal: 8,
   },
-  button2: {
+  buttonSnatch: {
     flex: 2,
     alignItems: 'center',
     justifyContent: 'center',
@@ -62,11 +61,55 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
-  }
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    height: '70%',
+    width: '85%',
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonContact: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 250,
+    borderRadius: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    elevation: 3,
+    backgroundColor: 'dimgray',
+    marginHorizontal: 8,
+  },
+  modalText: {
+    flex: 11,
+    marginBottom: 15,
+    textAlign: 'center',
+  },
 });
 
-function HomeScreen() {
-  
+function HomeScreen( {route, navigation} ) {
+
+  //    Exchange Protocol popup hooks    //
+  const [protocolPopupVisible, setProtocolVisible] = useState(false);
+  const [contactPopupVisible, setContactVisible] = useState(false);
+
   //    Bottom Sheet Code   //
   //below is the code for the menu that can be dragged up from the bottom of the interface.
   //we will use it to display listing info when a makrer is tapped
@@ -88,10 +131,10 @@ function HomeScreen() {
       <Text>{title}</Text>
       <Text>{desc}</Text>
       <View style={styles.buttonContainer}>
-        <Pressable onPress={() => Alert.alert('More info pressed')} style={styles.button1}>
+        <Pressable onPress={() => navigation.push('ListingDetailScreen', { item :{name: title, description: desc} })} style={styles.buttonMoreInfo}>
           <Text style={styles.buttonText}>More Info</Text>
         </Pressable>
-        <Pressable onPress={() => Alert.alert('Snatch pressed')} style={styles.button2}>
+        <Pressable onPress={() => setProtocolVisible(!protocolPopupVisible)} style={styles.buttonSnatch}>
           <Text style={styles.buttonText}>Snatch!</Text>
           </Pressable>
       </View>
@@ -135,6 +178,9 @@ function HomeScreen() {
   }
 
   //added lines for logging on map ready and on region change complete events
+  //included in this wall are two new modals, basically the popups. when i understand more i'd like to perhaps split these out into their own const functions
+  //inside this file, so the home screen function is less bloated. I would instead split them into new files but we need to keep them in (i think) as they
+  //need to be accessed by the onPress call for the pressables inside the onPress for the map markers (so many layers omg)
   return (
     <View style={styles.container}>
      <MapView
@@ -157,6 +203,42 @@ function HomeScreen() {
       >
         {bottomSheetContent}
       </BottomSheet>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={protocolPopupVisible}
+        onRequestClose={() => {
+          setProtocolVisible(!protocolPopupVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+            <Pressable
+              style={styles.buttonContact}
+              onPress={() => setProtocolVisible(!protocolPopupVisible)}>
+              <Text style={styles.buttonText}>Contact Producer</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={contactPopupVisible}
+        onRequestClose={() => {
+          setContactVisible(!contactPopupVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+            <Pressable
+              style={styles.buttonContact}
+              onPress={() => setContactVisible(!contactPopupVisible)}>
+              <Text style={styles.buttonText}>Hide Modal</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
    </View>
   );
 }
