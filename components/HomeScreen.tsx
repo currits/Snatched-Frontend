@@ -7,7 +7,8 @@ import {
   View,
   Text,
   Button,
-  Alert
+  Alert,
+  Pressable
 } from 'react-native';
 
 import MapView, { Marker } from 'react-native-maps';
@@ -25,6 +26,43 @@ const styles = StyleSheet.create({
   flex: 1,
   alignItems: 'center',
 },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    height: '75%',
+  },
+  button1: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    borderRadius: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    elevation: 3,
+    backgroundColor: 'darkgray',
+    marginHorizontal: 8,
+  },
+  button2: {
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    borderRadius: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    elevation: 3,
+    backgroundColor: 'dimgray',
+    marginHorizontal: 8,
+  },
+  buttonText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  }
 });
 
 function HomeScreen() {
@@ -49,10 +87,15 @@ function HomeScreen() {
     <View style={styles.contentContainer}>
       <Text>{title}</Text>
       <Text>{desc}</Text>
-      <Button title="More Info" onPress={() => Alert.alert('More info pressed')}></Button>
-      <Button title="Snatch!" onPress={() => Alert.alert('Snatched pressed')}></Button>
+      <View style={styles.buttonContainer}>
+        <Pressable onPress={() => Alert.alert('More info pressed')} style={styles.button1}>
+          <Text style={styles.buttonText}>More Info</Text>
+        </Pressable>
+        <Pressable onPress={() => Alert.alert('Snatch pressed')} style={styles.button2}>
+          <Text style={styles.buttonText}>Snatch!</Text>
+          </Pressable>
+      </View>
     </View>
-
     );
   }
 
@@ -90,8 +133,6 @@ function HomeScreen() {
     setRequestCenter(newCenter);
     //here we would use setMarkers to change the list of markers we need to display and it s h o u l d update on map on its own if im interpreting states right
   }
-
-
 
   //added lines for logging on map ready and on region change complete events
   return (
