@@ -35,7 +35,7 @@ import { WelcomeScreen } from './WelcomeScreen'
 import { LoginScreen } from './LoginScreen'
 import { SignupScreen } from './SignupScreen'
 import { HomeScreen } from './HomeScreen'
-import { Search } from './Search'
+import { SearchScreen } from './SearchScreen'
 import { MyListingsScreen } from './MyListingsScreen'
 import { SettingsScreen } from './SettingsScreen'
 
@@ -128,7 +128,7 @@ function MainDrawer() {
       />
       <Drawer.Screen
         name="Search"
-        component={Search}
+        component={SearchScreen}
         options={{
           drawerLabel: 'Search',
           drawerIcon: icon=({ name, color, size }) => <Icon color={color} size={size} name="search" />

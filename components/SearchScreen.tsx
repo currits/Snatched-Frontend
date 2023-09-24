@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import {
   StyleSheet,
@@ -7,34 +7,48 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-  Button
 } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
+import { SearchBar } from './SearchBar';
 
-import SearchBar from 'react-native-search-bar';
 import { useDummyList } from '../contexts/DummyContext';
 
-function Search({ navigation }) {
+function SearchScreen({ navigation }) {
   const { dummyList } = useDummyList();
   const searchBar = useRef(null);
+  const [searchPhrase, setSearchPhrase] = useState("");
+  const [clicked, setClicked] = useState(false);
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused){
-      searchBar.current.focus();
+      //this.searchBar.focus();
     }
   }, [isFocused])
-  
+
   return (
     <View>
       <SearchBar
-        ref={searchBar}
-        placeholder="Search"
-        onCancelButtonPress={() => {
+        searchPhrase={searchPhrase}
+        setSearchPhrase={setSearchPhrase}
+        clicked={clicked}
+        setClicked={setClicked}
+      />
+      {/*
+      <SearchBar
+        placeholder="Type Here..."
+        ref={searchBar => this.searchBar = searchBar}
+        platform="ios"
+        searchIcon={null}
+        value={search}
+        onCancel={() => {
           navigation.goBack();
         }}
-      />
+        onChangeText={(search) => {
+          setSearch(search);
+        }}
+      />*/}
       <FlatList
         data={dummyList}
         renderItem={({ item }) => <Listing item={item} navigation={navigation} />} // Use the component here
@@ -82,4 +96,4 @@ const Listing = ({ item, navigation }) => {
   );
 };
 
-export { Search }
+export { SearchScreen }
