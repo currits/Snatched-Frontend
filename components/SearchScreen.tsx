@@ -16,26 +16,24 @@ import { useDummyList } from '../contexts/DummyContext';
 
 function SearchScreen({ navigation }) {
   const { dummyList } = useDummyList();
-  const searchBar = useRef(null);
+  const searchBar = useRef();
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
   const isFocused = useIsFocused();
 
-  useEffect(() => {
-    if (isFocused){
-      //this.searchBar.focus();
-    }
-  }, [isFocused])
-
   return (
     <View>
       <SearchBar
+        ref={searchBar}
         searchPhrase={searchPhrase}
         setSearchPhrase={setSearchPhrase}
         clicked={clicked}
         setClicked={setClicked}
         onSubmit={() => {
           alert("boo");
+        }}
+        onCancel={() => {
+          navigation.goBack();
         }}
       />
       <FlatList

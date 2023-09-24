@@ -1,8 +1,17 @@
-import React from "react";
+import { React, useRef, useEffect } from "react";
 import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function SearchBar({clicked, onSubmit, searchPhrase, setSearchPhrase, setClicked}) {
+/* https://blog.logrocket.com/create-react-native-search-bar-from-scratch/ */
+
+const SearchBar = ({clicked, onSubmit, onCancel, searchPhrase, setSearchPhrase, setClicked}) => {
+  const textRef = useRef()
+
+  // Focus the search bar when first rendering
+  useEffect(()=>{
+    textRef.current.focus();
+  })
+
   return (
     <View style={styles.container}>
       <View
@@ -21,6 +30,7 @@ function SearchBar({clicked, onSubmit, searchPhrase, setSearchPhrase, setClicked
         />
         {/* Input field */}
         <TextInput
+          ref={textRef}
           style={styles.input}
           placeholder="Search"
           inputmode="search"
@@ -49,6 +59,7 @@ function SearchBar({clicked, onSubmit, searchPhrase, setSearchPhrase, setClicked
             onPress={() => {
               Keyboard.dismiss();
               setClicked(false);
+              onCancel();
             }}
           ></Button>
         </View>
@@ -69,14 +80,15 @@ const styles = StyleSheet.create({
 
   },
   searchBar__unclicked: {
-    padding: 10,
+    paddingLeft: 10,
     flexDirection: "row",
     backgroundColor: "#d9dbda",
     borderRadius: 15,
     alignItems: "center",
   },
   searchBar__clicked: {
-    padding: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
     flexDirection: "row",
     width: "83%",
     backgroundColor: "#d9dbda",
