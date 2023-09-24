@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function SearchBar({clicked, searchPhrase, setSearchPhrase, setClicked}) {
+function SearchBar({clicked, onSubmit, searchPhrase, setSearchPhrase, setClicked}) {
   return (
     <View style={styles.container}>
       <View
@@ -23,8 +23,13 @@ function SearchBar({clicked, searchPhrase, setSearchPhrase, setClicked}) {
         <TextInput
           style={styles.input}
           placeholder="Search"
+          inputmode="search"
+          returnKeyType="search"
           value={searchPhrase}
           onChangeText={setSearchPhrase}
+          onSubmitEditing={() => {
+            onSubmit();
+          }}
           onFocus={() => {
             setClicked(true);
           }}

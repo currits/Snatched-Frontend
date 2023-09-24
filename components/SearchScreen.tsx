@@ -34,21 +34,10 @@ function SearchScreen({ navigation }) {
         setSearchPhrase={setSearchPhrase}
         clicked={clicked}
         setClicked={setClicked}
+        onSubmit={() => {
+          alert("boo");
+        }}
       />
-      {/*
-      <SearchBar
-        placeholder="Type Here..."
-        ref={searchBar => this.searchBar = searchBar}
-        platform="ios"
-        searchIcon={null}
-        value={search}
-        onCancel={() => {
-          navigation.goBack();
-        }}
-        onChangeText={(search) => {
-          setSearch(search);
-        }}
-      />*/}
       <FlatList
         data={dummyList}
         renderItem={({ item }) => <Listing item={item} navigation={navigation} />} // Use the component here
