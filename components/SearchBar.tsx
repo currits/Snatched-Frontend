@@ -97,6 +97,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   input: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    height: 40,
     fontSize: 20,
     marginLeft: 10,
     width: "92%",

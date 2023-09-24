@@ -493,9 +493,9 @@ PODS:
     - React-jsi (= 0.72.4)
     - React-logger (= 0.72.4)
     - React-perflogger (= 0.72.4)
-  - RNGestureHandler (2.12.1):
+  - RNGestureHandler (2.13.1):
     - React-Core
-  - RNReanimated (3.5.1):
+  - RNReanimated (3.5.4):
     - DoubleConversion
     - FBLazyVector
     - glog
@@ -767,8 +767,8 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 4941cc1b3cf08b792fbf666342c9fc95f1969035
   React-utils: b79f2411931f9d3ea5781404dcbb2fa8a837e13a
   ReactCommon: 4b2bdcb50a3543e1c2b2849ad44533686610826d
-  RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
-  RNReanimated: 99aa8c96151abbc2d7e737a56ec62aca709f0c92
+  RNGestureHandler: 38aa38413896620338948fbb5c90579a7b1c3fde
+  RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981

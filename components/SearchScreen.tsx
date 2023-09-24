@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   StyleSheet,
@@ -16,7 +16,6 @@ import { useDummyList } from '../contexts/DummyContext';
 
 function SearchScreen({ navigation }) {
   const { dummyList } = useDummyList();
-  const searchBar = useRef();
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
   const isFocused = useIsFocused();
@@ -24,7 +23,6 @@ function SearchScreen({ navigation }) {
   return (
     <View>
       <SearchBar
-        ref={searchBar}
         searchPhrase={searchPhrase}
         setSearchPhrase={setSearchPhrase}
         clicked={clicked}
