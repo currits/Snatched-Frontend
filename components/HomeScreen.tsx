@@ -1,6 +1,7 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import { CreateMarker } from './CreateMarker';
 import BottomSheet from '@gorhom/bottom-sheet'
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {
   StyleSheet,
@@ -62,20 +63,48 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'white',
   },
-  centeredView: {
+  protocolView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
   },
-  modalView: {
-    height: '70%',
-    width: '85%',
+  protocolModal: {
+    flex: 1,
+    flexDirection: 'column',
+    width: '80%',
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  contactView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '40%',
+    marginBottom: '35%'
+  },
+  contactModal: {
+    flex: 1,
+    flexDirection: 'column',
+    width: '80%',
+    margin: 10,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -98,9 +127,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   modalText: {
-    flex: 11,
+    flex: 15,
     marginBottom: 15,
     textAlign: 'center',
+  },
+  buttonClose: {
+    flex: 1,
+    alignSelf: 'flex-end'
   },
 });
 
@@ -210,12 +243,17 @@ function HomeScreen( {route, navigation} ) {
         onRequestClose={() => {
           setProtocolVisible(!protocolPopupVisible);
         }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
+        <View style={styles.protocolView}>
+          <View style={styles.protocolModal}>
+            <Pressable
+                style={styles.buttonClose}
+                onPress={() => setProtocolVisible(!protocolPopupVisible)}>
+                <Icon name="close" size={20} color="black" />
+              </Pressable>
+            <Text style={styles.modalText}>Exchange protocol here</Text>
             <Pressable
               style={styles.buttonContact}
-              onPress={() => setProtocolVisible(!protocolPopupVisible)}>
+              onPress={() => { setProtocolVisible(!protocolPopupVisible); setContactVisible(!contactPopupVisible); }}>
               <Text style={styles.buttonText}>Contact Producer</Text>
             </Pressable>
           </View>
@@ -228,14 +266,14 @@ function HomeScreen( {route, navigation} ) {
         onRequestClose={() => {
           setContactVisible(!contactPopupVisible);
         }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={styles.buttonContact}
+        <View style={styles.contactView}>
+          <View style={styles.contactModal}>
+          <Pressable
+              style={styles.buttonClose}
               onPress={() => setContactVisible(!contactPopupVisible)}>
-              <Text style={styles.buttonText}>Hide Modal</Text>
+              <Icon name="close" size={20} color="black" />
             </Pressable>
+            <Text style={styles.modalText}>Contact details here</Text>
           </View>
         </View>
       </Modal>
