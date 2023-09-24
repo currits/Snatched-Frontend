@@ -43,6 +43,7 @@ import { SettingsScreen } from './SettingsScreen'
 import { MyListingDetailScreen } from './MyListingDetailScreen'
 import { MyListingEditScreen } from './MyListingEditScreen'
 import { MyListingAddScreen } from './MyListingAddScreen'
+import { ListingDetailScreen } from './ListingDetailScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -191,7 +192,7 @@ function NavigationScreen() {
               }} name="Snatched" component={MainDrawer}
             />
             <Stack.Screen options={{
-                title: "Listing Details",
+                title: "My Listing Details",
               }} name="MyListingDetailScreen" component={MyListingDetailScreen}
             />
             <Stack.Screen options={{
@@ -201,6 +202,10 @@ function NavigationScreen() {
             <Stack.Screen options={{
                 title: "Create New Listing",
               }} name="MyListingAddScreen" component={MyListingAddScreen}
+            />
+            <Stack.Screen options={{
+                title: "Listing Details",
+            }} name="ListingDetailScreen" component={ListingDetailScreen}
             />
           </>
         )}
