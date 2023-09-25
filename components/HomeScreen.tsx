@@ -13,6 +13,7 @@ import {
 
 import MapView, { Marker } from 'react-native-maps';
 import {request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import Geolocation from 'react-native-geolocation-service';
 
 const styles = StyleSheet.create({
  container: {
@@ -223,27 +224,63 @@ function HomeScreen( {route, navigation} ) {
     request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
   });
 
+  const mapRef = useRef();
+
   //added lines for logging on map ready and on region change complete events
   //included in this wall are two new modals, basically the popups. when i understand more i'd like to perhaps split these out into their own const functions
   //inside this file, so the home screen function is less bloated. I would instead split them into new files but we need to keep them in (i think) as they
   //need to be accessed by the onPress call for the pressables inside the onPress for the map markers (so many layers omg)
   return (
     <View style={styles.container}>
-     <MapView
-       style={styles.map}
-       showsUserLocation={true}
-       showsMyLocationButton={true}
-       region={{
-         latitude: -37.791545,
-         longitude: 175.289350,
-         latitudeDelta: 0.015,
-         longitudeDelta: 0.0121,
-       }}
-       onRegionChangeComplete={handleCenterMove}
-     >
-      {markers.map(r => CreateMarker(r, displayListingInfo))}
-     </MapView>
-     <BottomSheet
+      <MapView
+        ref={mapRef}
+        style={styles.map}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        region={{
+          latitude: -37.791545,
+          longitude: 175.289350,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        }}
+        onRegionChangeComplete={handleCenterMove}
+      >
+        {markers.map(r => CreateMarker(r, displayListingInfo))}
+        <View
+          style={{
+              position: 'absolute',//use absolute position to show button on top of the map
+              margin: 15
+          }}
+        >
+        {Platform.OS === 'ios' &&
+          <Icon
+            name="my-location"
+            size={20}
+            color="#000"
+            onPress={() => {
+              Geolocation.getCurrentPosition(
+                position => {
+                  console.log(position);
+                  mapRef.current?.animateCamera({
+                      center: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                      },
+                      zoom: 14,
+                  });
+                },
+                error => {
+                  // See error code charts below.
+                  console.log(error.code, error.message);
+                },
+                {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+              );
+            }}
+          />
+        }
+        </View>
+      </MapView>
+      <BottomSheet
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
