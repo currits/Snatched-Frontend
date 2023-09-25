@@ -35,6 +35,7 @@ function SearchScreen({ navigation }) {
         }}
       />
       <FlatList
+        keyboardShouldPersistTaps="always"
         data={dummyList}
         renderItem={({ item }) => <Listing item={item} navigation={navigation} />} // Use the component here
       />

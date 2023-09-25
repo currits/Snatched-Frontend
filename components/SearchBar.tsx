@@ -61,7 +61,7 @@ const SearchBar = ({clicked, onSubmit, onCancel, searchPhrase, setSearchPhrase, 
               setClicked(false);
               onCancel();
             }}
-          ></Button>
+          />
         </View>
       )}
     </View>

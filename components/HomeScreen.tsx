@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useMemo, useEffect, useRef, useState} from 'react';
 import { CreateMarker } from './CreateMarker';
 import BottomSheet from '@gorhom/bottom-sheet'
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import MapView, { Marker } from 'react-native-maps';
+import {request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 const styles = StyleSheet.create({
  container: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    height: '75%',
+    height: '50%',
   },
   buttonMoreInfo: {
     flex: 1,
@@ -148,7 +149,7 @@ function HomeScreen( {route, navigation} ) {
   //we will use it to display listing info when a makrer is tapped
   const bottomSheetRef = useRef<BottomSheet>(null);
   //memo is a thing that lets a component not be rerendered when its parent is rerendered -> optimisation
-  const snapPoints = useMemo(() => ['3%', '35%'], []);
+  const snapPoints = useMemo(() => ['35%'], []);
   
   //retaining this code from bottomsheet usage description for now
   //we likely wont have use for tracking bottomsheet changes
@@ -160,18 +161,25 @@ function HomeScreen( {route, navigation} ) {
   const displayListingInfo = (title, desc) => {
     bottomSheetRef.current.expand();
     setBottomSheetContent(
-    <View style={styles.contentContainer}>
-      <Text>{title}</Text>
-      <Text>{desc}</Text>
-      <View style={styles.buttonContainer}>
-        <Pressable onPress={() => navigation.push('ListingDetailScreen', { item :{name: title, description: desc} })} style={styles.buttonMoreInfo}>
-          <Text style={styles.buttonText}>More Info</Text>
-        </Pressable>
-        <Pressable onPress={() => setProtocolVisible(!protocolPopupVisible)} style={styles.buttonSnatch}>
-          <Text style={styles.buttonText}>Snatch!</Text>
+      <View style={styles.contentContainer}>
+        <Text style={{
+          fontSize: 24,
+          fontWeight: 'bold',
+          marginBottom: 20
+        }}>
+          Listing Information
+        </Text>
+        <Text>{title}</Text>
+        <Text>{desc}</Text>
+        <View style={styles.buttonContainer}>
+          <Pressable onPress={() => navigation.push('ListingDetailScreen', { item :{name: title, description: desc} })} style={styles.buttonMoreInfo}>
+            <Text style={styles.buttonText}>More Info</Text>
           </Pressable>
+          <Pressable onPress={() => setProtocolVisible(!protocolPopupVisible)} style={styles.buttonSnatch}>
+            <Text style={styles.buttonText}>Snatch!</Text>
+            </Pressable>
+        </View>
       </View>
-    </View>
     );
   }
 
@@ -210,6 +218,11 @@ function HomeScreen( {route, navigation} ) {
     //here we would use setMarkers to change the list of markers we need to display and it s h o u l d update on map on its own if im interpreting states right
   }
 
+  useEffect(() => {
+    request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+    request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+  });
+
   //added lines for logging on map ready and on region change complete events
   //included in this wall are two new modals, basically the popups. when i understand more i'd like to perhaps split these out into their own const functions
   //inside this file, so the home screen function is less bloated. I would instead split them into new files but we need to keep them in (i think) as they
@@ -218,6 +231,8 @@ function HomeScreen( {route, navigation} ) {
     <View style={styles.container}>
      <MapView
        style={styles.map}
+       showsUserLocation={true}
+       showsMyLocationButton={true}
        region={{
          latitude: -37.791545,
          longitude: 175.289350,
@@ -232,6 +247,7 @@ function HomeScreen( {route, navigation} ) {
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
+        enablePanDownToClose={true}
         onChange={handleSheetChanges}
       >
         {bottomSheetContent}
