@@ -159,7 +159,8 @@ function HomeScreen( {route, navigation} ) {
   //this function is passed to each marker, so that when a marker is tapped it sends back up it's listing data for us to populate the bottom sheet
   //we will use the buttons to open detailed listing views etc
   const displayListingInfo = (title, desc) => {
-    bottomSheetRef.current.expand();
+    bottomSheetRef.current.snapToIndex(0);
+    console.log('displayListingInfo Call');
     setBottomSheetContent(
       <View style={styles.contentContainer}>
         <Text style={{
@@ -213,7 +214,7 @@ function HomeScreen( {route, navigation} ) {
   const handleCenterMove = (newCenter, gestureObject) => {
     console.log('New map center:', newCenter);
     if (gestureObject.isGesture) 
-      bottomSheetRef.current.collapse();
+      bottomSheetRef.current.close();
     setRequestCenter(newCenter);
     //here we would use setMarkers to change the list of markers we need to display and it s h o u l d update on map on its own if im interpreting states right
   }
