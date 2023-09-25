@@ -28,7 +28,7 @@ function SearchScreen({ navigation }) {
         clicked={clicked}
         setClicked={setClicked}
         onSubmit={() => {
-          alert("boo");
+          alert("Searched for: " + searchPhrase);
         }}
         onCancel={() => {
           navigation.goBack();

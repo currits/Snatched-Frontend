@@ -246,39 +246,39 @@ function HomeScreen( {route, navigation} ) {
         onRegionChangeComplete={handleCenterMove}
       >
         {markers.map(r => CreateMarker(r, displayListingInfo))}
-        <View
-          style={{
-              position: 'absolute',//use absolute position to show button on top of the map
-              margin: 15
-          }}
-        >
         {Platform.OS === 'ios' &&
-          <Icon
-            name="my-location"
-            size={20}
-            color="#000"
-            onPress={() => {
-              Geolocation.getCurrentPosition(
-                position => {
-                  console.log(position);
-                  mapRef.current?.animateCamera({
-                      center: {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
-                      },
-                      zoom: 14,
-                  });
-                },
-                error => {
-                  // See error code charts below.
-                  console.log(error.code, error.message);
-                },
-                {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-              );
+          <View
+            style={{
+                position: 'absolute', //use absolute position to show button on top of the map
+                margin: 15
             }}
-          />
+          >
+            <Icon
+              name="my-location"
+              size={20}
+              color="#000"
+              onPress={() => {
+                Geolocation.getCurrentPosition(
+                  position => {
+                    console.log(position);
+                    mapRef.current?.animateCamera({
+                        center: {
+                          latitude: position.coords.latitude,
+                          longitude: position.coords.longitude
+                        },
+                        zoom: 14,
+                    });
+                  },
+                  error => {
+                    // See error code charts below.
+                    console.log(error.code, error.message);
+                  },
+                  {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+                );
+              }}
+            />
+          </View>
         }
-        </View>
       </MapView>
       <BottomSheet
         ref={bottomSheetRef}
