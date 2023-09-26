@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useEffect, useRef, useState} from 'react';
-import { CreateMarker } from './CreateMarker';
+import { CreateMarker } from '../components/CreateMarker';
 import BottomSheet from '@gorhom/bottom-sheet'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
-import { SearchBar } from './SearchBar';
+import { SearchBar } from '../components/SearchBar';
 
 import { useDummyList } from '../contexts/DummyContext';
 
