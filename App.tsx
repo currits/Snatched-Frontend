@@ -8,7 +8,7 @@
 import React from 'react';
 import { AuthProvider } from './contexts/AuthContext';
 import { DummyListProvider } from './contexts/DummyContext';
-import { NavigationScreen } from './components/NavigationScreen'
+import { NavigationScreen } from './screens/NavigationScreen'
 
 function App(): JSX.Element {
   // Dummy list provider context is temporary
