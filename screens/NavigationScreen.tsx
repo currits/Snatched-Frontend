@@ -40,6 +40,7 @@ import { MyListingDetailScreen } from './MyListingDetailScreen'
 import { MyListingEditScreen } from './MyListingEditScreen'
 import { MyListingAddScreen } from './MyListingAddScreen'
 import { ListingDetailScreen } from './ListingDetailScreen';
+import { AboutScreen } from './AboutScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -195,6 +196,10 @@ function NavigationScreen() {
             <Stack.Screen options={{
                 title: "Listing Details",
             }} name="ListingDetailScreen" component={ListingDetailScreen}
+            />
+            <Stack.Screen options={{
+                title: "About",
+            }} name="AboutScreen" component={AboutScreen}
             />
           </>
         )}

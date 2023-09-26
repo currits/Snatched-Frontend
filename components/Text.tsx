@@ -17,13 +17,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 12
   },
-  description: {
-    fontSize: 16,
-    marginTop: 8,
+  header: {
+    fontSize: 20,
   },
+
   caption: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  description: {
+    fontSize: 16,
+    marginTop: 8,
   },
   input: {
     height: 40,
@@ -66,9 +70,21 @@ const Title = ({ text, style }) => {
 	)
 }
 
+const Header = ({ text, style }) => {
+	return (
+    <Text style={[style, styles.header]}>{text}</Text>
+	)
+}
+
 const Caption = ({ text, style }) => {
 	return (
     <Text style={[style, styles.caption]}>{text}</Text>
+	)
+}
+
+const Description = ({ text, style }) => {
+	return (
+    <Text style={[style, styles.Description]}>{text}</Text>
 	)
 }
 
@@ -93,4 +109,4 @@ const TextBox = ({ placeholder, value, style }) => {
 	)
 }
 
-export { Snatched, Title, Caption, Hint, TextBox, CaptionedTextBox }
+export { Snatched, Title, Header, Caption, Description, Hint, TextBox, CaptionedTextBox }

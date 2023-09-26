@@ -6,6 +6,7 @@ import {
 	View,
 	TouchableOpacity
 } from "react-native";
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const styles = StyleSheet.create({
