@@ -8,7 +8,6 @@ import {
   useColorScheme,
   View,
   Button,
-  Alert,
 } from 'react-native';
 
 import {
@@ -26,6 +25,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { useAuth } from '../contexts/AuthContext';
+import { LogoutAlert } from '../components/LogoutAlert';
 
 import { WelcomeScreen } from './WelcomeScreen'
 import { LoginScreen } from './LoginScreen'
@@ -46,27 +46,7 @@ const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 function CustomDrawerContent(props) {
-  const { isLoggedIn, login, logout } = useAuth();
-
-  const showLogoutConfirmDialog = () => {
-    return Alert.alert(
-      "Are you sure?",
-      "Are you sure you want to log out?",
-      [
-        // Does nothing but dismiss the dialog when tapped
-        {
-          text: "Cancel",
-        },
-        {
-          text: "Log out",
-          style: 'destructive',
-          onPress: () => {
-            logout();
-          },
-        },
-      ]
-    );
-  };
+  const { logout } = useAuth();
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -94,7 +74,7 @@ function CustomDrawerContent(props) {
         <DrawerItem
             icon={({ name, color, size }) => <Icon color={color} size={size} name="logout" /> }
             label="Log Out"
-            onPress={() => showLogoutConfirmDialog()}
+            onPress={() => LogoutAlert(logout)}
           />
       </View>
     </SafeAreaView>
@@ -149,7 +129,7 @@ function NavigationScreen() {
   // textbox outlines, snatched header and other heading text
   theme = 'light';
 
-  const { isLoggedIn, login, logout } = useAuth();
+  const { isLoggedIn, login } = useAuth();
 
   return (
     <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>

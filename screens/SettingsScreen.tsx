@@ -10,12 +10,17 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import { useAuth } from '../contexts/AuthContext';
+
 import { version } from "../package.json"
 import { appStyles } from '../components/Styles';
+import { LogoutAlert } from '../components/LogoutAlert';
 import { Header, Caption, Description, CaptionedTextBox } from '../components/Text';
 import { PrimaryButton, Link } from '../components/Buttons';
 
 const SettingsScreen = ({ route, navigation }) => {
+  const { logout } = useAuth();
+
   useEffect(() => {
     navigation.setOptions({ title: "Settings" })
   }, [navigation]);
@@ -48,7 +53,7 @@ const SettingsScreen = ({ route, navigation }) => {
         </View>
         */}
         <Link text="About Snatched" onPress={() => { navigation.navigate('AboutScreen') }}/>
-        <Link text="Log Out"/>
+        <Link text="Log Out" onPress={() => { LogoutAlert(logout) }}/>
       </View>
       <View style={appStyles.bottomContainer}>
         <Text>Snatched App</Text>
