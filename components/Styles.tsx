@@ -19,6 +19,10 @@ const appStyles = StyleSheet.create({
     marginTop: -120,
     justifyContent: 'center',
     padding: 32
+  },
+  bottomContainer: {
+    marginBottom: 48,
+    alignItems: 'center',
   }
 });
 

@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Button
 } from 'react-native';
-import { PrimaryButton, buttonHelperStyles } from '../components/Buttons';
+import { PrimaryButton } from '../components/Buttons';
+import { appStyles } from '../components/Styles';
 import { Title } from '../components/Text';
 
 const MyListingDetailScreen = ({ route, navigation }) => {
@@ -22,7 +23,7 @@ const MyListingDetailScreen = ({ route, navigation }) => {
         <Text style={styles.description}>{item.description}</Text>
         {/* Add more details here */}
       </View>
-      <View style={buttonHelperStyles.bottomButtonContainer}>
+      <View style={appStyles.bottomContainer}>
         <PrimaryButton
           text="Edit Listing"
           icon="edit"

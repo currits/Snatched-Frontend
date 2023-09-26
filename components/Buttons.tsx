@@ -58,14 +58,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const buttonHelperStyles = StyleSheet.create({
-  bottomButtonContainer: {
-    height: 120,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
-});
-
 const PrimaryButton = ({ text, icon, onPress, style, styleText }) => {
 	return (
 		<Pressable onPress={onPress} style={[styles.button, styles.buttonPrimary, style]}>
@@ -109,4 +101,4 @@ const Link = ({ text, onPress, style }) => {
 	)
 }
 
-export { PrimaryButton, SecondaryButton, Link, buttonHelperStyles }
+export { PrimaryButton, SecondaryButton, Link }
