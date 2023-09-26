@@ -15,6 +15,7 @@ import MapView, { Marker } from 'react-native-maps';
 import {request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 import ListingInfoSheet from '../components/ListingInfoSheet';
+import ProtocolModal from '../components/ProtocolModal';
 
 const styles = StyleSheet.create({
  container: {
@@ -143,8 +144,11 @@ const styles = StyleSheet.create({
 function HomeScreen( {route, navigation} ) {
 
   //    Exchange Protocol popup hooks    //
-  const [protocolPopupVisible, setProtocolVisible] = useState(false);
-  const [contactPopupVisible, setContactVisible] = useState(false);
+  const [isProtocolModalVisible, setProtocolModalVisible] = useState(false);
+
+  const toggleProtocolModal = () => {
+    setProtocolModalVisible(!isProtocolModalVisible);
+  };
 
   //    Bottom Sheet Code   //
   //below is the code for the menu that can be dragged up from the bottom of the interface.
@@ -167,7 +171,7 @@ function HomeScreen( {route, navigation} ) {
       <ListingInfoSheet
         item={ {name: title, description: desc} }
         onInfoPress={() => navigation.push('ListingDetailScreen', { item :{name: title, description: desc} })}
-        onSnatchPress={() => setProtocolVisible(!protocolPopupVisible)}
+        onSnatchPress={toggleProtocolModal}
       />
     );
   }
@@ -277,47 +281,11 @@ function HomeScreen( {route, navigation} ) {
       >
         {bottomSheetContent}
       </BottomSheet>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={protocolPopupVisible}
-        onRequestClose={() => {
-          setProtocolVisible(!protocolPopupVisible);
-        }}>
-        <View style={styles.protocolView}>
-          <View style={styles.protocolModal}>
-            <Pressable
-                style={styles.buttonClose}
-                onPress={() => setProtocolVisible(!protocolPopupVisible)}>
-                <Icon name="close" size={20} color="black" />
-              </Pressable>
-            <Text style={styles.modalText}>Exchange protocol here</Text>
-            <Pressable
-              style={styles.buttonContact}
-              onPress={() => { setProtocolVisible(!protocolPopupVisible); setContactVisible(!contactPopupVisible); }}>
-              <Text style={styles.buttonText}>Contact Producer</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={contactPopupVisible}
-        onRequestClose={() => {
-          setContactVisible(!contactPopupVisible);
-        }}>
-        <View style={styles.contactView}>
-          <View style={styles.contactModal}>
-          <Pressable
-              style={styles.buttonClose}
-              onPress={() => setContactVisible(!contactPopupVisible)}>
-              <Icon name="close" size={20} color="black" />
-            </Pressable>
-            <Text style={styles.modalText}>Contact details here</Text>
-          </View>
-        </View>
-      </Modal>
+      
+      <ProtocolModal
+        visible={isProtocolModalVisible}
+        toggleModal={toggleProtocolModal}
+      />
    </View>
   );
 }
