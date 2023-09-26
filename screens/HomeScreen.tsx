@@ -18,127 +18,14 @@ import ListingInfoSheet from '../components/ListingInfoSheet';
 import ProtocolModal from '../components/ProtocolModal';
 
 const styles = StyleSheet.create({
- container: {
-   ...StyleSheet.absoluteFillObject,
-   justifyContent: 'flex-end',
-   alignItems: 'center',
- },
- map: {
-   ...StyleSheet.absoluteFillObject,
- },
- contentContainer: {
-  flex: 1,
-  alignItems: 'center',
-},
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    height: '50%',
-  },
-  buttonMoreInfo: {
-    flex: 1,
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: 50,
-    borderRadius: 5,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    elevation: 3,
-    backgroundColor: 'darkgray',
-    marginHorizontal: 8,
   },
-  buttonSnatch: {
-    flex: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 50,
-    borderRadius: 5,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    elevation: 3,
-    backgroundColor: 'dimgray',
-    marginHorizontal: 8,
-  },
-  buttonText: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'white',
-  },
-  protocolView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  protocolModal: {
-    flex: 1,
-    flexDirection: 'column',
-    width: '80%',
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  contactView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '40%',
-    marginBottom: '35%'
-  },
-  contactModal: {
-    flex: 1,
-    flexDirection: 'column',
-    width: '80%',
-    margin: 10,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 20,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  buttonContact: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 250,
-    borderRadius: 5,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    elevation: 3,
-    backgroundColor: 'dimgray',
-    marginHorizontal: 8,
-  },
-  modalText: {
-    flex: 15,
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  buttonClose: {
-    flex: 1,
-    alignSelf: 'flex-end'
-  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  }
 });
 
 function HomeScreen( {route, navigation} ) {
@@ -176,9 +63,16 @@ function HomeScreen( {route, navigation} ) {
     );
   }
 
-  const [bottomSheetContent, setBottomSheetContent] = useState((<View style={styles.contentContainer}>
-    <Text>Awesome 🎉</Text>
-  </View>));
+  // We prolly wanna hide this until a marker is selected
+  // OR set this to a 'welcome, scroll around to find listings in ur area' type thing
+  const [bottomSheetContent, setBottomSheetContent] = useState((
+    <View style={{
+      flex: 1,
+      alignItems: 'center',
+    }}>
+      <Text>Awesome 🎉</Text>
+    </View>
+  ));
   
   //    Marker Code   //
   //dummy array of markers. here we should instead send request to DB for listings within certain distance then use response to build markers
@@ -199,7 +93,8 @@ function HomeScreen( {route, navigation} ) {
     latitude: -37.791545,
     longitude: 175.289350,
     latitudeDelta: 0.015,
-    longitudeDelta: 0.0121,});
+    longitudeDelta: 0.0121,
+  });
 
   //and this will be called after every map scroll completes, to update the 'center'
   //(should also be called when map first created to get the initial markers)
@@ -211,10 +106,32 @@ function HomeScreen( {route, navigation} ) {
     //here we would use setMarkers to change the list of markers we need to display and it s h o u l d update on map on its own if im interpreting states right
   }
 
+  const scrollToUserLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        console.log(position);
+        mapRef.current?.animateCamera({
+            center: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            },
+            zoom: 14,
+        });
+      },
+      error => {
+        console.log(error.code, error.message);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  }
+
+  // Request location on load
   useEffect(() => {
     request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
     request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
-  });
+
+    scrollToUserLocation();
+  }, []);
 
   const mapRef = useRef();
 
@@ -238,6 +155,7 @@ function HomeScreen( {route, navigation} ) {
         onRegionChangeComplete={handleCenterMove}
       >
         {markers.map(r => CreateMarker(r, displayListingInfo))}
+        {/* Show our custom scroll to location button if on iOS (Android has this built-in) */}
         {Platform.OS === 'ios' &&
           <View
             style={{
@@ -249,25 +167,7 @@ function HomeScreen( {route, navigation} ) {
               name="my-location"
               size={20}
               color="#000"
-              onPress={() => {
-                Geolocation.getCurrentPosition(
-                  position => {
-                    console.log(position);
-                    mapRef.current?.animateCamera({
-                        center: {
-                          latitude: position.coords.latitude,
-                          longitude: position.coords.longitude
-                        },
-                        zoom: 14,
-                    });
-                  },
-                  error => {
-                    // See error code charts below.
-                    console.log(error.code, error.message);
-                  },
-                  {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-                );
-              }}
+              onPress={scrollToUserLocation}
             />
           </View>
         }
