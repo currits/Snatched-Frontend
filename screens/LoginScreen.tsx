@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 
-import { TextBox, Caption, Hint } from '../components/Text';
+import { Snatched, TextBox, Caption, Hint } from '../components/Text';
 import { PrimaryButton, Link } from '../components/Buttons';
 import { appStyles } from '../components/Styles';
 
@@ -22,7 +22,10 @@ const LoginScreen = ({ route, navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={appStyles.centeredContainer}>
-        {/* Extra View here to workaround to stop buggy keyboard sliding animation */}
+        {/* Extra Views here to workaround to stop buggy keyboard sliding animation */}
+        <View style={{alignItems: 'center'}}>
+          <Snatched text="SNATCHED"/>
+        </View>
         <View>
           <Caption text="Log into your Account" />
         </View>

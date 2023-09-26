@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
 	snatched: {
     fontSize: 36,
     fontWeight: 'bold',
+    marginBottom: 32
 	},
   title: {
     fontSize: 24,
