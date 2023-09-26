@@ -14,6 +14,7 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import {request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
+import ListingInfoSheet from '../components/ListingInfoSheet';
 
 const styles = StyleSheet.create({
  container: {
@@ -163,25 +164,11 @@ function HomeScreen( {route, navigation} ) {
     bottomSheetRef.current.snapToIndex(0);
     console.log('displayListingInfo Call');
     setBottomSheetContent(
-      <View style={styles.contentContainer}>
-        <Text style={{
-          fontSize: 24,
-          fontWeight: 'bold',
-          marginBottom: 20
-        }}>
-          Listing Information
-        </Text>
-        <Text>{title}</Text>
-        <Text>{desc}</Text>
-        <View style={styles.buttonContainer}>
-          <Pressable onPress={() => navigation.push('ListingDetailScreen', { item :{name: title, description: desc} })} style={styles.buttonMoreInfo}>
-            <Text style={styles.buttonText}>More Info</Text>
-          </Pressable>
-          <Pressable onPress={() => setProtocolVisible(!protocolPopupVisible)} style={styles.buttonSnatch}>
-            <Text style={styles.buttonText}>Snatch!</Text>
-            </Pressable>
-        </View>
-      </View>
+      <ListingInfoSheet
+        item={ {name: title, description: desc} }
+        onInfoPress={() => navigation.push('ListingDetailScreen', { item :{name: title, description: desc} })}
+        onSnatchPress={() => setProtocolVisible(!protocolPopupVisible)}
+      />
     );
   }
 
