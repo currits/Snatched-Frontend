@@ -10,6 +10,7 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import { version } from "../package.json"
 import { Header, Caption, Description, CaptionedTextBox } from '../components/Text';
 import { Link } from '../components/Buttons';
 
@@ -46,6 +47,7 @@ const SettingsScreen = ({ route, navigation }) => {
       */}
       <Link text="About Snatched" onPress={() => { navigation.navigate('AboutScreen') }}/>
       <Link text="Log Out"/>
+      <Header text={version}/>
       {/* Add more details here */}
     </View>
   );
