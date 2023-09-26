@@ -31,7 +31,7 @@ const LoginScreen = ({ route, navigation }) => {
         </View>
 
         <TextBox placeholder="Email" />
-        <TextBox placeholder="Password" />
+        <TextBox placeholder="Password" secureTextEntry={true} />
 
         <PrimaryButton
           text="Sign in"

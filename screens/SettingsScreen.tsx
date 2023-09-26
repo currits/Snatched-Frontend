@@ -32,9 +32,9 @@ const SettingsScreen = ({ route, navigation }) => {
             <Icon name="edit" size={20} color="black"/>
           </Pressable>
         </View>
-        <CaptionedTextBox caption="Email" editable={false}/>
-        <CaptionedTextBox caption="Password" editable={false}/>
-        <CaptionedTextBox caption="Phone Number" editable={false}/>
+        <CaptionedTextBox caption="Email" placeholder="Email" editable={false}/>
+        <CaptionedTextBox caption="Password" placeholder="Password" secureTextEntry={true} editable={false}/>
+        <CaptionedTextBox caption="Phone Number" placeholder="Password" editable={false}/>
 
         <Header text="App Settings"/>
         {/* We don't have push notifications, so just commenting this setting out */}

@@ -31,8 +31,8 @@ const SignupScreen = ({ route, navigation }) => {
         </View>
 
         <TextBox placeholder="Email" />
-        <TextBox placeholder="Password" />
-        <TextBox placeholder="Confirm Password" />
+        <TextBox placeholder="Password" secureTextEntry={true} />
+        <TextBox placeholder="Confirm Password" secureTextEntry={true} />
 
         <PrimaryButton
           text="Sign up"

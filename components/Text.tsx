@@ -94,18 +94,18 @@ const Hint = ({ text, style }) => {
 	)
 }
 
-const CaptionedTextBox = ({ caption, placeholder, value, editable, style }) => {
+const CaptionedTextBox = ({ caption, placeholder, value, editable, secureTextEntry, style }) => {
 	return (
 		<>
     <Text style={styles.caption}>{caption}</Text>
-		<TextInput style={[style, styles.input]} editable={editable} placeholder={placeholder} value={value}/>
+		<TextInput style={[style, styles.input]} editable={editable} secureTextEntry={secureTextEntry} placeholder={placeholder} value={value}/>
 		</>
 	)
 }
 
-const TextBox = ({ placeholder, value, editable, style }) => {
+const TextBox = ({ placeholder, value, editable, secureTextEntry, style }) => {
 	return (
-		<TextInput style={[style, styles.input]} editable={editable} placeholderTextColor="gray" placeholder={placeholder} value={value} />
+		<TextInput style={[style, styles.input]} editable={editable} secureTextEntry={secureTextEntry} placeholderTextColor="gray" placeholder={placeholder} value={value} />
 	)
 }
 
