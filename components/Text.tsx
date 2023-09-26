@@ -88,7 +88,7 @@ const CaptionedTextBox = ({ caption, placeholder, value, style }) => {
 
 const TextBox = ({ placeholder, value, style }) => {
 	return (
-		<TextInput style={[style, styles.input]} placeholder={placeholder} value={value} />
+		<TextInput style={[style, styles.input]} placeholderTextColor="gray" placeholder={placeholder} value={value} />
 	)
 }
 
