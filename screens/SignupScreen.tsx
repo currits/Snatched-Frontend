@@ -3,7 +3,8 @@ import {
   View,
   Text,
   Button,
-  StyleSheet
+  StyleSheet,
+  KeyboardAvoidingView
 } from 'react-native';
 
 import { TextBox, Caption } from '../components/Text';
@@ -16,19 +17,24 @@ const SignupScreen = ({ route, navigation }) => {
   const { isLoggedIn, login, logout } = useAuth();
   
   return (
-    <View style={appStyles.container}>
-      <Caption text="Create your Account" />
+    <KeyboardAvoidingView
+      style={appStyles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <View style={appStyles.centeredContainerWithHeader}>
+        <Caption text="Create your Account" />
 
-      <TextBox placeholder="Email" />
-      <TextBox placeholder="Password" />
-      <TextBox placeholder="Confirm Password" />
+        <TextBox placeholder="Email" />
+        <TextBox placeholder="Password" />
+        <TextBox placeholder="Confirm Password" />
 
-      <PrimaryButton
-        text="Sign up"
-        onPress={() => login()}
-      />
-      {/* Add more details here */}
-    </View>
+        <PrimaryButton
+          text="Sign up"
+          onPress={() => login()}
+        />
+        {/* Add more details here */}
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 

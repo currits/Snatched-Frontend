@@ -35,8 +35,8 @@ const ListingInfoSheet = ({item, onInfoPress, onSnatchPress}) => {
 			<Text>{item.name}</Text>
 			<Text>{item.description}</Text>
 			<View style={styles.buttonContainer}>
-				<SecondaryButton onPress={onInfoPress} text="More Info"/>
-				<PrimaryButton onPress={onSnatchPress} text="Snatch!" style={{ flex: 2 }}/>
+				<SecondaryButton onPress={onInfoPress} text="More Info" style={{ margin: 12 }}/>
+				<PrimaryButton onPress={onSnatchPress} text="Snatch!" style={{ margin: 12, flex: 2 }}/>
 			</View>
 		</View>
 	)

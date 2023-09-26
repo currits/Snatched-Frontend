@@ -7,28 +7,23 @@ import {
   StyleSheet
 } from 'react-native';
 
+import { Snatched } from '../components/Text';
+import { PrimaryButton } from '../components/Buttons';
+import { appStyles } from '../components/Styles';
+
 const WelcomeScreen = ({ route, navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.caption}>SNATCHED</Text>
-      <Button
-        title="Let's get started"
+    <View style={[{alignItems: 'center'}, appStyles.centeredContainer]}>
+      <Snatched text="SNATCHED"/>
+
+      <PrimaryButton
+        text="Let's get started"
+        icon="arrow-forward"
         onPress={() => navigation.replace('LoginScreen')}
       />
       {/* Add more details here */}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',  },
-  caption: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
 
 export { WelcomeScreen }

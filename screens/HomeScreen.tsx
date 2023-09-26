@@ -1,7 +1,4 @@
 import React, {useCallback, useMemo, useEffect, useRef, useState} from 'react';
-import { CreateMarker } from '../components/CreateMarker';
-import BottomSheet from '@gorhom/bottom-sheet'
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {
   StyleSheet,
@@ -11,11 +8,17 @@ import {
   Modal
 } from 'react-native';
 
+import { CreateMarker } from '../components/CreateMarker';
+import BottomSheet from '@gorhom/bottom-sheet'
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import MapView, { Marker } from 'react-native-maps';
 import {request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
+
 import ListingInfoSheet from '../components/ListingInfoSheet';
 import ProtocolModal from '../components/ProtocolModal';
+import { Title } from '../components/Text';
+import { appStyles } from '../components/Styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -66,11 +69,11 @@ function HomeScreen( {route, navigation} ) {
   // We prolly wanna hide this until a marker is selected
   // OR set this to a 'welcome, scroll around to find listings in ur area' type thing
   const [bottomSheetContent, setBottomSheetContent] = useState((
-    <View style={{
-      flex: 1,
-      alignItems: 'center',
-    }}>
-      <Text>Awesome 🎉</Text>
+    <View style={[{marginTop: -50}, appStyles.centeredContainer]}>
+      <Title text="Welcome to Snatched!" style={{ textAlign: 'center' }} />
+      <Text>Scroll around to find listings in your area.</Text>
+      <Text>Tap a marker to find out more information about a listing.</Text>
+      <Text>Search using the button in the top right corner.</Text>
     </View>
   ));
   

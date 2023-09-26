@@ -13,6 +13,12 @@ const appStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 32
+  },
+  centeredContainerWithHeader: {
+    flex: 1,
+    marginTop: -120,
+    justifyContent: 'center',
+    padding: 32
   }
 });
 

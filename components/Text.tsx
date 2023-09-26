@@ -7,9 +7,14 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const styles = StyleSheet.create({
+	snatched: {
+    fontSize: 36,
+    fontWeight: 'bold',
+	},
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 12
   },
   description: {
     fontSize: 16,
@@ -48,6 +53,12 @@ const styles = StyleSheet.create({
   }
 });
 
+const Snatched = ({ text, style }) => {
+	return (
+		<Text style={[style, styles.snatched]}>{text}</Text>
+	)
+}
+
 const Title = ({ text, style }) => {
 	return (
 		<Text style={[style, styles.title]}>{text}</Text>
@@ -81,4 +92,4 @@ const TextBox = ({ placeholder, value, style }) => {
 	)
 }
 
-export { Title, Caption, Hint, TextBox, CaptionedTextBox }
+export { Snatched, Title, Caption, Hint, TextBox, CaptionedTextBox }
