@@ -5,9 +5,11 @@ import {
   View,
   Text,
   Pressable,
-  Modal
+  Modal,
+  Button
 } from 'react-native';
 
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { CreateMarker } from '../components/CreateMarker';
 import BottomSheet from '@gorhom/bottom-sheet'
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -32,6 +34,27 @@ const styles = StyleSheet.create({
 });
 
 function HomeScreen( {route, navigation} ) {
+  React.useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons>
+          <Item
+            IconComponent={Icon} iconSize={23}
+            title="location"
+            iconName="my-location"
+            onPress={scrollToUserLocation}
+          />
+          <Item
+            IconComponent={Icon} iconSize={23}
+            title="search"
+            iconName="search"
+            onPress={() => { navigation.navigate('Search') }}
+          />
+        </HeaderButtons>
+      ),
+    });
+  }, [navigation]);
+
 
   //    Exchange Protocol popup hooks    //
   const [isProtocolModalVisible, setProtocolModalVisible] = useState(false);
@@ -148,7 +171,7 @@ function HomeScreen( {route, navigation} ) {
         ref={mapRef}
         style={styles.map}
         showsUserLocation={true}
-        showsMyLocationButton={true}
+        showsMyLocationButton={false}
         region={{
           latitude: -37.791545,
           longitude: 175.289350,
@@ -158,22 +181,6 @@ function HomeScreen( {route, navigation} ) {
         onRegionChangeComplete={handleCenterMove}
       >
         {markers.map(r => CreateMarker(r, displayListingInfo))}
-        {/* Show our custom scroll to location button if on iOS (Android has this built-in) */}
-        {Platform.OS === 'ios' &&
-          <View
-            style={{
-                position: 'absolute', //use absolute position to show button on top of the map
-                margin: 15
-            }}
-          >
-            <Icon
-              name="my-location"
-              size={20}
-              color="#000"
-              onPress={scrollToUserLocation}
-            />
-          </View>
-        }
       </MapView>
       <BottomSheet
         ref={bottomSheetRef}

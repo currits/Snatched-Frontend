@@ -1,17 +1,4 @@
 import React from 'react';
-
-import {
-  NavigationContainer,
-  DarkTheme,
-  DefaultTheme,
-  useNavigation
-} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator, DrawerContentScrollView,
-  DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import {
   SafeAreaView,
   ScrollView,
@@ -25,9 +12,18 @@ import {
 } from 'react-native';
 
 import {
-  HeaderButtons,
-  Item,
-} from 'react-navigation-header-buttons';
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme,
+  useNavigation
+} from '@react-navigation/native';
+
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator, DrawerContentScrollView,
+  DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { useAuth } from '../contexts/AuthContext';
 
@@ -115,16 +111,6 @@ function MainDrawer() {
         options={{
           drawerLabel: 'Home',
           drawerIcon: icon=({ name, color, size }) => <Icon color={color} size={size} name="home" />,
-          headerRight: ({props}) => (
-            <HeaderButtons>
-              <Item
-                IconComponent={Icon} iconSize={23}
-                title="search"
-                iconName="search"
-                onPress={() => { navigation.navigate('Search') }}
-              />
-            </HeaderButtons>
-          ),
         }}
       />
       <Drawer.Screen

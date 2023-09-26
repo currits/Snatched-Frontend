@@ -22,7 +22,10 @@ const SignupScreen = ({ route, navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={appStyles.centeredContainerWithHeader}>
-        <Caption text="Create your Account" />
+        {/* Extra View here to workaround to stop buggy keyboard sliding animation */}
+        <View>
+          <Caption text="Create your Account" />
+        </View>
 
         <TextBox placeholder="Email" />
         <TextBox placeholder="Password" />
