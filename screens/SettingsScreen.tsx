@@ -31,15 +31,15 @@ const SettingsScreen = ({ route, navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <View style={appStyles.container}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Header text="My Account" style={{ marginBottom: 12 }}/>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <Header text="My Account"/>
           <Pressable>
             <Icon name="edit" size={20} color="black"/>
           </Pressable>
         </View>
         <CaptionedTextBox caption="Email" placeholder="Email" editable={false}/>
         <CaptionedTextBox caption="Password" placeholder="Password" secureTextEntry={true} editable={false}/>
-        <CaptionedTextBox caption="Phone Number" placeholder="Password" editable={false}/>
+        <CaptionedTextBox caption="Phone Number" placeholder="Phone Number" editable={false}/>
 
         <Header text="App Settings"/>
         {/* We don't have push notifications, so just commenting this setting out */}

@@ -36,7 +36,7 @@ const MyListing = ({ item, onPress, onEditPress }) => {
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
         <View style={styles.textContainer}>
-          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.name}>{item.title}</Text>
           <Text style={styles.description}>{item.description}</Text>
         </View>
         <Pressable onPress={onEditPress}>

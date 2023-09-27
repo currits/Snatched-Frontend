@@ -74,7 +74,7 @@ const Listing = ({ item, navigation }) => {
     <TouchableOpacity onPress={handlePress}>
       <View style={ListItemStyles.container}>
         <View style={ListItemStyles.textContainer}>
-          <Text style={ListItemStyles.name}>{item.name}</Text>
+          <Text style={ListItemStyles.name}>{item.title}</Text>
           <Text style={ListItemStyles.description}>{item.distance}km</Text>
         </View>
       </View>

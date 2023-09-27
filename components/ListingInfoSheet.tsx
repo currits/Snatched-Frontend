@@ -7,6 +7,7 @@ import {
 	Button
 } from "react-native";
 
+import { Title, Caption, Description } from '../components/Text';
 import { PrimaryButton, SecondaryButton } from '../components/Buttons';
 
 const ListingInfoSheet = ({item, onInfoPress, onSnatchPress}) => {
@@ -25,15 +26,15 @@ const ListingInfoSheet = ({item, onInfoPress, onSnatchPress}) => {
 
 	return (
 		<View style={styles.contentContainer}>
-			<Text style={{
-				fontSize: 24,
-				fontWeight: 'bold',
+			<Title style={{
 				marginBottom: 20
-			}}>
-				Listing Information
-			</Text>
-			<Text>{item.name}</Text>
-			<Text>{item.description}</Text>
+			}} text="Listing Information"/>
+
+			<View style={{  }}>
+				<Caption text={item.title}/>
+				<Description text={item.description}/>
+			</View>
+
 			<View style={styles.buttonContainer}>
 				<SecondaryButton onPress={onInfoPress} text="More Info" style={{ margin: 12 }}/>
 				<PrimaryButton onPress={onSnatchPress} text="Snatch!" style={{ margin: 12, flex: 2 }}/>

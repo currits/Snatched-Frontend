@@ -17,6 +17,7 @@ import MapView, { Marker } from 'react-native-maps';
 import {request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 
+import { useDummyList } from '../contexts/DummyContext';
 import ListingInfoSheet from '../components/ListingInfoSheet';
 import ProtocolModal from '../components/ProtocolModal';
 import { Title } from '../components/Text';
@@ -77,13 +78,13 @@ function HomeScreen( {route, navigation} ) {
   
   //this function is passed to each marker, so that when a marker is tapped it sends back up it's listing data for us to populate the bottom sheet
   //we will use the buttons to open detailed listing views etc
-  const displayListingInfo = (title, desc) => {
+  const displayListingInfo = (listing) => {
     bottomSheetRef.current.snapToIndex(0);
-    console.log('displayListingInfo Call');
+
     setBottomSheetContent(
       <ListingInfoSheet
-        item={ {name: title, description: desc} }
-        onInfoPress={() => navigation.push('ListingDetailScreen', { item :{name: title, description: desc} })}
+        item={listing}
+        onInfoPress={() => navigation.push('ListingDetailScreen', { listing }) }
         onSnatchPress={toggleProtocolModal}
       />
     );
@@ -102,15 +103,10 @@ function HomeScreen( {route, navigation} ) {
   
   //    Marker Code   //
   //dummy array of markers. here we should instead send request to DB for listings within certain distance then use response to build markers
-  const dudMarkers = [{latitude: -37.78825, longitude: 175.289350, title:'test one', desc:'test 1 desc', id: 1},
-  {latitude: -36.78825, longitude: 176.289350, title:'test two', desc:'test 2 desc', id: 2},
-  {latitude: -38.78825, longitude: 174.289350, title:'test three', desc:'test 3 desc', id: 3},
-  {latitude: -37.78825, longitude: 177.289350, title:'test four', desc:'test 4 desc', id: 4},
-  {latitude: -35.78825, longitude: 175.289350, title:'test five', desc:'test 5 desc', id: 5},
-  {latitude: -34.78825, longitude: 175.289350, title:'test six', desc:'test 6 desc', id: 6}]
+  const { dummyList } = useDummyList();
 
   //marker state for list of markers.
-  const [markers, setMarkers] = useState(dudMarkers);
+  const [markers, setMarkers] = useState(dummyList);
 
   //this is how we can manage updating markers as we scroll
   //this sets up a 'center' state for us to use to send requests to the DB
@@ -135,7 +131,6 @@ function HomeScreen( {route, navigation} ) {
   const scrollToUserLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
-        console.log(position);
         mapRef.current?.animateCamera({
             center: {
               latitude: position.coords.latitude,
@@ -180,7 +175,7 @@ function HomeScreen( {route, navigation} ) {
         }}
         onRegionChangeComplete={handleCenterMove}
       >
-        {markers.map(r => CreateMarker(r, displayListingInfo))}
+        {markers.map(listing => CreateMarker(listing, displayListingInfo))}
       </MapView>
       <BottomSheet
         ref={bottomSheetRef}

@@ -58,39 +58,41 @@ const styles = StyleSheet.create({
   }
 });
 
+/* Style should always go at end of {[]} style array to ensure argument-defined styles take precedence */
+
 const Snatched = ({ text, style }) => {
 	return (
-		<Text style={[style, styles.snatched]}>{text}</Text>
+		<Text style={[styles.snatched, style]}>{text}</Text>
 	)
 }
 
 const Title = ({ text, style }) => {
 	return (
-		<Text style={[style, styles.title]}>{text}</Text>
+		<Text style={[styles.title, style]}>{text}</Text>
 	)
 }
 
 const Header = ({ text, style }) => {
 	return (
-    <Text style={[style, styles.header]}>{text}</Text>
+    <Text style={[styles.header, style]}>{text}</Text>
 	)
 }
 
 const Caption = ({ text, style }) => {
 	return (
-    <Text style={[style, styles.caption]}>{text}</Text>
+    <Text style={[styles.caption, style]}>{text}</Text>
 	)
 }
 
 const Description = ({ text, style }) => {
 	return (
-    <Text style={[style, styles.Description]}>{text}</Text>
+    <Text style={[styles.Description, style]}>{text}</Text>
 	)
 }
 
 const Hint = ({ text, style }) => {
 	return (
-    <Text style={[style, styles.hint]}>{text}</Text>
+    <Text style={[styles.hint, style]}>{text}</Text>
 	)
 }
 
@@ -98,14 +100,14 @@ const CaptionedTextBox = ({ caption, placeholder, value, editable, secureTextEnt
 	return (
 		<>
     <Text style={styles.caption}>{caption}</Text>
-		<TextInput style={[style, styles.input]} editable={editable} secureTextEntry={secureTextEntry} placeholder={placeholder} value={value}/>
+		<TextInput style={[styles.input, style]} editable={editable} secureTextEntry={secureTextEntry} placeholder={placeholder} value={value}/>
 		</>
 	)
 }
 
 const TextBox = ({ placeholder, value, editable, secureTextEntry, style }) => {
 	return (
-		<TextInput style={[style, styles.input]} editable={editable} secureTextEntry={secureTextEntry} placeholderTextColor="gray" placeholder={placeholder} value={value} />
+		<TextInput style={[styles.input, style]} editable={editable} secureTextEntry={secureTextEntry} placeholderTextColor="gray" placeholder={placeholder} value={value} />
 	)
 }
 

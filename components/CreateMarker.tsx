@@ -12,16 +12,18 @@ function CreateMarker(listing, displayListingInfo) {
     //operates on the assumption that each marker will be created by being passed in a JSON array with the details from the DB
     //and that it will have fields lat, long, title, desc, and a unique key (used to make a request to the DB for viewing the listing in detail, and for react to identify array siblings)
 
-    return (<Marker
-        coordinate={{latitude: listing.latitude, longitude: listing.longitude}}
-        title={listing.title}
-        //this for now just logs the marker (or text above) being pressed. later this can be used as the call to go to the listing details for this marker.
-        onCalloutPress={e =>(displayListingInfo(listing.title, listing.desc))}
-        onPress={e =>(displayListingInfo(listing.title, listing.desc))}
-        key={listing.id}>
+    return (
+        <Marker
+            coordinate={{latitude: listing.lat, longitude: listing.lon}}
+            title={listing.title}
+            //this for now just logs the marker (or text above) being pressed. later this can be used as the call to go to the listing details for this marker.
+            onCalloutPress={e =>(displayListingInfo(listing))}
+            onPress={e =>(displayListingInfo(listing))}
+            key={listing.id}
+        >
         <Callout>
             <View>
-                <Text>{listing.desc}</Text>
+                <Text>{listing.title}</Text>
             </View>
         </Callout>
     </Marker>)
