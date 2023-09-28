@@ -101,16 +101,27 @@ function HomeScreen( {route, navigation} ) {
   ));
   
   //    Marker Code   //
-  //dummy array of markers. here we should instead send request to DB for listings within certain distance then use response to build markers
-  const dudMarkers = [{latitude: -37.78825, longitude: 175.289350, title:'test one', desc:'test 1 desc', id: 1},
-  {latitude: -36.78825, longitude: 176.289350, title:'test two', desc:'test 2 desc', id: 2},
-  {latitude: -38.78825, longitude: 174.289350, title:'test three', desc:'test 3 desc', id: 3},
-  {latitude: -37.78825, longitude: 177.289350, title:'test four', desc:'test 4 desc', id: 4},
-  {latitude: -35.78825, longitude: 175.289350, title:'test five', desc:'test 5 desc', id: 5},
-  {latitude: -34.78825, longitude: 175.289350, title:'test six', desc:'test 6 desc', id: 6}]
+  //basic code for communicating with api
+  //note that the ip address is just what the emulator uses, will need to present an actual address later
+  const url = 'http://10.0.2.2:5000/';
+  const getListingsInArea = async (lat, lon) => {
+    fetch(url + "listing/?lat=" + lat + "&lon=" + lon)
+    .then(response => response.json())
+    .then(json => {
+      console.log(json[0]);
+      setMarkers(json);
+      })
+    .catch(error => {console.error(error)});
+  }
+  const markerList = [{lat: -37.78825, lon: 175.289350, title:'test one', description:'test 1 desc', listing_ID: 1},
+  {lat: -36.78825, lon: 176.289350, title:'test two', description:'test 2 desc', listing_ID: 2},
+  {lat: -38.78825, lon: 174.289350, title:'test three', description:'test 3 desc', listing_ID: 3},
+  {lat: -37.78825, lon: 177.289350, title:'test four', description:'test 4 desc', listing_ID: 4},
+  {lat: -35.78825, lon: 175.289350, title:'test five', description:'test 5 desc', listing_ID: 5},
+  {lat: -34.78825, lon: 175.289350, title:'test six', description:'test 6 desc', listing_ID: 6}]
 
   //marker state for list of markers.
-  const [markers, setMarkers] = useState(dudMarkers);
+  const [markers, setMarkers] = useState(markerList);
 
   //this is how we can manage updating markers as we scroll
   //this sets up a 'center' state for us to use to send requests to the DB
@@ -124,11 +135,13 @@ function HomeScreen( {route, navigation} ) {
 
   //and this will be called after every map scroll completes, to update the 'center'
   //(should also be called when map first created to get the initial markers)
-  const handleCenterMove = (newCenter, gestureObject) => {
+  const handleCenterMove = async (newCenter, gestureObject) => {
     console.log('New map center:', newCenter);
     if (gestureObject.isGesture) 
       bottomSheetRef.current.close();
     setRequestCenter(newCenter);
+    console.log("attempting to contact server.");
+    getListingsInArea(requestCenter.latitude, requestCenter.longitude);
     //here we would use setMarkers to change the list of markers we need to display and it s h o u l d update on map on its own if im interpreting states right
   }
 
