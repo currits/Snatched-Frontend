@@ -1,12 +1,19 @@
-import React from 'react';
-import {useState} from 'react';
+import { React, useState } from 'react';
 
-import { View, Text, StyleSheet, Button } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button
+} from 'react-native';
+
 import { PrimaryButton } from '../components/Buttons';
+import { appStyles } from '../components/Styles';
+import { Title, Header } from '../components/Text';
 import ProtocolModal from '../components/ProtocolModal';
 
 const ListingDetailScreen = ({ route, navigation }) => {
-  const { item } = route.params;
+  const { listing } = route.params;
 
   React.useEffect(() => {
     navigation.setOptions({ title: item.title })
@@ -18,15 +25,22 @@ const ListingDetailScreen = ({ route, navigation }) => {
     setProtocolModalVisible(!isProtocolModalVisible);
   };
 
-  const url = 'http://10.0.2.2:5000/';
-  //const getListingData = async (id)
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.name}>{item.title}</Text>
-      <Text style={styles.description}>{item.description}</Text>
-      {/* Add more details here */}
-      <PrimaryButton onPress={setProtocolModalVisible} text="Snatch!" style={{ margin: 12, flex: 0.5 }}/>
+    <View style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Title text={listing.title} style={{ marginBottom: 0 }} />
+          <Header text="0.2km" />
+        </View>
+        <Text style={styles.description}>{listing.description}</Text>
+        {/* Add more details here */}
+      </View>
+      <View style={appStyles.bottomContainer}>
+        <PrimaryButton
+          text="Snatch!"
+          onPress={setProtocolModalVisible}
+        />
+      </View>
       <ProtocolModal
         visible={isProtocolModalVisible}
         toggleModal={toggleProtocolModal}
@@ -40,8 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
-  name: {
-    flex: 1,
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
   },

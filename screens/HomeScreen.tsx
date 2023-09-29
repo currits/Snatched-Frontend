@@ -17,6 +17,7 @@ import MapView, { Marker } from 'react-native-maps';
 import {request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 
+import { useDummyList } from '../contexts/DummyContext';
 import ListingInfoSheet from '../components/ListingInfoSheet';
 import ProtocolModal from '../components/ProtocolModal';
 import { Description, Title } from '../components/Text';
@@ -79,11 +80,11 @@ function HomeScreen( {route, navigation} ) {
   //we will use the buttons to open detailed listing views etc
   const displayListingInfo = (listing) => {
     bottomSheetRef.current.snapToIndex(0);
-    console.log('displayListingInfo Call');
+
     setBottomSheetContent(
       <ListingInfoSheet
-        item={ listing }
-        onInfoPress={() => navigation.push('ListingDetailScreen', { item :listing })}
+        item={listing}
+        onInfoPress={() => navigation.push('ListingDetailScreen', { listing }) }
         onSnatchPress={toggleProtocolModal}
       />
     );
@@ -107,26 +108,20 @@ function HomeScreen( {route, navigation} ) {
   const url = 'http://10.0.2.2:5000/';
   const getListingsInArea = async (lat, lon) => {
     fetch(url + "listing/?lat=" + lat + "&lon=" + lon)
-    .then(response => {
-      if(!response.ok)
-        throw new Error("Error retrieving multiple listings from server.");
-      return response.json();
-    })
-    .then(json => {
-      console.log(json[0]);
-      setMarkers(json);
+      .then(response => {
+        if(!response.ok)
+          throw new Error("Error retrieving multiple listings from server.");
+        return response.json();
       })
-    .catch(error => {console.error(error)});
+      .then(json => {
+        console.log(json[0]);
+        setMarkers(json);
+        })
+      .catch(error => {console.error(error)});
   }
-  const markerList = [{lat: -37.78825, lon: 175.289350, title:'test one', description:'test 1 desc', listing_ID: 1},
-  {lat: -36.78825, lon: 176.289350, title:'test two', description:'test 2 desc', listing_ID: 2},
-  {lat: -38.78825, lon: 174.289350, title:'test three', description:'test 3 desc', listing_ID: 3},
-  {lat: -37.78825, lon: 177.289350, title:'test four', description:'test 4 desc', listing_ID: 4},
-  {lat: -35.78825, lon: 175.289350, title:'test five', description:'test 5 desc', listing_ID: 5},
-  {lat: -34.78825, lon: 175.289350, title:'test six', description:'test 6 desc', listing_ID: 6}]
 
   //marker state for list of markers.
-  const [markers, setMarkers] = useState(markerList);
+  const [markers, setMarkers] = useState([]);
 
   //this is how we can manage updating markers as we scroll
   //this sets up a 'center' state for us to use to send requests to the DB
@@ -153,7 +148,6 @@ function HomeScreen( {route, navigation} ) {
   const scrollToUserLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
-        console.log(position);
         mapRef.current?.animateCamera({
             center: {
               latitude: position.coords.latitude,
@@ -198,7 +192,7 @@ function HomeScreen( {route, navigation} ) {
         }}
         onRegionChangeComplete={handleCenterMove}
       >
-        {markers.map(r => CreateMarker(r, displayListingInfo))}
+        {markers.map(listing => CreateMarker(listing, displayListingInfo))}
       </MapView>
       <BottomSheet
         ref={bottomSheetRef}

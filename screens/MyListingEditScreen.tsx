@@ -14,7 +14,7 @@ const MyListingEditScreen = ({ route, navigation }) => {
   return (
     <View style={appStyles.container}>
       <Text>Fill out the listing details</Text>
-      <CaptionedTextBox caption="Title/Name of Listing *" value={item.name} />
+      <CaptionedTextBox caption="Title/Name of Listing *" value={item.title} />
       <CaptionedTextBox caption="Address *" value={item.address} />
       <CaptionedTextBox caption="Description" value={item.description} />
       {/* Add more details here */}
