@@ -6,6 +6,7 @@ import {
     StyleSheet
 } from 'react-native';
 import MapView, { Callout, Marker } from 'react-native-maps';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function CreateMarker(listing, displayListingInfo) {
     //this is barebones for now and subject to change
@@ -13,17 +14,17 @@ function CreateMarker(listing, displayListingInfo) {
     //and that it will have fields lat, long, title, desc, and a unique key (used to make a request to the DB for viewing the listing in detail, and for react to identify array siblings)
 
     return (<Marker
-        coordinate={{latitude: listing.latitude, longitude: listing.longitude}}
-        title={listing.title}
+        coordinate={{latitude: parseFloat(listing.lat), longitude: parseFloat(listing.lon)}}
         //this for now just logs the marker (or text above) being pressed. later this can be used as the call to go to the listing details for this marker.
-        onCalloutPress={e =>(displayListingInfo(listing.title, listing.desc))}
-        onPress={e =>(displayListingInfo(listing.title, listing.desc))}
-        key={listing.id}>
-        <Callout>
-            <View>
-                <Text>{listing.desc}</Text>
+        onCalloutPress={e =>(displayListingInfo(listing))}
+        onPress={e =>(displayListingInfo(listing))}
+        key={listing.listing_ID}>
+        <View style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+            <View style={{flex:1, backgroundColor: 'white', borderRadius: 8, padding: 2}}>
+                <Text style={{color:'darkgreen', flex: 1}}>{listing.title}</Text>
             </View>
-        </Callout>
+            <Icon name="shopping-basket" size={25} color="green" style={{flex: 1}}/>
+        </View>
     </Marker>)
     //we will need to decide if we want to have text floating above markers, saying what the listing is, when they are drwan or have to make the user
     //click on each one.
