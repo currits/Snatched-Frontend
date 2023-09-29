@@ -5,7 +5,8 @@ import {
   TextInput,
   StyleSheet,
   Switch,
-  Pressable
+  Pressable,
+  ActivityIndicator
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -68,9 +69,19 @@ const SettingsScreen = ({ route, navigation }) => {
             <Icon name="edit" size={20} color="black"/>
           </Pressable>
         </View>
-        <CaptionedTextBox caption="Email" placeholder="Email" value={ userData ? userData.email : "" } editable={false}/>
-        <CaptionedTextBox caption="Password" placeholder="Password" value="password" secureTextEntry={true} editable={false}/>
-        <CaptionedTextBox caption="Phone Number" placeholder="Phone Number" value={ userData ? userData.phone : "" } editable={false}/>
+        <View style={{ height: 250, justifyContent: 'center' }}>
+          <View>
+            {userData ? (
+              <View>
+                <CaptionedTextBox caption="Email" placeholder="Email" value={userData.email} editable={false}/>
+                <CaptionedTextBox caption="Password" placeholder="Password" value="password" secureTextEntry={true} editable={false}/>
+                <CaptionedTextBox caption="Phone Number" placeholder="Phone Number" value={userData.phone} editable={false}/>
+              </View>
+            ) : (
+              <ActivityIndicator />
+            )}
+          </View>
+        </View>
 
         <Header text="App Settings"/>
         {/* We don't have push notifications, so just commenting this setting out */}
