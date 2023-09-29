@@ -23,6 +23,8 @@ import ProtocolModal from '../components/ProtocolModal';
 import { Description, Title } from '../components/Text';
 import { appStyles } from '../components/Styles';
 
+const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
+
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
@@ -105,18 +107,17 @@ function HomeScreen( {route, navigation} ) {
   //basic code for communicating with api
   //note that the ip address is just what the emulator uses, will need to present an actual address later
   //fetch is passed a signal object so it can be aborted if the user tries to make another, different request
-  const url = 'http://10.0.2.2:5000/';
   const getListingsInArea = async (lat, lon) => {
-    fetch(url + "listing/?lat=" + lat + "&lon=" + lon)
+    fetch(API_ENDPOINT + "/listing/?lat=" + lat + "&lon=" + lon)
       .then(response => {
-        if(!response.ok)
-          throw new Error("Error retrieving multiple listings from server.");
+        if(!response.ok) {
+          throw new Error("Error retrieving multiple listings from server. ");
+        }
         return response.json();
       })
       .then(json => {
-        console.log(json[0]);
         setMarkers(json);
-        })
+      })
       .catch(error => {console.error(error)});
   }
 
