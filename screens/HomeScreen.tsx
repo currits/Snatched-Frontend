@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
   }
 });
 
+const controller = new AbortController();
+const signal = controller.signal;
+
 function HomeScreen( {route, navigation} ) {
   React.useEffect(() => {
     navigation.setOptions({
@@ -103,10 +106,15 @@ function HomeScreen( {route, navigation} ) {
   //    Marker Code   //
   //basic code for communicating with api
   //note that the ip address is just what the emulator uses, will need to present an actual address later
+  //fetch is passed a signal object so it can be aborted if the user tries to make another, different request
   const url = 'http://10.0.2.2:5000/';
   const getListingsInArea = async (lat, lon) => {
-    fetch(url + "listing/?lat=" + lat + "&lon=" + lon)
-    .then(response => response.json())
+    fetch(url + "listing/?lat=" + lat + "&lon=" + lon, { signal })
+    .then(response => {
+      if(!response.ok)
+        throw new Error("Error retrieving multiple listings from server.");
+      return response.json();
+    })
     .then(json => {
       console.log(json[0]);
       setMarkers(json);
@@ -137,6 +145,8 @@ function HomeScreen( {route, navigation} ) {
   //(should also be called when map first created to get the initial markers)
   const handleCenterMove = async (newCenter, gestureObject) => {
     console.log('New map center:', newCenter);
+    //adding this to try improve performance by aborting any currently active requests that have been sent by this method, before making another.
+    controller.abort();
     if (gestureObject.isGesture) 
       bottomSheetRef.current.close();
     setRequestCenter(newCenter);
