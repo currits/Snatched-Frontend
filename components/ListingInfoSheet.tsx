@@ -66,7 +66,7 @@ const ListingInfoSheet = ({item, onInfoPress, onSnatchPress}) => {
 			</Text>
 			<View style={{flex: 1, flexDirection: "row", justifyContent:'space-between'}}>
 				<Text style={styles.titleText}>{item.title}</Text>
-				{userCoords && <Text style={{flex: 1, fontSize: 14, justifyContent: 'flex-end'}}>{getDistance(userLocation, targetCoords, 100)}km</Text>}
+				{userCoords && <Text style={{flex: 1, fontSize: 14, justifyContent: 'flex-end'}}>{(getDistance(userLocation, targetCoords, 100)/1000)}km</Text>}
 			</View>
 			<Text style={styles.descText}>{item.description}</Text>
 			<View style={styles.buttonContainer}>

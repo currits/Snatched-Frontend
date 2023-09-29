@@ -64,8 +64,8 @@ const ListingDetailScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.nameBox}>
-        <Text style={styles.name}>{item.title}</Text>
-        {userCoords && <Text style={styles.distance}>{getDistance(userLocation, targetCoords, 100)}km</Text>}
+        <Text style={styles.title}>{item.title}</Text>
+        {userCoords && <Text style={styles.distance}>{(getDistance(userLocation, targetCoords, 100)/1000)}km</Text>}
       </View>
       <Text style={styles.stock}>Approx. Stock: {listingContent ? listingContent.stock_num : "-"}</Text>
       <View style={styles.tagContainer}>
@@ -73,7 +73,7 @@ const ListingDetailScreen = ({ route, navigation }) => {
       </View>
       <Text style={styles.description}>{item.description}</Text>
       {/* Add more details here */}
-      <PrimaryButton onPress={setProtocolModalVisible} text="Snatch!" style={{ margin: 12, flex: 0.5 }}/>
+      <PrimaryButton onPress={toggleProtocolModal} text="Snatch!" style={{ margin: 12, flex: 0.5 }}/>
       <ProtocolModal
         visible={isProtocolModalVisible}
         toggleModal={toggleProtocolModal}
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
-  name: {
+  title: {
     flex: 2,
     fontSize: 24,
     fontWeight: 'bold',
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
   distance: {
     flex: 1,
     fontSize: 24,
+    textAlign: 'right',
   },
   description: {
     flex: 5,
