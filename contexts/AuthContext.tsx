@@ -21,9 +21,9 @@ function parseJwt(token) {
 export function AuthProvider({ children }) {
   const [isInitializing, setInitializing] = useState(true);
 
-  useEffect(() => {
+  const getJwt = async () => {
     // Attempt to retreive the token from storage
-    AsyncStorage.getItem('token').then((token) => {
+    return await AsyncStorage.getItem('token').then((token) => {
       // Note: not entirely secure. The app should securely cache the email/password in the
       // OS keychain using something like https://github.com/oblador/react-native-keychain
       // Then, when the JWT expires (usually every ~15 min), login again in the background
@@ -34,21 +34,26 @@ export function AuthProvider({ children }) {
         const expirationTimestamp = parseJwt(token).exp * 1000; // Convert to milliseconds
         const currentTimestamp = Date.now();
 
+        // 
         if (currentTimestamp > expirationTimestamp) {
           // not valid - get user to login again
           setIsLoggedIn(false);
         } else {
           // still valid
           setIsLoggedIn(true);
+
+          return token;
         }
       }
       else {
         // Otherwise if no token
         setIsLoggedIn(false); 
       }
-
-      setInitializing(false);
     });
+  }
+
+  useEffect(() => {
+    getJwt().then(() => { setInitializing(false) });
   }, []);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -111,7 +116,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, signup, isInitializing }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, signup, isInitializing, getJwt }}>
       {children}
     </AuthContext.Provider>
   );

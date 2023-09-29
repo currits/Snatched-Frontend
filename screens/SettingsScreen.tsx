@@ -18,6 +18,33 @@ import { LogoutAlert } from '../components/LogoutAlert';
 import { Header, Caption, Description, CaptionedTextBox } from '../components/Text';
 import { PrimaryButton, Link } from '../components/Buttons';
 
+const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
+
+const getUserData = async () => {
+  const { getJwt } = useAuth();
+
+  console.log(await getJwt());
+
+  try {
+    const response = await fetch(API_ENDPOINT + "/user", {
+      method: "GET",
+      headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Basic' + await getJwt()
+        }
+    });
+
+    if (response.ok) {
+      return await response.json();
+    } else {
+      throw await response.text();
+    }
+  }
+  catch (error) {
+    alert(error);
+  }
+};
+
 const SettingsScreen = ({ route, navigation }) => {
   const { logout } = useAuth();
 
@@ -28,6 +55,8 @@ const SettingsScreen = ({ route, navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
+  const userData = getUserData();
+
   return (
     <View style={{ flex: 1 }}>
       <View style={appStyles.container}>
@@ -37,8 +66,8 @@ const SettingsScreen = ({ route, navigation }) => {
             <Icon name="edit" size={20} color="black"/>
           </Pressable>
         </View>
-        <CaptionedTextBox caption="Email" placeholder="Email" editable={false}/>
-        <CaptionedTextBox caption="Password" placeholder="Password" secureTextEntry={true} editable={false}/>
+        <CaptionedTextBox caption="Email" placeholder="Email" value={{ userData }} editable={false}/>
+        <CaptionedTextBox caption="Password" placeholder="Password" value="password" secureTextEntry={true} editable={false}/>
         <CaptionedTextBox caption="Phone Number" placeholder="Phone Number" editable={false}/>
 
         <Header text="App Settings"/>
