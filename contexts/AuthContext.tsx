@@ -19,7 +19,7 @@ function parseJwt(token) {
 
 // Should be using a state manager for this sort of thing
 export function AuthProvider({ children }) {
-  const [initializing, setInitializing] = useState(true);
+  const [isInitializing, setInitializing] = useState(true);
 
   useEffect(() => {
     // Attempt to retreive the token from storage
@@ -111,7 +111,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, signup, initializing }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, signup, isInitializing }}>
       {children}
     </AuthContext.Provider>
   );
