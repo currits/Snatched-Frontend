@@ -16,8 +16,8 @@ function CreateMarker(listing, displayListingInfo) {
         coordinate={{latitude: parseFloat(listing.lat), longitude: parseFloat(listing.lon)}}
         title={listing.title}
         //this for now just logs the marker (or text above) being pressed. later this can be used as the call to go to the listing details for this marker.
-        onCalloutPress={e =>(displayListingInfo(listing.title, listing.description))}
-        onPress={e =>(displayListingInfo(listing.title, listing.description))}
+        onCalloutPress={e =>(displayListingInfo(listing))}
+        onPress={e =>(displayListingInfo(listing))}
         key={listing.listing_ID}>
         <Callout>
             <View>

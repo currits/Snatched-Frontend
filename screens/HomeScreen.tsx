@@ -19,7 +19,7 @@ import Geolocation from 'react-native-geolocation-service';
 
 import ListingInfoSheet from '../components/ListingInfoSheet';
 import ProtocolModal from '../components/ProtocolModal';
-import { Title } from '../components/Text';
+import { Description, Title } from '../components/Text';
 import { appStyles } from '../components/Styles';
 
 const styles = StyleSheet.create({
@@ -77,13 +77,13 @@ function HomeScreen( {route, navigation} ) {
   
   //this function is passed to each marker, so that when a marker is tapped it sends back up it's listing data for us to populate the bottom sheet
   //we will use the buttons to open detailed listing views etc
-  const displayListingInfo = (title, desc) => {
+  const displayListingInfo = (listing) => {
     bottomSheetRef.current.snapToIndex(0);
     console.log('displayListingInfo Call');
     setBottomSheetContent(
       <ListingInfoSheet
-        item={ {name: title, description: desc} }
-        onInfoPress={() => navigation.push('ListingDetailScreen', { item :{name: title, description: desc} })}
+        item={ listing }
+        onInfoPress={() => navigation.push('ListingDetailScreen', { item :listing })}
         onSnatchPress={toggleProtocolModal}
       />
     );

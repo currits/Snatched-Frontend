@@ -6,12 +6,12 @@ const ListingDetailScreen = ({ route, navigation }) => {
   const { item } = route.params;
 
   React.useEffect(() => {
-    navigation.setOptions({ title: item.name })
-  }, [navigation, item.name]);
+    navigation.setOptions({ title: item.title })
+  }, [navigation, item.description]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.name}>{item.name}</Text>
+      <Text style={styles.name}>{item.title}</Text>
       <Text style={styles.description}>{item.description}</Text>
       {/* Add more details here */}
     </View>

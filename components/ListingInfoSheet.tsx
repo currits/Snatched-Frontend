@@ -13,13 +13,25 @@ const ListingInfoSheet = ({item, onInfoPress, onSnatchPress}) => {
 	const styles = StyleSheet.create({
 		contentContainer: {
 			flex: 1,
-			alignItems: 'center',
+			alignItems: 'flex-start',
 		},
 		buttonContainer: {
 			flexDirection: 'row',
 			justifyContent: 'space-between',
 			alignItems: 'flex-end',
-			height: '50%',
+			flex: 2,
+		},
+		titleText:{
+			flex: 1,
+			fontWeight: 'bold',
+			fontSize: 14,
+			marginBottom: 15,
+			marginStart: 20
+		},
+		descText:{
+			flex : 4,
+			fontSize: 14,
+			marginStart: 20
 		}
 	});
 
@@ -28,12 +40,13 @@ const ListingInfoSheet = ({item, onInfoPress, onSnatchPress}) => {
 			<Text style={{
 				fontSize: 24,
 				fontWeight: 'bold',
-				marginBottom: 20
+				marginBottom: 15,
+				marginStart: 20
 			}}>
 				Listing Information
 			</Text>
-			<Text>{item.name}</Text>
-			<Text>{item.description}</Text>
+			<Text style={styles.titleText}>{item.title}</Text>
+			<Text style={styles.descText}>{item.description}</Text>
 			<View style={styles.buttonContainer}>
 				<SecondaryButton onPress={onInfoPress} text="More Info" style={{ margin: 12 }}/>
 				<PrimaryButton onPress={onSnatchPress} text="Snatch!" style={{ margin: 12, flex: 2 }}/>
