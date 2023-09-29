@@ -19,20 +19,23 @@ function parseJwt(token) {
 
 export function AuthProvider({ children }) {
   useEffect(() => {
-    console.log("LAUNCHED!");
-
+    // Attempt to retreive the token from storage
     AsyncStorage.getItem('token').then((token) => {
+      // Note: not entirely secure. The app should securely cache the email/password in the
+      // OS keychain using something like https://github.com/oblador/react-native-keychain
+      // Then, when the JWT expires (usually every ~15 min), login again in the background
+      // This would involve creating a wrapper for every API request made in the app to
+      // check if the JWT is about to expire and grab a new one transparently.
       if (token !== null) {
-        // check if token is valid for some time (we don't want the token to be rejected while the user is using the app!)
+        // check if token is valid
         const expirationTimestamp = parseJwt(token).exp * 1000; // Convert to milliseconds
-        const offsetInMilliseconds = 0; // 3 * 24 * 60 * 60 * 1000; // 3 days in milliseconds
         const currentTimestamp = Date.now();
 
-        if (currentTimestamp + offsetInMilliseconds > expirationTimestamp) {
-          // no - get user to login again
+        if (currentTimestamp > expirationTimestamp) {
+          // not valid - get user to login again
           setIsLoggedIn(false);
         } else {
-          // yes
+          // still valid
           setIsLoggedIn(true);
         }
       }
