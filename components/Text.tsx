@@ -1,4 +1,4 @@
-import { React } from "react";
+import React, { forwardRef } from "react";
 import {
 	StyleSheet,
 	Text,
@@ -96,19 +96,19 @@ const Hint = ({ text, style }) => {
 	)
 }
 
-const CaptionedTextBox = ({ caption, placeholder, value, editable, secureTextEntry, style }) => {
+const CaptionedTextBox = forwardRef(({ caption, ...props }, ref) => {
 	return (
 		<>
     <Text style={styles.caption}>{caption}</Text>
-		<TextInput style={[styles.input, style]} editable={editable} secureTextEntry={secureTextEntry} placeholder={placeholder} value={value}/>
+		<TextInput ref={ref} style={[styles.input, props.style]} {...props} />
 		</>
 	)
-}
+});
 
-const TextBox = ({ placeholder, value, editable, secureTextEntry, style }) => {
+const TextBox = forwardRef(({ ...props }, ref) => {
 	return (
-		<TextInput style={[styles.input, style]} editable={editable} secureTextEntry={secureTextEntry} placeholderTextColor="gray" placeholder={placeholder} value={value} />
+		<TextInput ref={ref} style={[styles.input, props.style]} {...props} />
 	)
-}
+});
 
 export { Snatched, Title, Header, Caption, Description, Hint, TextBox, CaptionedTextBox }

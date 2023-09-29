@@ -67,7 +67,7 @@ const ListItemStyles = StyleSheet.create({
 
 const Listing = ({ item, navigation }) => {
   const handlePress = () => {
-    navigation.push('ListingDetailScreen', { item });
+    navigation.push('ListingDetailScreen', { listing: item });
   };
 
   return (

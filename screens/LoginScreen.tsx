@@ -1,10 +1,11 @@
-import React from 'react';
+import { React, useState } from "react";
 import {
   View,
   Text,
   Button,
   StyleSheet,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ActivityIndicator
 } from 'react-native';
 
 import { Snatched, TextBox, Caption, Hint } from '../components/Text';
@@ -14,7 +15,12 @@ import { appStyles } from '../components/Styles';
 import { useAuth } from '../contexts/AuthContext';
 
 const LoginScreen = ({ route, navigation }) => {
-  const { isLoggedIn, login, logout } = useAuth();
+  const { login } = useAuth();
+
+  const [email, onChangeEmail] = useState("");
+  const [password, onChangePassword] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <KeyboardAvoidingView
@@ -30,12 +36,27 @@ const LoginScreen = ({ route, navigation }) => {
           <Caption text="Log into your Account" />
         </View>
 
-        <TextBox placeholder="Email" />
-        <TextBox placeholder="Password" secureTextEntry={true} />
+        <TextBox placeholder="Email" 
+          onChangeText={onChangeEmail}
+          value={email} />
+        <TextBox placeholder="Password"
+          secureTextEntry={true}
+          onChangeText={onChangePassword}
+          value={password} />
 
         <PrimaryButton
           text="Sign in"
-          onPress={() => login()}
+          isLoading={isLoading}
+          onPress={async () => {
+            try {
+              setIsLoading(true); // Set loading to true, disabling the button.
+              await login(email, password);
+            } catch (error) {
+              alert('API error: ' + error);
+            } finally {
+              setIsLoading(false); // Set loading to false, enabling the button.
+            }
+          }}
         />
 
         <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
