@@ -17,7 +17,10 @@ function parseJwt(token) {
     return JSON.parse(jsonPayload);
 }
 
+// Should be using a state manager for this sort of thing
 export function AuthProvider({ children }) {
+  const [initializing, setInitializing] = useState(true);
+
   useEffect(() => {
     // Attempt to retreive the token from storage
     AsyncStorage.getItem('token').then((token) => {
@@ -43,6 +46,8 @@ export function AuthProvider({ children }) {
         // Otherwise if no token
         setIsLoggedIn(false); 
       }
+
+      setInitializing(false);
     });
   }, []);
 
@@ -101,11 +106,12 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
+    AsyncStorage.setItem('token', "");
     setIsLoggedIn(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, signup }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, signup, initializing }}>
       {children}
     </AuthContext.Provider>
   );

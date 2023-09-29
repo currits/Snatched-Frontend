@@ -142,7 +142,9 @@ function NavigationScreen() {
   // textbox outlines, snatched header and other heading text
   theme = 'light';
 
-  const { isLoggedIn, login } = useAuth();
+  const { isLoggedIn, initializing, login } = useAuth();
+
+  if (initializing) return null;
 
   return (
     <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
