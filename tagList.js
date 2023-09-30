@@ -12,4 +12,8 @@ export const tagList =[
     { label: 'Tree', value: 'Tree' },
     { label: 'Fresh', value: 'Fresh' },
     { label: 'Garden', value: 'Garden' },
+    { label: 'Citrus', value: 'Citrus' },
+    { label: 'Greens', value: 'Greens' },
+    { label: 'Roots', value: 'Roots' },
+    { label: 'Herbs', value: 'Herbs' },
 ];
