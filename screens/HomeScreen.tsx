@@ -17,11 +17,13 @@ import MapView, { Marker } from 'react-native-maps';
 import {request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 
+import { useAuth } from '../contexts/AuthContext';
+
 import { useDummyList } from '../contexts/DummyContext';
 import ListingInfoSheet from '../components/ListingInfoSheet';
 import ProtocolModal from '../components/ProtocolModal';
 import { Description, Title } from '../components/Text';
-import { appStyles } from '../components/Styles';
+import { dynamicStyles, dynamicBackgroundStyles, appStyles } from '../components/Styles';
 
 const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
 
@@ -97,28 +99,39 @@ function HomeScreen( {route, navigation} ) {
   const [bottomSheetContent, setBottomSheetContent] = useState((
     <View style={[{marginTop: -50}, appStyles.centeredContainer]}>
       <Title text="Welcome to Snatched!" style={{ textAlign: 'center' }} />
-      <Text>Scroll around to find listings in your area.</Text>
-      <Text>Tap a marker to find out more information about a listing.</Text>
-      <Text>Search using the button in the top right corner.</Text>
+      <Description text="Scroll around to find listings in your area."/>
+      <Description text="Tap a marker to find out more information about a listing."/>
+      <Description text="Search using the button in the top right corner."/>
     </View>
   ));
+
+  const { getJwt } = useAuth();
   
   //    Marker Code   //
   //basic code for communicating with api
   //note that the ip address is just what the emulator uses, will need to present an actual address later
   //fetch is passed a signal object so it can be aborted if the user tries to make another, different request
   const getListingsInArea = async (lat, lon) => {
-    fetch(API_ENDPOINT + "/listing/?lat=" + lat + "&lon=" + lon)
-      .then(response => {
-        if(!response.ok) {
-          throw new Error("Error retrieving multiple listings from server. ");
-        }
-        return response.json();
-      })
-      .then(json => {
-        setMarkers(json);
-      })
-      .catch(error => {console.error(error)});
+    try {
+      const response = await fetch(
+        API_ENDPOINT + "/listing/?lat=" + lat + "&lon=" + lon, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer ' + await getJwt()
+        }}
+      )
+        
+      if (response.ok) {
+        response.json().then((json) => {
+          setMarkers(json);
+        })
+      } else {
+        throw await response.text();
+      }
+    }
+    catch (error) {
+      console.error(error)
+    }
   }
 
   //marker state for list of markers.
@@ -201,6 +214,8 @@ function HomeScreen( {route, navigation} ) {
         snapPoints={snapPoints}
         enablePanDownToClose={true}
         onChange={handleSheetChanges}
+        handleIndicatorStyle={{backgroundColor: dynamicStyles.color}}
+        backgroundStyle={dynamicBackgroundStyles}
       >
         {bottomSheetContent}
       </BottomSheet>

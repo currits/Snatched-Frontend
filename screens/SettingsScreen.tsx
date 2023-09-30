@@ -5,7 +5,8 @@ import {
   TextInput,
   StyleSheet,
   Switch,
-  Pressable
+  Pressable,
+  ActivityIndicator
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -15,7 +16,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { version } from "../package.json"
 import { appStyles } from '../components/Styles';
 import { LogoutAlert } from '../components/LogoutAlert';
-import { Header, Caption, Description, CaptionedTextBox } from '../components/Text';
+import { DynamicIcon, Header, Caption, Description, CaptionedTextBox } from '../components/Text';
 import { PrimaryButton, Link } from '../components/Buttons';
 
 const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
@@ -38,9 +39,9 @@ const SettingsScreen = ({ route, navigation }) => {
         const response = await fetch(API_ENDPOINT + "/user", {
           method: "GET",
           headers: {
-              'Content-Type': 'application/json',
-              "Authorization": 'Bearer ' + await getJwt()
-            }
+            'Content-Type': 'application/json',
+            "Authorization": 'Bearer ' + await getJwt()
+          }
         });
 
         if (response.ok) {
@@ -65,12 +66,22 @@ const SettingsScreen = ({ route, navigation }) => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
           <Header text="My Account"/>
           <Pressable>
-            <Icon name="edit" size={20} color="black"/>
+            <DynamicIcon name="edit" size={20} />
           </Pressable>
         </View>
-        <CaptionedTextBox caption="Email" placeholder="Email" value={ userData ? userData.email : "" } editable={false}/>
-        <CaptionedTextBox caption="Password" placeholder="Password" value="password" secureTextEntry={true} editable={false}/>
-        <CaptionedTextBox caption="Phone Number" placeholder="Phone Number" value={ userData ? userData.phone : "" } editable={false}/>
+        <View style={{ height: 250, justifyContent: 'center' }}>
+          <View>
+            {userData ? (
+              <View>
+                <CaptionedTextBox caption="Email" placeholder="Email" value={userData.email} editable={false}/>
+                <CaptionedTextBox caption="Password" placeholder="Password" value="password" secureTextEntry={true} editable={false}/>
+                <CaptionedTextBox caption="Phone Number" placeholder="Phone Number" value={userData.phone} editable={false}/>
+              </View>
+            ) : (
+              <ActivityIndicator />
+            )}
+          </View>
+        </View>
 
         <Header text="App Settings"/>
         {/* We don't have push notifications, so just commenting this setting out */}
@@ -87,7 +98,7 @@ const SettingsScreen = ({ route, navigation }) => {
         <Link text="Log Out" onPress={() => { LogoutAlert(logout) }}/>
       </View>
       <View style={appStyles.bottomContainer}>
-        <Text>Snatched App</Text>
+        <Description text="Snatched App"/>
         <Header text={"v" + version}/>
       </View>
     </View>

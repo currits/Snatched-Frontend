@@ -5,7 +5,10 @@ import {
 	Pressable,
 	ActivityIndicator
 } from "react-native";
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import { dynamicStyles } from "./Styles";
 
 const styles = StyleSheet.create({
 	contentContainer: {
@@ -55,6 +58,7 @@ const styles = StyleSheet.create({
 		marginLeft: 10
 	},
 	link: {
+  		...dynamicStyles,
     	marginTop: 12
 	}
 });
