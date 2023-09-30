@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Button
 } from 'react-native';
+
 import { PrimaryButton } from '../components/Buttons';
 import { appStyles } from '../components/Styles';
 import { Title, Header } from '../components/Text';
@@ -14,8 +15,13 @@ import Tags from '../components/Tags';
 import {getDistance} from 'geolib';
 import Geolocation from 'react-native-geolocation-service';
 
+import { useAuth } from '../contexts/AuthContext';
+
+const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
+
 const ListingDetailScreen = ({ route, navigation }) => {
   const { listing } = route.params;
+  const { getJwt } = useAuth();
 
   useEffect(() => {
     navigation.setOptions({ title: listing.title })
@@ -29,23 +35,30 @@ const ListingDetailScreen = ({ route, navigation }) => {
 
   const [listingContent, setListingContent] = useState(null);
 
-  const url = 'http://10.0.2.2:5000/';
   const getListingData = async (id) => {
-    fetch(url + "listing/" + id)
-    .then(response => {
-      if(!response.ok)
+    try {
+      const response = await fetch(
+        API_ENDPOINT + "/listing/" + id, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer ' + await getJwt()
+        }
+      });
+      if (!response.ok)
         throw new Error("Error retrieving listing from server.");
-      return response.json();
-    })
-    .then(json => {
-      console.log(json);
-      setListingContent(json);
-      })
-    .catch(error => {console.error(error)});
+      else {
+        response.json().then((json) => {
+          setListingContent(json);
+        })
+      }
+    }
+    catch (error) {
+      console.error(error)
+    }
   }
 
   useEffect(() => {
-    getListingData(item.listing_ID);
+    getListingData(listing.listing_ID);
   }, []);
 
   const [userCoords, setUserCoords] = useState(null);
@@ -64,20 +77,20 @@ const ListingDetailScreen = ({ route, navigation }) => {
 		);
 	}, []);
 
-	var targetCoords = {latitude: parseFloat(item.lat), longitude: parseFloat(item.lon)}
+	var targetCoords = {latitude: listing.lat, longitude: listing.lon}
 	var userLocation = userCoords;
 
   return (
     <View style={styles.container}>
       <View style={styles.nameBox}>
-        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title}>{listing.title}</Text>
         {userCoords && <Text style={styles.distance}>{(getDistance(userLocation, targetCoords, 100)/1000)}km</Text>}
       </View>
       <Text style={styles.stock}>Approx. Stock: {listingContent ? listingContent.stock_num : "-"}</Text>
       <View style={styles.tagContainer}>
         {listingContent && <Tags tagString={listingContent.tags}></Tags>}
       </View>
-      <Text style={styles.description}>{item.description}</Text>
+      <Text style={styles.description}>{listing.description}</Text>
       {/* Add more details here */}
       <PrimaryButton onPress={toggleProtocolModal} text="Snatch!" style={{ margin: 12, flex: 0.5 }}/>
       <ProtocolModal
