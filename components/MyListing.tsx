@@ -7,7 +7,7 @@ import {
 	TouchableOpacity
 } from "react-native";
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Caption, Hint, DynamicIcon } from '../components/Text';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,13 +21,8 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 10,
   },
-  name: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   description: {
-    fontSize: 14,
-    color: '#555',
+    opacity: 0.7,
   }
 });
 
@@ -36,11 +31,11 @@ const MyListing = ({ item, onPress, onEditPress }) => {
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
         <View style={styles.textContainer}>
-          <Text style={styles.name}>{item.title}</Text>
-          <Text style={styles.description}>{item.description}</Text>
+          <Caption text={item.title}/>
+          <Hint style={styles.description} text={item.description}/>
         </View>
         <Pressable onPress={onEditPress}>
-        	<Icon name="edit" size={20} color="black"/>
+        	<DynamicIcon name="edit" size={20} />
         </Pressable>
       </View>
     </TouchableOpacity>

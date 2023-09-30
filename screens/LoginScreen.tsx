@@ -60,7 +60,7 @@ const LoginScreen = ({ route, navigation }) => {
         />
 
         <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-          <Hint text="Don't have an account? "/>
+          <Hint text="Don't have an account? " style={{ marginTop: 12 }}/>
           <Link
             text="Sign up"
             onPress={() => navigation.push('SignupScreen')}

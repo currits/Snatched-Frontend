@@ -5,7 +5,7 @@ import {
   Text
 } from 'react-native';
 
-import { CaptionedTextBox } from '../components/Text';
+import { CaptionedTextBox, Description } from '../components/Text';
 import { appStyles } from '../components/Styles';
 
 const MyListingEditScreen = ({ route, navigation }) => {
@@ -13,7 +13,7 @@ const MyListingEditScreen = ({ route, navigation }) => {
 
   return (
     <View style={appStyles.container}>
-      <Text>Fill out the listing details</Text>
+      <Description text="Fill out the listing details" />
       <CaptionedTextBox caption="Title/Name of Listing *" value={item.title} />
       <CaptionedTextBox caption="Address *" value={item.address} />
       <CaptionedTextBox caption="Description" value={item.description} />

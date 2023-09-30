@@ -10,8 +10,10 @@ import {
 } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
-import { SearchBar } from '../components/SearchBar';
 
+import { theme } from '../components/Styles'
+import { Caption, Hint } from '../components/Text';
+import { SearchBar } from '../components/SearchBar';
 import { useDummyList } from '../contexts/DummyContext';
 
 function SearchScreen({ navigation }) {
@@ -43,25 +45,16 @@ function SearchScreen({ navigation }) {
   );
 }
 
-const ListItemStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: theme.lightColor,
   },
   textContainer: {
     flex: 1,
     flexDirection: 'row'
-  },
-  name: {
-    flex: 1,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  description: {
-    fontSize: 14,
-    color: '#555',
   }
 });
 
@@ -72,10 +65,10 @@ const Listing = ({ item, navigation }) => {
 
   return (
     <TouchableOpacity onPress={handlePress}>
-      <View style={ListItemStyles.container}>
-        <View style={ListItemStyles.textContainer}>
-          <Text style={ListItemStyles.name}>{item.title}</Text>
-          <Text style={ListItemStyles.description}>{item.distance}km</Text>
+      <View style={styles.container}>
+        <View style={styles.textContainer}>
+          <Caption text={item.title} style={{ flex: 1 }} />
+          <Hint text={item.distance + "km"} style={{ marginTop: 0 }} />
         </View>
       </View>
     </TouchableOpacity>

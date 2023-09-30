@@ -1,6 +1,15 @@
 import { React, useRef, useEffect } from "react";
-import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  Keyboard,
+  Button
+} from "react-native";
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import { dynamicStyles } from "./Styles";
 
 /* https://blog.logrocket.com/create-react-native-search-bar-from-scratch/ */
 
@@ -33,6 +42,7 @@ const SearchBar = ({clicked, onSubmit, onCancel, searchPhrase, setSearchPhrase, 
           ref={textRef}
           style={styles.input}
           placeholder="Search"
+          placeholderTextColor="gray"
           inputmode="search"
           returnKeyType="search"
           value={searchPhrase}
@@ -97,6 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   input: {
+    ...dynamicStyles,
     paddingTop: 0,
     paddingBottom: 0,
     height: 40,

@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { PrimaryButton } from '../components/Buttons';
 import { appStyles } from '../components/Styles';
-import { Title } from '../components/Text';
+import { Title, Description } from '../components/Text';
 
 const MyListingDetailScreen = ({ route, navigation }) => {
   const { item } = route.params;
@@ -20,7 +20,7 @@ const MyListingDetailScreen = ({ route, navigation }) => {
     <View style={{ flex: 1 }}>
       <View style={styles.container}>
         <Title text={item.title}/>
-        <Text style={styles.description}>{item.description}</Text>
+        <Description text={item.description}/>
         {/* Add more details here */}
       </View>
       <View style={appStyles.bottomContainer}>
