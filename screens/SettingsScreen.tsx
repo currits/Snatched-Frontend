@@ -39,9 +39,9 @@ const SettingsScreen = ({ route, navigation }) => {
         const response = await fetch(API_ENDPOINT + "/user", {
           method: "GET",
           headers: {
-              'Content-Type': 'application/json',
-              "Authorization": 'Bearer ' + await getJwt()
-            }
+            'Content-Type': 'application/json',
+            "Authorization": 'Bearer ' + await getJwt()
+          }
         });
 
         if (response.ok) {

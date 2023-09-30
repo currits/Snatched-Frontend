@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 
 import {
   View,
@@ -15,9 +15,9 @@ import ProtocolModal from '../components/ProtocolModal';
 const ListingDetailScreen = ({ route, navigation }) => {
   const { listing } = route.params;
 
-  React.useEffect(() => {
-    navigation.setOptions({ title: item.title })
-  }, [navigation, item.description]);
+  useEffect(() => {
+    navigation.setOptions({ title: listing.title })
+  }, [navigation]);
 
   //    Exchange Protocol popup hooks    //
   const [isProtocolModalVisible, setProtocolModalVisible] = useState(false);

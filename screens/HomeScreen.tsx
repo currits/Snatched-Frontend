@@ -17,6 +17,8 @@ import MapView, { Marker } from 'react-native-maps';
 import {request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 
+import { useAuth } from '../contexts/AuthContext';
+
 import { useDummyList } from '../contexts/DummyContext';
 import ListingInfoSheet from '../components/ListingInfoSheet';
 import ProtocolModal from '../components/ProtocolModal';
@@ -102,23 +104,34 @@ function HomeScreen( {route, navigation} ) {
       <Description text="Search using the button in the top right corner."/>
     </View>
   ));
+
+  const { getJwt } = useAuth();
   
   //    Marker Code   //
   //basic code for communicating with api
   //note that the ip address is just what the emulator uses, will need to present an actual address later
   //fetch is passed a signal object so it can be aborted if the user tries to make another, different request
   const getListingsInArea = async (lat, lon) => {
-    fetch(API_ENDPOINT + "/listing/?lat=" + lat + "&lon=" + lon)
-      .then(response => {
-        if(!response.ok) {
-          throw new Error("Error retrieving multiple listings from server. ");
-        }
-        return response.json();
-      })
-      .then(json => {
-        setMarkers(json);
-      })
-      .catch(error => {console.error(error)});
+    try {
+      const response = await fetch(
+        API_ENDPOINT + "/listing/?lat=" + lat + "&lon=" + lon, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer ' + await getJwt()
+        }}
+      )
+        
+      if (response.ok) {
+        response.json().then((json) => {
+          setMarkers(json);
+        })
+      } else {
+        throw await response.text();
+      }
+    }
+    catch (error) {
+      console.error(error)
+    }
   }
 
   //marker state for list of markers.
