@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 
 const PrimaryButton = ({ text, isLoading, icon, style, styleText, ...props }) => {
 	return (
-		<Pressable style={[styles.button, styles.buttonPrimary, style]} disabled={isLoading} {...props}>
+		<Pressable {...props} style={[styles.button, styles.buttonPrimary, style]} disabled={isLoading}>
 			{isLoading ? (
 				<ActivityIndicator />
       		) : (
@@ -87,7 +87,7 @@ const PrimaryButton = ({ text, isLoading, icon, style, styleText, ...props }) =>
 
 const SecondaryButton = ({ text, icon, style, styleText, ...props }) => {
 	return (
-		<Pressable style={[styles.button, styles.buttonSecondary, style]} {...props}>
+		<Pressable {...props} style={[styles.button, styles.buttonSecondary, style]}>
 			<Text style={[styles.buttonPrimaryText, styleText]}>{text}</Text>
 			{icon &&
 				<Icon
