@@ -21,7 +21,7 @@ import { useDummyList } from '../contexts/DummyContext';
 import ListingInfoSheet from '../components/ListingInfoSheet';
 import ProtocolModal from '../components/ProtocolModal';
 import { Description, Title } from '../components/Text';
-import { appStyles } from '../components/Styles';
+import { dynamicStyles, dynamicBackgroundStyles, appStyles } from '../components/Styles';
 
 const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
 
@@ -97,9 +97,9 @@ function HomeScreen( {route, navigation} ) {
   const [bottomSheetContent, setBottomSheetContent] = useState((
     <View style={[{marginTop: -50}, appStyles.centeredContainer]}>
       <Title text="Welcome to Snatched!" style={{ textAlign: 'center' }} />
-      <Text>Scroll around to find listings in your area.</Text>
-      <Text>Tap a marker to find out more information about a listing.</Text>
-      <Text>Search using the button in the top right corner.</Text>
+      <Description text="Scroll around to find listings in your area."/>
+      <Description text="Tap a marker to find out more information about a listing."/>
+      <Description text="Search using the button in the top right corner."/>
     </View>
   ));
   
@@ -201,6 +201,8 @@ function HomeScreen( {route, navigation} ) {
         snapPoints={snapPoints}
         enablePanDownToClose={true}
         onChange={handleSheetChanges}
+        handleIndicatorStyle={{backgroundColor: dynamicStyles.color}}
+        backgroundStyle={dynamicBackgroundStyles}
       >
         {bottomSheetContent}
       </BottomSheet>

@@ -1,6 +1,16 @@
 import { React, useRef, useEffect } from "react";
-import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  Keyboard,
+  Button,
+  Platform, PlatformColor
+} from "react-native";
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import { dynamicStyles } from "./Styles";
 
 /* https://blog.logrocket.com/create-react-native-search-bar-from-scratch/ */
 
@@ -97,6 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   input: {
+    ...dynamicStyles,
     paddingTop: 0,
     paddingBottom: 0,
     height: 40,

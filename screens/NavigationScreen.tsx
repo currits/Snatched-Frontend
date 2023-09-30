@@ -8,7 +8,9 @@ import {
   useColorScheme,
   View,
   Button,
-  Linking
+  Linking,
+  Platform,
+  PlatformColor
 } from 'react-native';
 
 import {
@@ -24,6 +26,8 @@ import { createDrawerNavigator, DrawerContentScrollView,
 import 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+
+import { SmallSnatched } from '../components/Text';
 
 import { useAuth } from '../contexts/AuthContext';
 import { LogoutAlert } from '../components/LogoutAlert';
@@ -58,9 +62,7 @@ function CustomDrawerContent(props) {
           justifyContent: 'center',
         }}
       >
-        <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
-          SNATCHED
-        </Text>
+        <SmallSnatched />
       </View>
       <DrawerContentScrollView {...props} contentContainerStyle={{ paddingTop: 0 }}>
           <DrawerItemList {...props} footer={true}/>
@@ -76,7 +78,14 @@ function CustomDrawerContent(props) {
         <DrawerItem
           icon={({ name, size }) => <Icon color="red" size={size} name="bug-report" /> }
           label="Bug Report/Feedback"
-          labelStyle={{ color: "red" }}
+          labelStyle={{
+            ...Platform.select({
+              ios: {
+                color: PlatformColor('systemRed'),
+              },
+              default: {color: 'red'},
+            }),
+          }}
           onPress={() => { Linking.openURL("https://forms.google.com"); }}
         />
         <DrawerItem
@@ -140,7 +149,7 @@ function NavigationScreen() {
   var theme = useColorScheme();
   // for now cause it's slightly buggy aye
   // textbox outlines, snatched header and other heading text
-  theme = 'light';
+  //theme = 'light';
 
   const { isLoggedIn, isInitializing, login } = useAuth();
 

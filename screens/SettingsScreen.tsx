@@ -16,7 +16,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { version } from "../package.json"
 import { appStyles } from '../components/Styles';
 import { LogoutAlert } from '../components/LogoutAlert';
-import { Header, Caption, Description, CaptionedTextBox } from '../components/Text';
+import { DynamicIcon, Header, Caption, Description, CaptionedTextBox } from '../components/Text';
 import { PrimaryButton, Link } from '../components/Buttons';
 
 const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
@@ -66,7 +66,7 @@ const SettingsScreen = ({ route, navigation }) => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
           <Header text="My Account"/>
           <Pressable>
-            <Icon name="edit" size={20} color="black"/>
+            <DynamicIcon name="edit" size={20} />
           </Pressable>
         </View>
         <View style={{ height: 250, justifyContent: 'center' }}>
@@ -98,7 +98,7 @@ const SettingsScreen = ({ route, navigation }) => {
         <Link text="Log Out" onPress={() => { LogoutAlert(logout) }}/>
       </View>
       <View style={appStyles.bottomContainer}>
-        <Text>Snatched App</Text>
+        <Description text="Snatched App"/>
         <Header text={"v" + version}/>
       </View>
     </View>
