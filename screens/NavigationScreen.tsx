@@ -8,7 +8,7 @@ import {
   useColorScheme,
   View,
   Button,
-  Alert,
+  Linking
 } from 'react-native';
 
 import {
@@ -26,6 +26,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { useAuth } from '../contexts/AuthContext';
+import { LogoutAlert } from '../components/LogoutAlert';
 
 import { WelcomeScreen } from './WelcomeScreen'
 import { LoginScreen } from './LoginScreen'
@@ -46,27 +47,7 @@ const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 function CustomDrawerContent(props) {
-  const { isLoggedIn, login, logout } = useAuth();
-
-  const showLogoutConfirmDialog = () => {
-    return Alert.alert(
-      "Are you sure?",
-      "Are you sure you want to log out?",
-      [
-        // Does nothing but dismiss the dialog when tapped
-        {
-          text: "Cancel",
-        },
-        {
-          text: "Log out",
-          style: 'destructive',
-          onPress: () => {
-            logout();
-          },
-        },
-      ]
-    );
-  };
+  const { logout } = useAuth();
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -77,7 +58,7 @@ function CustomDrawerContent(props) {
           justifyContent: 'center',
         }}
       >
-        <Text style={{ fontSize: 30 }}>
+        <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
           SNATCHED
         </Text>
       </View>
@@ -86,16 +67,28 @@ function CustomDrawerContent(props) {
       </DrawerContentScrollView>
       
       <View>
+        {/*<DrawerItem
+          icon={({ name, size }) => <Icon color="#1575FC" size={size} name="email" /> }
+          label="Help/Contact"
+          labelStyle={{ color: "#1575FC" }}
+          onPress={() => { Linking.openURL("mailto:kurtisrae.mokaraka@gmail.com"); }}
+        />*/}
         <DrawerItem
-            icon={({ name, color, size }) => <Icon color={color} size={size} name="settings" /> }
-            label="Settings"
-            onPress={() => { props.navigation.navigate('Settings'); }}
-          />
+          icon={({ name, size }) => <Icon color="red" size={size} name="bug-report" /> }
+          label="Bug Report/Feedback"
+          labelStyle={{ color: "red" }}
+          onPress={() => { Linking.openURL("https://forms.google.com"); }}
+        />
         <DrawerItem
-            icon={({ name, color, size }) => <Icon color={color} size={size} name="logout" /> }
-            label="Log Out"
-            onPress={() => showLogoutConfirmDialog()}
-          />
+          icon={({ name, color, size }) => <Icon color={color} size={size} name="settings" /> }
+          label="Settings"
+          onPress={() => { props.navigation.navigate('Settings'); }}
+        />
+        <DrawerItem
+          icon={({ name, color, size }) => <Icon color={color} size={size} name="logout" /> }
+          label="Log Out"
+          onPress={() => LogoutAlert(logout)}
+        />
       </View>
     </SafeAreaView>
   );
@@ -149,7 +142,9 @@ function NavigationScreen() {
   // textbox outlines, snatched header and other heading text
   theme = 'light';
 
-  const { isLoggedIn, login, logout } = useAuth();
+  const { isLoggedIn, isInitializing, login } = useAuth();
+
+  if (isInitializing) return null;
 
   return (
     <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>

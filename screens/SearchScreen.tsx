@@ -67,14 +67,14 @@ const ListItemStyles = StyleSheet.create({
 
 const Listing = ({ item, navigation }) => {
   const handlePress = () => {
-    navigation.push('ListingDetailScreen', { item });
+    navigation.push('ListingDetailScreen', { listing: item });
   };
 
   return (
     <TouchableOpacity onPress={handlePress}>
       <View style={ListItemStyles.container}>
         <View style={ListItemStyles.textContainer}>
-          <Text style={ListItemStyles.name}>{item.name}</Text>
+          <Text style={ListItemStyles.name}>{item.title}</Text>
           <Text style={ListItemStyles.description}>{item.distance}km</Text>
         </View>
       </View>

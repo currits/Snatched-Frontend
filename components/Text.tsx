@@ -1,4 +1,4 @@
-import { React } from "react";
+import React, { forwardRef } from "react";
 import {
 	StyleSheet,
 	Text,
@@ -58,55 +58,57 @@ const styles = StyleSheet.create({
   }
 });
 
+/* Style should always go at end of {[]} style array to ensure argument-defined styles take precedence */
+
 const Snatched = ({ text, style }) => {
 	return (
-		<Text style={[style, styles.snatched]}>{text}</Text>
+		<Text style={[styles.snatched, style]}>{text}</Text>
 	)
 }
 
 const Title = ({ text, style }) => {
 	return (
-		<Text style={[style, styles.title]}>{text}</Text>
+		<Text style={[styles.title, style]}>{text}</Text>
 	)
 }
 
 const Header = ({ text, style }) => {
 	return (
-    <Text style={[style, styles.header]}>{text}</Text>
+    <Text style={[styles.header, style]}>{text}</Text>
 	)
 }
 
 const Caption = ({ text, style }) => {
 	return (
-    <Text style={[style, styles.caption]}>{text}</Text>
+    <Text style={[styles.caption, style]}>{text}</Text>
 	)
 }
 
 const Description = ({ text, style }) => {
 	return (
-    <Text style={[style, styles.Description]}>{text}</Text>
+    <Text style={[styles.Description, style]}>{text}</Text>
 	)
 }
 
 const Hint = ({ text, style }) => {
 	return (
-    <Text style={[style, styles.hint]}>{text}</Text>
+    <Text style={[styles.hint, style]}>{text}</Text>
 	)
 }
 
-const CaptionedTextBox = ({ caption, placeholder, value, style }) => {
+const CaptionedTextBox = forwardRef(({ caption, ...props }, ref) => {
 	return (
 		<>
     <Text style={styles.caption}>{caption}</Text>
-		<TextInput style={[style, styles.input]} placeholder={placeholder} value={value}/>
+		<TextInput ref={ref} style={[styles.input, props.style]} {...props} />
 		</>
 	)
-}
+});
 
-const TextBox = ({ placeholder, value, style }) => {
+const TextBox = forwardRef(({ ...props }, ref) => {
 	return (
-		<TextInput style={[style, styles.input]} placeholderTextColor="gray" placeholder={placeholder} value={value} />
+		<TextInput ref={ref} style={[styles.input, props.style]} {...props} />
 	)
-}
+});
 
 export { Snatched, Title, Header, Caption, Description, Hint, TextBox, CaptionedTextBox }

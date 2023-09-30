@@ -14,7 +14,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { MyListingDetailScreen } from './MyListingDetailScreen';
 import { useDummyList } from '../contexts/DummyContext';
-import { PrimaryButton, buttonHelperStyles } from '../components/Buttons';
+import { appStyles } from '../components/Styles';
+import { PrimaryButton } from '../components/Buttons';
 import { MyListing } from '../components/MyListing';
 import { Title } from '../components/Text';
 
@@ -25,7 +26,7 @@ const MyListingsScreen = ({ navigation }) => {
 
   return (
     <View style={{flex: 1 }}>
-      <View style={{ flex: 1, padding: 16 }}>
+      <View style={appStyles.container}>
         <Title text="My Listings" />
         <FlatList
           style={{ margin: 0 }}
@@ -38,7 +39,7 @@ const MyListingsScreen = ({ navigation }) => {
           }
         />
       </View>
-      <View style={buttonHelperStyles.bottomButtonContainer}>
+      <View style={appStyles.bottomContainer}>
         <PrimaryButton text="Add new Listing" icon="add" onPress={() => navigation.push('MyListingAddScreen')}/>
       </View>
     </View>

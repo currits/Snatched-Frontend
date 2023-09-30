@@ -6,8 +6,10 @@ import {
 	Pressable,
 	Button,
 } from "react-native";
+
 import { getDistance } from 'geolib';
 import Geolocation from 'react-native-geolocation-service';
+import { Title, Caption, Description } from '../components/Text';
 import { PrimaryButton, SecondaryButton } from '../components/Buttons';
 
 const ListingInfoSheet = ({item, onInfoPress, onSnatchPress}) => {
@@ -56,19 +58,17 @@ const ListingInfoSheet = ({item, onInfoPress, onSnatchPress}) => {
 
 	return (
 		<View style={styles.contentContainer}>
-			<Text style={{
-				fontSize: 24,
-				fontWeight: 'bold',
-				marginBottom: 15,
-				marginStart: 20
-			}}>
-				Listing Information
-			</Text>
+
+			<Title style={{
+				marginBottom: 20
+			}} text="Listing Information"/>
 			<View style={{flex: 1, flexDirection: "row", justifyContent:'space-between'}}>
-				<Text style={styles.titleText}>{item.title}</Text>
+				<Caption text={item.title} style={styles.titleText}/>
 				{userCoords && <Text style={{flex: 1, fontSize: 14, justifyContent: 'flex-end'}}>{(getDistance(userLocation, targetCoords, 100)/1000)}km</Text>}
 			</View>
-			<Text style={styles.descText}>{item.description}</Text>
+
+			<Description text={item.description}/>
+			
 			<View style={styles.buttonContainer}>
 				<SecondaryButton onPress={onInfoPress} text="More Info" style={{ margin: 12 }}/>
 				<PrimaryButton onPress={onSnatchPress} text="Snatch!" style={{ margin: 12, flex: 2 }}/>

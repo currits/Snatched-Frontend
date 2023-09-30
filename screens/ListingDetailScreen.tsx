@@ -1,15 +1,20 @@
-import React from 'react';
-import {useState, useEffect} from 'react';
-
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { React, useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button
+} from 'react-native';
 import { PrimaryButton } from '../components/Buttons';
+import { appStyles } from '../components/Styles';
+import { Title, Header } from '../components/Text';
 import ProtocolModal from '../components/ProtocolModal';
 import Tags from '../components/Tags';
 import {getDistance} from 'geolib';
 import Geolocation from 'react-native-geolocation-service';
 
 const ListingDetailScreen = ({ route, navigation }) => {
-  const { item } = route.params;
+  const { listing } = route.params;
 
   React.useEffect(() => {
     navigation.setOptions({ title: item.title })
@@ -21,6 +26,22 @@ const ListingDetailScreen = ({ route, navigation }) => {
     setProtocolModalVisible(!isProtocolModalVisible);
   };
 
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Title text={listing.title} style={{ marginBottom: 0 }} />
+          <Header text="0.2km" />
+        </View>
+        <Text style={styles.description}>{listing.description}</Text>
+        {/* Add more details here */}
+      </View>
+      <View style={appStyles.bottomContainer}>
+        <PrimaryButton
+          text="Snatch!"
+          onPress={setProtocolModalVisible}
+        />
+      </View>
   const [listingContent, setListingContent] = useState(null);
 
   const url = 'http://10.0.2.2:5000/';

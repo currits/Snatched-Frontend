@@ -10,10 +10,19 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import { useAuth } from '../contexts/AuthContext';
+
+import { version } from "../package.json"
+import { appStyles } from '../components/Styles';
+import { LogoutAlert } from '../components/LogoutAlert';
 import { Header, Caption, Description, CaptionedTextBox } from '../components/Text';
-import { Link } from '../components/Buttons';
+import { PrimaryButton, Link } from '../components/Buttons';
+
+const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
 
 const SettingsScreen = ({ route, navigation }) => {
+  const { logout, getJwt } = useAuth();
+
   useEffect(() => {
     navigation.setOptions({ title: "Settings" })
   }, [navigation]);
@@ -21,45 +30,68 @@ const SettingsScreen = ({ route, navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-  return (
-    <View style={styles.container}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Header text="My Account" style={{ marginBottom: 12 }}/>
-        <Pressable>
-          <Icon name="edit" size={20} color="black"/>
-        </Pressable>
-      </View>
-      <CaptionedTextBox caption="Email"/>
-      <CaptionedTextBox caption="Password"/>
-      <CaptionedTextBox caption="Phone Number"/>
-      <Header text="App Settings"/>
+  const [userData, setUserData] = useState(null);
 
-      {/* We don't have push notifications, so just commenting this setting out */}
-      {/*
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Description text="Push Notifications"/>
-        <Switch
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const response = await fetch(API_ENDPOINT + "/user", {
+          method: "GET",
+          headers: {
+              'Content-Type': 'application/json',
+              "Authorization": 'Bearer ' + await getJwt()
+            }
+        });
+
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw await response.text();
+        }
+      }
+      catch (error) {
+        alert(error);
+      }
+    };
+
+    getUserData().then((data) => {
+      setUserData(data);
+    });
+  }, []);
+
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={appStyles.container}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <Header text="My Account"/>
+          <Pressable>
+            <Icon name="edit" size={20} color="black"/>
+          </Pressable>
+        </View>
+        <CaptionedTextBox caption="Email" placeholder="Email" value={ userData ? userData.email : "" } editable={false}/>
+        <CaptionedTextBox caption="Password" placeholder="Password" value="password" secureTextEntry={true} editable={false}/>
+        <CaptionedTextBox caption="Phone Number" placeholder="Phone Number" value={ userData ? userData.phone : "" } editable={false}/>
+
+        <Header text="App Settings"/>
+        {/* We don't have push notifications, so just commenting this setting out */}
+        {/*
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Description text="Push Notifications"/>
+          <Switch
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+        </View>
+        */}
+        <Link text="About Snatched" onPress={() => { navigation.navigate('AboutScreen') }}/>
+        <Link text="Log Out" onPress={() => { LogoutAlert(logout) }}/>
       </View>
-      */}
-      <Link text="About Snatched" onPress={() => { navigation.navigate('AboutScreen') }}/>
-      <Link text="Log Out"/>
-      {/* Add more details here */}
+      <View style={appStyles.bottomContainer}>
+        <Text>Snatched App</Text>
+        <Header text={"v" + version}/>
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  caption: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
 
 export { SettingsScreen }

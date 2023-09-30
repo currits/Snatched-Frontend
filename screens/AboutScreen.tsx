@@ -21,7 +21,7 @@ const AboutScreen = ({ route, navigation }) => {
   return (
     <ScrollView contentContainerStyle={[{alignItems: 'center'}, appStyles.centeredContainer]}>
       <Snatched text="SNATCHED"/>
-      <Title text="Made with love by..."/>
+      <Title text="Made with <3 by..."/>
 
       <Header text="Kurt"/>
       <Description text="Frontend/iOS Lead" style={styles.description}/>

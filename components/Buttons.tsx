@@ -3,6 +3,7 @@ import {
 	StyleSheet,
 	Text,
 	Pressable,
+	ActivityIndicator
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -58,33 +59,31 @@ const styles = StyleSheet.create({
 	}
 });
 
-const buttonHelperStyles = StyleSheet.create({
-  bottomButtonContainer: {
-    height: 120,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
-});
-
-const PrimaryButton = ({ text, icon, onPress, style, styleText }) => {
+const PrimaryButton = ({ text, isLoading, icon, style, styleText, ...props }) => {
 	return (
-		<Pressable onPress={onPress} style={[styles.button, styles.buttonPrimary, style]}>
-			<Text style={[styles.buttonPrimaryText, styleText]}>{text}</Text>
-			{icon &&
-				<Icon
-					style={styles.buttonIcon}
-					name={icon}
-					size={20}
-					color="#FFF"
-				/>
-			}
+		<Pressable style={[styles.button, styles.buttonPrimary, style]} disabled={isLoading} {...props}>
+			{isLoading ? (
+				<ActivityIndicator />
+      		) : (
+      			<>
+					<Text style={[styles.buttonPrimaryText, styleText]}>{text}</Text>
+					{icon &&
+						<Icon
+							style={styles.buttonIcon}
+							name={icon}
+							size={20}
+							color="#FFF"
+						/>
+					}
+				</>
+			)}
 		</Pressable>
 	)
 }
 
-const SecondaryButton = ({ text, icon, onPress, style, styleText }) => {
+const SecondaryButton = ({ text, icon, style, styleText, ...props }) => {
 	return (
-		<Pressable onPress={onPress} style={[styles.button, styles.buttonSecondary, style]}>
+		<Pressable style={[styles.button, styles.buttonSecondary, style]} {...props}>
 			<Text style={[styles.buttonPrimaryText, styleText]}>{text}</Text>
 			{icon &&
 				<Icon
@@ -109,4 +108,4 @@ const Link = ({ text, onPress, style }) => {
 	)
 }
 
-export { PrimaryButton, SecondaryButton, Link, buttonHelperStyles }
+export { PrimaryButton, SecondaryButton, Link }
