@@ -26,7 +26,6 @@ const Stack = createNativeStackNavigator();
 
 const MyListingsScreen = ({ navigation }) => {
   const { getJwt } = useAuth();
-  const { dummyList } = useDummyList();
 
   const [listingContent, setListingContent] = useState(null);
 
@@ -40,13 +39,10 @@ const MyListingsScreen = ({ navigation }) => {
         }
       });
       if (!response.ok){
-        console.log(response);
         throw new Error("Error retrieving listing from server.");
       }
-         
       else {
         response.json().then((json) => {
-          console.log(json);
           setListingContent(json);
         })
       }

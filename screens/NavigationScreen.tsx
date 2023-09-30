@@ -45,6 +45,7 @@ import { MyListingDetailScreen } from './MyListingDetailScreen'
 import { MyListingEditScreen } from './MyListingEditScreen'
 import { MyListingAddScreen } from './MyListingAddScreen'
 import { ListingDetailScreen } from './ListingDetailScreen';
+import { LocationSelectScreen } from './LocationSelectScreen';
 import { AboutScreen } from './AboutScreen';
 
 const Drawer = createDrawerNavigator();
@@ -185,6 +186,10 @@ function NavigationScreen() {
             <Stack.Screen options={{
                 title: "Edit Listing",
               }} name="MyListingEditScreen" component={MyListingEditScreen}
+            />
+            <Stack.Screen options={{
+                title: "Location Selector",
+              }} name="LocationSelectScreen" component={LocationSelectScreen}
             />
             <Stack.Screen options={{
                 title: "Create New Listing",

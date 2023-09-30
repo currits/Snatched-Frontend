@@ -9,13 +9,18 @@ const data = tagList;
 const TagDropdown = forwardRef((props, ref) => {
 
     useImperativeHandle(ref, () =>({
-        getSelectedItems,
+        getSelectedItems, setSelectedItems,
     }));
 
     const [selected, setSelected] = useState([]);
 
     const getSelectedItems = () => {
         return selected;
+    };
+
+    const setSelectedItems = (newItems) => {
+        console.log("setting new items");
+        setSelected(newItems);
     };
 
     const renderItem = item => {
