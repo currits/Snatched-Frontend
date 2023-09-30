@@ -9,15 +9,53 @@ import {
 } from "react-native";
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { exchangeText } from "../exchangeProtocol";
 
 const ProtocolModal = ({ visible, toggleModal }) => {
+  
   const [isContactModalVisible, setContactModalVisible] = useState(false);
-
   const toggleContactModal = () => {
     setContactModalVisible(!isContactModalVisible);
   };
 
+  const makeBullet = (bulletList) => {
+    var output = bulletList.map((element, index) => {
+      return(
+      <View style={styles.bulletWrapper} key={index}>
+        <Text style={styles.bulletBullet} key={0}> • </Text>
+        <Text style={styles.bulletText} key={1}>
+          <Text style={{fontWeight: 'bold'}}>{element.bold} </Text>
+          {element.rest}</Text>
+      </View>);
+    });
+    return (<View style={styles.exchange}>{output}</View>);
+  };
+
   const styles = StyleSheet.create({
+    title: {
+      flex: 1,
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: 'black',
+      textAlign: 'left'
+    },
+    exchange:{
+      flex: 10,
+      flexDirection: 'column'
+    },
+    bulletText:{
+      flex: 3,
+      fontSize: 14
+    },
+    bulletBullet:{
+      flex: 0.5,
+      fontSize: 14
+    },
+    bulletWrapper: {
+      flex: 1,
+      width: '100%',
+      flexDirection: 'row',
+    },
     buttonText: {
       fontSize: 16,
       lineHeight: 21,
@@ -94,7 +132,6 @@ const ProtocolModal = ({ visible, toggleModal }) => {
       textAlign: 'center',
     },
     buttonClose: {
-      flex: 1,
       alignSelf: 'flex-end'
     },
   });
@@ -113,9 +150,10 @@ const ProtocolModal = ({ visible, toggleModal }) => {
             <Pressable
               style={styles.buttonClose}
               onPress={toggleModal}>
-              <Icon name="close" size={20} color="black" />
+              <Icon name="close" size={24} color="black" />
             </Pressable>
-            <Text style={styles.modalText}>Exchange protocol here</Text>
+            <Text style={styles.title}>Exchange Protocol</Text>
+            {makeBullet(exchangeText)}
             <Pressable
               style={styles.buttonContact}
               onPress={() => { toggleModal(); setContactModalVisible(); }}>
@@ -136,7 +174,7 @@ const ProtocolModal = ({ visible, toggleModal }) => {
             <Pressable
               style={styles.buttonClose}
               onPress={toggleContactModal}>
-                <Icon name="close" size={20} color="black" />
+                <Icon name="close" size={24} color="black" />
             </Pressable>
             <Text style={styles.modalText}>Contact details here</Text>
           </View>
