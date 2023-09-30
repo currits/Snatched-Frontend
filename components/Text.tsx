@@ -2,9 +2,7 @@ import React, { forwardRef } from "react";
 import {
 	StyleSheet,
 	Text,
-	TextInput,
-  Platform,
-  PlatformColor
+	TextInput
 } from "react-native";
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -45,6 +43,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   input: {
+  	...dynamicStyles,
     height: 40,
     marginTop: 12,
     marginBottom: 12,
@@ -78,12 +77,15 @@ const styles = StyleSheet.create({
 /* Style should always go at end of {[]} style array to ensure argument-defined styles take precedence */
 
 const DynamicIcon = ({ ...props }) => {
-	return (
+	/*return (
 		<Icon color={Platform.select({
 		    ios: PlatformColor('label'),
 		    android: PlatformColor('?android:attr/textColor'),
 		    default: 'black'
 		  })} {...props} />
+	)*/
+	return (
+		<Icon {...props} />
 	)
 }
 

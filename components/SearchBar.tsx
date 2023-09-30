@@ -4,8 +4,7 @@ import {
   TextInput,
   View,
   Keyboard,
-  Button,
-  Platform, PlatformColor
+  Button
 } from "react-native";
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -43,6 +42,7 @@ const SearchBar = ({clicked, onSubmit, onCancel, searchPhrase, setSearchPhrase, 
           ref={textRef}
           style={styles.input}
           placeholder="Search"
+          placeholderTextColor="gray"
           inputmode="search"
           returnKeyType="search"
           value={searchPhrase}

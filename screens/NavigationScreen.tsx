@@ -78,14 +78,7 @@ function CustomDrawerContent(props) {
         <DrawerItem
           icon={({ name, size }) => <Icon color="red" size={size} name="bug-report" /> }
           label="Bug Report/Feedback"
-          labelStyle={{
-            ...Platform.select({
-              ios: {
-                color: PlatformColor('systemRed'),
-              },
-              default: {color: 'red'},
-            }),
-          }}
+          labelStyle={{ color: "red" }}
           onPress={() => { Linking.openURL("https://forms.google.com"); }}
         />
         <DrawerItem
@@ -149,7 +142,7 @@ function NavigationScreen() {
   var theme = useColorScheme();
   // for now cause it's slightly buggy aye
   // textbox outlines, snatched header and other heading text
-  //theme = 'light';
+  theme = 'light';
 
   const { isLoggedIn, isInitializing, login } = useAuth();
 
