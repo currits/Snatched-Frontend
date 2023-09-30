@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,12 +7,15 @@ import {
   Button,
   Modal
 } from "react-native";
-
+import { useAuth } from '../contexts/AuthContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { exchangeText } from "../exchangeProtocol";
+import { Title, Caption, Description } from '../components/Text';
+const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
 
-const ProtocolModal = ({ visible, toggleModal }) => {
-  
+const ProtocolModal = ({ visible, toggleModal, contactOptions }) => {
+
+  const { getJwt } = useAuth();  
   const [isContactModalVisible, setContactModalVisible] = useState(false);
   const toggleContactModal = () => {
     setContactModalVisible(!isContactModalVisible);
@@ -30,6 +33,75 @@ const ProtocolModal = ({ visible, toggleModal }) => {
     });
     return (<View style={styles.exchange}>{output}</View>);
   };
+
+  const [address, setAddress] = useState(null);
+  const [contact, setContact] = useState(null);
+  const clearContactContent = () => {
+    setAddress(null);
+    setContact(null);
+  };
+
+  const getContactContent = async (contactOptions) => {
+    console.log(contactOptions);
+    console.log("contact modal making request");
+    try {
+      if (contactOptions.should_contact) {
+        console.log("contact modal fetching contact details")
+        const userResponse = await fetch(
+          API_ENDPOINT + "/user/" + contactOptions.user_ID, {
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": 'Bearer ' + await getJwt()
+          }
+        });
+        if (userResponse.ok) {
+          userResponse.json().then((json) => {
+            console.log(json);
+            setContact({username: json.username, phone: json.phone});
+          })
+        }
+      }
+      console.log("contact modal fetvhing listing address");
+      console.log(contactOptions.listing_ID);
+      const listingReponse = await fetch(
+        API_ENDPOINT + "/listing/" + contactOptions.listing_ID, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer ' + await getJwt()
+        }
+      });
+      if (listingReponse.ok) {
+        listingReponse.json().then((json)=> {
+          console.log(json);
+          setAddress(json.address);});
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  const contactModalText = (address, contact) => {
+    console.log("contactmodal making text");
+    console.log(address);
+    console.log(contact);
+    return (
+      <View style={{flex:2}}>
+        <View key={0} style={{flex:0.2}}>
+          <Text style={styles.modalText}>Address: {address}</Text>
+        </View>
+        {contact ? (
+          <View key={1} style={{flex:1}}>
+            <Text key={0} style={styles.modalText}>Username: {contact.username}</Text>
+            <Text key={1} style={styles.modalText}>Phone: {contact.phone}</Text>
+          </View>) : (
+          <View style={{flex:1}}>
+            <Text style={styles.modalText}>The Producer has specified they do not need to be contacted before pickup.</Text>
+          </View>
+        )}
+      </View>
+    );
+  }
 
   const styles = StyleSheet.create({
     title: {
@@ -104,8 +176,8 @@ const ProtocolModal = ({ visible, toggleModal }) => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: '40%',
-      marginBottom: '35%'
+      marginTop: '45%',
+      marginBottom: '40%'
     },
     contactModal: {
       flex: 1,
@@ -127,9 +199,9 @@ const ProtocolModal = ({ visible, toggleModal }) => {
       elevation: 5,
     },
     modalText: {
-      flex: 15,
-      marginBottom: 15,
+      fontSize: 14,
       textAlign: 'center',
+      color: 'black'
     },
     buttonClose: {
       alignSelf: 'flex-end'
@@ -156,7 +228,7 @@ const ProtocolModal = ({ visible, toggleModal }) => {
             {makeBullet(exchangeText)}
             <Pressable
               style={styles.buttonContact}
-              onPress={() => { toggleModal(); setContactModalVisible(); }}>
+              onPress={() => { toggleModal(); setContactModalVisible(); getContactContent(contactOptions);}}>
               <Text style={styles.buttonText}>Contact Producer</Text>
             </Pressable>
           </View>
@@ -168,15 +240,16 @@ const ProtocolModal = ({ visible, toggleModal }) => {
         animationType="slide"
         transparent={true}
         visible={isContactModalVisible}
-        onRequestClose={toggleContactModal}>
+        onRequestClose={() => { toggleContactModal(); clearContactContent(); }}>
         <View style={styles.contactView}>
           <View style={styles.contactModal}>
             <Pressable
               style={styles.buttonClose}
-              onPress={toggleContactModal}>
+              onPress={() => { toggleContactModal(); clearContactContent(); }}>
                 <Icon name="close" size={24} color="black" />
             </Pressable>
-            <Text style={styles.modalText}>Contact details here</Text>
+            <Title style={{fontWeight: 'bold', flex: 1}} text={"Contact Information"}></Title>
+            <View style={{flex: 4}}>{address && contactModalText(address, contact)}</View>
           </View>
         </View>
       </Modal>

@@ -79,6 +79,10 @@ const ListingDetailScreen = ({ route, navigation }) => {
 
 	var targetCoords = {latitude: listing.lat, longitude: listing.lon}
 	var userLocation = userCoords;
+  const [contactOptions, setContactOptions] = useState(null);
+  var contactObject = {should_contact: (listing.should_contact == 1)? true: false, user_ID: listing.userUserID, listing_ID: listing.listing_ID };
+
+  useEffect(() => {setContactOptions(contactObject)}, []);
 
   return (
     <View style={styles.container}>
@@ -92,10 +96,11 @@ const ListingDetailScreen = ({ route, navigation }) => {
       </View>
       <Text style={styles.description}>{listing.description}</Text>
       {/* Add more details here */}
-      <PrimaryButton onPress={toggleProtocolModal} text="Snatch!" style={{ margin: 12, flex: 0.5 }}/>
+      <PrimaryButton onPress={() =>{toggleProtocolModal()}} text="Snatch!" style={{ margin: 12, flex: 0.5 }}/>
       <ProtocolModal
         visible={isProtocolModalVisible}
         toggleModal={toggleProtocolModal}
+        contactOptions={contactOptions}
       />
     </View>
   );
