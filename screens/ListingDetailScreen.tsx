@@ -27,22 +27,6 @@ const ListingDetailScreen = ({ route, navigation }) => {
     setProtocolModalVisible(!isProtocolModalVisible);
   };
 
-  return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Title text={listing.title} style={{ marginBottom: 0 }} />
-          <Header text="0.2km" />
-        </View>
-        <Text style={styles.description}>{listing.description}</Text>
-        {/* Add more details here */}
-      </View>
-      <View style={appStyles.bottomContainer}>
-        <PrimaryButton
-          text="Snatch!"
-          onPress={setProtocolModalVisible}
-        />
-      </View>
   const [listingContent, setListingContent] = useState(null);
 
   const url = 'http://10.0.2.2:5000/';
