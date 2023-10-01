@@ -77,7 +77,7 @@ const MyListingsScreen = ({ navigation }) => {
         />
       </View>
       <View style={appStyles.bottomContainer}>
-        <PrimaryButton text="Add new Listing" icon="add" onPress={() => navigation.push('MyListingAddScreen')}/>
+        <PrimaryButton text="Add new Listing" icon="add" onPress={() => navigation.push('MyListingAddScreen', {returnCoords: null})}/>
       </View>
     </View>
   );

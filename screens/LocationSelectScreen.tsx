@@ -73,7 +73,7 @@ function LocationSelectScreen({ route, navigation, onSubmit }) {
                 ref={mapRef}
                 style={styles.map}
                 showsUserLocation={true}
-                showsMyLocationButton={false}
+                showsMyLocationButton={true}
                 region={{
                     latitude: -37.791545,
                     longitude: 175.289350,

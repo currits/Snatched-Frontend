@@ -151,7 +151,7 @@ const CaptionedTextBoxWithIcon = forwardRef(({ caption, onPress, ...props }, ref
 			<Pressable
               onPress={onPress}
 			  style={{flex:1, alignSelf:'center'}}>
-              <Icon name="edit-location" size={40} color="red"/>
+              <Icon name="edit-location" size={50} color="red"/>
             </Pressable>
 		</View>
 		</>

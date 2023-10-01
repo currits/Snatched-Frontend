@@ -85,6 +85,7 @@ const MyListingEditScreen = ({ route, navigation }) => {
   const [title, onChangeTitle] = useState("");
   const [desc, onChangeDesc] = useState("");
   const [stockNum, onChangeStockNum] = useState("");
+  const [pickUpInstructions, onChangePickupInstructions] = useState("");
 
   const { getJwt } = useAuth();
   const submitChanges = async () => {
@@ -102,6 +103,8 @@ const MyListingEditScreen = ({ route, navigation }) => {
         {newData.should_contact = 1; item.should_contact = 1;}
       else
         {newData.should_contact = 0; item.should_contact = 0;}
+      if (pickUpInstructions)
+        {newData.pickup_instructions = pickUpInstructions; item.pickup_instructions = 0;}
       if (stockNum)
         {newData.stock_num = stockNum; item.stock_num = stockNum;}
       if (multiSelectRef.current) {
@@ -145,11 +148,12 @@ const MyListingEditScreen = ({ route, navigation }) => {
       <View style={appStyles.container}>
         <Description text="Fill out the listing details" style={{ flex: 0.2, textAlign: 'left' }} />
         <CaptionedTextBox caption="Title/Name of Listing *" defaultValue={item.title} onChangeText={onChangeTitle} />
-        <CaptionedTextBoxWithIcon maxLength={40} onPress={() => {setBoolCheck(true); navigation.navigate('LocationSelectScreen', { address: { lat: item.lat, lon: item.lon }, returnScreen: 'MyListingEditScreen', item: item }) }} caption="Address *" readOnly={true} defaultValue={address? address : item.address} />
-        <CaptionedTextBox caption="Description" defaultValue={item.description} onChangeText={onChangeDesc} />
+        <CaptionedTextBoxWithIcon multiline={true} numberOfLines={3} style={{height:70}} onPress={() => {setBoolCheck(true); navigation.navigate('LocationSelectScreen', { returnScreen: 'MyListingEditScreen', item: item }) }} caption="Address *" readOnly={true} defaultValue={address? address : item.address} />
+        <CaptionedTextBox multiline={true} numberOfLines={4} style={{height:100}}caption="Description" defaultValue={item.description} onChangeText={onChangeDesc} />
         <CaptionedTextBox caption="Stock Number" keyboardType="numeric" defaultValue={item.stock_num ? item.stock_num.toString() : "-"} onChangeText={cleanNumbers} />
         <Caption text={"Should you be contacted before a pickup?"}></Caption>
         <RadioGroup layout={'row'}radioButtons={radioButtons} onPress={setSelectedID} selectedId={selectedID}/>
+        <CaptionedTextBox multiline={true} numberOfLines={3} style={{height:70}} caption="Pickup instructions" defaultValue={item.pickup_instructions} onChangeText={onChangePickupInstructions} />
         <TagDropdown ref={multiSelectRef}></TagDropdown>
         <PrimaryButton isLoading={isLoading} text={"Submit Changes"} onPress={() => submitChanges()}></PrimaryButton>
       </View>
