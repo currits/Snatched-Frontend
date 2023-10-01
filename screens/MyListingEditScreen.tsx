@@ -106,9 +106,8 @@ const MyListingEditScreen = ({ route, navigation }) => {
         {newData.stock_num = stockNum; item.stock_num = stockNum;}
       if (multiSelectRef.current) {
         var selectedTags = multiSelectRef.current.getSelectedItems();
+        newData.tags = selectedTags; item.tags = selectedTags;
       }
-      if (selectedTags.length > 0)
-        {newData.tags = selectedTags; item.tags = selectedTags;}
       newData = JSON.stringify(newData);
 
       console.log("test submit", newData);
