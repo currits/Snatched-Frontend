@@ -70,6 +70,16 @@ function SearchScreen({ navigation }) {
       else {
         response.json().then((json) => {
           console.log("search results: ", json);
+          json.forEach(x => {
+            x.distance = (getDistance(userCoords, {latitude: x.lat, longitude: x.lon}, 100)/1000);
+          })
+          json = json.sort((a, b) =>{
+            if (a.distance > b.distance)
+              return 1;
+            else if (a.distance < b.distance)
+              return -1;
+            return 0;            
+          });
           setSearchResults(json);
         })
       }
@@ -144,7 +154,7 @@ const Listing = ({ item, navigation, userLoc }) => {
       <View style={styles.container}>
         <View style={styles.textContainer}>
           <Caption text={item.title} style={{ flex: 1 }} />
-          <Hint text={(getDistance(userLoc, {latitude: item.lat, longitude: item.lon}, 100)/1000) + "km"} style={{ marginTop: 0 }} />
+          <Hint text={item.distance + "km"} style={{ marginTop: 0 }} />
         </View>
       </View>
     </TouchableOpacity>
