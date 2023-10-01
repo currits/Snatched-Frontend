@@ -74,13 +74,6 @@ function HomeScreen( {route, navigation} ) {
   const bottomSheetRef = useRef<BottomSheet>(null);
   //memo is a thing that lets a component not be rerendered when its parent is rerendered -> optimisation
   const snapPoints = useMemo(() => ['35%'], []);
-  
-  //retaining this code from bottomsheet usage description for now
-  //we likely wont have use for tracking bottomsheet changes
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);}, []);
-
-  const [contactOptions, setContactOptions] = useState(null);
 
   //this function is passed to each marker, so that when a marker is tapped it sends back up it's listing data for us to populate the bottom sheet
   //we will use the buttons to open detailed listing views etc
@@ -88,7 +81,6 @@ function HomeScreen( {route, navigation} ) {
     setSelectedMarker(listing);
 
     bottomSheetRef.current.snapToIndex(0);
-    setContactOptions({should_contact: (listing.should_contact == 1) ? true : false, user_ID: listing.userUserID, listing_ID: listing.listing_ID});
     setBottomSheetContent(
       <ListingInfoSheet
         item={listing}
@@ -126,9 +118,15 @@ function HomeScreen( {route, navigation} ) {
       )
         
       if (response.ok) {
-        response.json().then((json) => {
-          setMarkers(json);
-        })
+        // if no markers in this area
+        if (response.status == 204) {
+            setMarkers([]);
+        }
+        else if (response.status == 200) {
+          response.json().then((json) => {
+            setMarkers(json);
+          });
+        }
       } else {
         throw await response.text();
       }
@@ -225,7 +223,6 @@ function HomeScreen( {route, navigation} ) {
         index={0}
         snapPoints={snapPoints}
         enablePanDownToClose={true}
-        onChange={handleSheetChanges}
         handleIndicatorStyle={{backgroundColor: dynamicStyles.color}}
         backgroundStyle={dynamicBackgroundStyles}
       >
@@ -235,7 +232,7 @@ function HomeScreen( {route, navigation} ) {
       <ProtocolModal
         visible={isProtocolModalVisible}
         toggleModal={toggleProtocolModal}
-        contactOptions={contactOptions}
+        listing={selectedMarker}
       />
    </View>
   );

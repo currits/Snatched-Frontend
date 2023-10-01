@@ -68,41 +68,52 @@ function SearchScreen({ navigation }) {
       if (!response.ok)
         throw new Error("Error retrieving listings from server.");
       else {
-        response.json().then((json) => {
-          console.log("search results: ", json);
-          json.forEach(x => {
-            x.distance = (getDistance(userCoords, {latitude: x.lat, longitude: x.lon}, 100)/1000);
+        // In case of empty search results returned
+        if (response.status == 204) {
+          setSearchResults(null);
+        }
+        else if (response.status == 200) {
+          response.json().then((json) => {
+            console.log("search results: ", json);
+            json.forEach(x => {
+              x.distance = (getDistance(userCoords, {latitude: x.lat, longitude: x.lon}, 100)/1000);
+            })
+            json = json.sort((a, b) =>{
+              if (a.distance > b.distance)
+                return 1;
+              else if (a.distance < b.distance)
+                return -1;
+              return 0;            
+            });
+            setSearchResults(json);
           })
-          json = json.sort((a, b) =>{
-            if (a.distance > b.distance)
-              return 1;
-            else if (a.distance < b.distance)
-              return -1;
-            return 0;            
-          });
-          setSearchResults(json);
-        })
+        }
       }
     }
     catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
   const [userCoords, setUserCoords] = useState(null);
 	useEffect(() => {
-		Geolocation.getCurrentPosition(
-			position => {
-				var coords = { latitude: position.coords.latitude, longitude: position.coords.longitude };
-				setUserCoords(coords);
-				console.log(position);
-				console.log(userCoords);
-			},
-			error => {
-				console.log(error.code, error.message);
-			},
-			{ enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-		);
+    const unsubscribe = navigation.addListener('focus', () => {
+      Geolocation.getCurrentPosition(
+        position => {
+          var coords = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+          setUserCoords(coords);
+          console.log(position);
+          console.log(userCoords);
+        },
+        error => {
+          console.log(error.code, error.message);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+      );
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
 	}, []);
 
 	var userLocation = userCoords;

@@ -53,7 +53,7 @@ const TagDropdown = forwardRef((props, ref) => {
                 renderLeftIcon={() => (
                     <Icon
                         color="black"
-                        name="tag"
+                        name="filter-list"
                         size={20}
                     />
                 )}
@@ -62,7 +62,7 @@ const TagDropdown = forwardRef((props, ref) => {
                     <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
                         <View style={styles.selectedStyle}>
                             <Text style={styles.textSelectedStyle}>{item.label}</Text>
-                            <Icon color="black" name="delete" size={17} />
+                            <Icon color="black" name="close" size={17} />
                         </View>
                     </TouchableOpacity>
                 )}

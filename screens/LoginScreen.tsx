@@ -5,7 +5,8 @@ import {
   Button,
   StyleSheet,
   KeyboardAvoidingView,
-  ActivityIndicator
+  ActivityIndicator,
+  Linking
 } from 'react-native';
 
 import { Snatched, TextBox, Caption, Hint } from '../components/Text';
@@ -17,8 +18,8 @@ import { useAuth } from '../contexts/AuthContext';
 const LoginScreen = ({ route, navigation }) => {
   const { login } = useAuth();
 
-  const [email, onChangeEmail] = useState("");
-  const [password, onChangePassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,21 +29,29 @@ const LoginScreen = ({ route, navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={appStyles.centeredContainer}>
-        {/* Extra Views here to workaround to stop buggy keyboard sliding animation */}
-        <View style={{alignItems: 'center'}}>
-          <Snatched text="SNATCHED"/>
-        </View>
-        <View>
+        {/* Extra View here to workaround to stop buggy keyboard sliding animation */}
+        <View >
+          <Snatched style={{textAlign: 'center'}} text="SNATCHED"/>
           <Caption text="Log into your Account" />
-        </View>
 
-        <TextBox placeholder="Email" 
-          onChangeText={onChangeEmail}
-          value={email} />
-        <TextBox placeholder="Password"
-          secureTextEntry={true}
-          onChangeText={onChangePassword}
-          value={password} />
+          <TextBox placeholder="Email" 
+            onChangeText={setEmail}
+            value={email}
+          />
+          <TextBox placeholder="Password"
+            secureTextEntry={true}
+            onChangeText={setPassword}
+            value={password}
+            style={{ marginBottom: 0 }}
+          />
+          <Link
+            text="Forgot Password"
+            style={{ marginBottom: 16, textAlign: "right", fontSize: 12, color: "gray" }}
+            onPress={() => {
+              Linking.openURL("https://docs.google.com/forms/d/e/1FAIpQLSfqBSbFNh4jS6z7nGxM6-7MOnuWTTITd3YkSJXoPD4o2TdnXA/viewform?usp=sf_link");
+            }}  
+          />
+        </View>
 
         <PrimaryButton
           text="Sign in"

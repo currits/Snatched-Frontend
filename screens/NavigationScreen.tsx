@@ -39,6 +39,7 @@ import { HomeScreen } from './HomeScreen'
 import { SearchScreen } from './SearchScreen'
 import { MyListingsScreen } from './MyListingsScreen'
 import { SettingsScreen } from './SettingsScreen'
+import { AccountEditScreen } from './AccountEditScreen'
 
 // Sub screens
 import { MyListingDetailScreen } from './MyListingDetailScreen'
@@ -80,7 +81,7 @@ function CustomDrawerContent(props) {
           icon={({ name, size }) => <Icon color="red" size={size} name="bug-report" /> }
           label="Bug Report/Feedback"
           labelStyle={{ color: "red" }}
-          onPress={() => { Linking.openURL("https://forms.google.com"); }}
+          onPress={() => { Linking.openURL("https://docs.google.com/forms/d/e/1FAIpQLSfqBSbFNh4jS6z7nGxM6-7MOnuWTTITd3YkSJXoPD4o2TdnXA/viewform?usp=sf_link"); }}
         />
         <DrawerItem
           icon={({ name, color, size }) => <Icon color={color} size={size} name="settings" /> }
@@ -198,6 +199,10 @@ function NavigationScreen() {
             <Stack.Screen options={{
                 title: "Listing Details",
             }} name="ListingDetailScreen" component={ListingDetailScreen}
+            />
+            <Stack.Screen options={{
+                title: "My Account",
+            }} name="AccountEditScreen" component={AccountEditScreen}
             />
             <Stack.Screen options={{
                 title: "About",
