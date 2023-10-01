@@ -43,9 +43,15 @@ const MyListingsScreen = ({ navigation }) => {
         throw new Error("Error retrieving listing from server.");
       }
       else {
-        response.json().then((json) => {
-          setListingContent(json);
-        })
+        // if no markers
+        if (response.status == 204) {
+            setListingContent([]);
+        }
+        else if (response.status == 200) {
+          response.json().then((json) => {
+            setListingContent(json);
+          });
+        }
       }
     }
     catch (error) {

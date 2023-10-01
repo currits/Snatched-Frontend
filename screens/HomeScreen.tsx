@@ -123,9 +123,15 @@ function HomeScreen( {route, navigation} ) {
       )
         
       if (response.ok) {
-        response.json().then((json) => {
-          setMarkers(json);
-        })
+        // if no markers in this area
+        if (response.status == 204) {
+            setMarkers([]);
+        }
+        else if (response.status == 200) {
+          response.json().then((json) => {
+            setMarkers(json);
+          });
+        }
       } else {
         throw await response.text();
       }
