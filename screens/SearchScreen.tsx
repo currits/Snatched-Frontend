@@ -68,14 +68,20 @@ function SearchScreen({ navigation }) {
       if (!response.ok)
         throw new Error("Error retrieving listings from server.");
       else {
-        response.json().then((json) => {
-          console.log("search results: ", json);
-          setSearchResults(json);
-        })
+        // In case of empty search results returned
+        if (response.status == 204) {
+          setSearchResults(null);
+        }
+        else if (response.status == 200) {
+          response.json().then((json) => {
+            console.log("search results: ", json);
+            setSearchResults(json);
+          });
+        }
       }
     }
     catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
