@@ -9,9 +9,11 @@ import {
     Pressable,
     Button
 } from 'react-native';
+import { PrimaryButton } from '../components/Buttons';
 
-function LocationSelectScreen({ route, navigation }) {
-    //const { address } = route.params;
+function LocationSelectScreen({ route, navigation, onSubmit }) {
+    const { address } = route.params;
+    const { returnScreen } = route.params;
 
     const [marker, setMarker] = useState(null);
     const [returnCoord, setReturnCoords] = useState(null);
@@ -49,23 +51,19 @@ function LocationSelectScreen({ route, navigation }) {
         setMarker(null);
     }
 
-    const tapMap = (lat, lon) => {
+    const tapMap = (latlng) => {
         clearMarker();
-        var marker = makeMarker(lat, lon, clearMarker);
+        var marker = makeMarker(latlng.coordinate.latitude, latlng.coordinate.longitude, clearMarker);
         setMarker(marker);
+        setReturnCoords({
+            latitude: latlng.coordinate.latitude,
+            longitude: latlng.coordinate.longitude
+        });
         mapRef.current?.animateCamera({
             center: {
-                latitude: lat,
-                longitude: lon
-            },
-            zoom: 14,
-        });
-    }
-
-    const handleMapMove = (newCenter) => {
-        setReturnCoords({
-            latitude: newCenter.latitude,
-            longitude: newCenter.longitude
+                latitude: latlng.coordinate.latitude,
+                longitude: latlng.coordinate.longitude
+            }
         });
     }
 
@@ -82,8 +80,12 @@ function LocationSelectScreen({ route, navigation }) {
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121,
                 }}
+                onPress={e => tapMap(e.nativeEvent)}
+                onPoiClick={e => tapMap(e.nativeEvent)}
             >
+            {marker ? marker : null}
             </MapView>
+            <PrimaryButton text={"Confirm"} style={styles.button} onPress={() => {navigation.navigate(returnScreen, {returnCoord: returnCoord, item: route.params.item})}}></PrimaryButton>
         </View>
     );
 }
@@ -96,6 +98,10 @@ const styles = StyleSheet.create({
     },
     map: {
         ...StyleSheet.absoluteFillObject,
+    },
+    button: {
+        marginBottom: 50,
+        width: '50%'
     }
 });
 

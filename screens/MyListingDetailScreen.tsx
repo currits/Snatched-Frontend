@@ -21,8 +21,9 @@ const MyListingDetailScreen = ({ route, navigation }) => {
     <View style={{ flex: 1 }}>
       <View style={styles.container}>
         <Title text={item.title} style={{flex: 1}}/>
+        <Text style={styles.stock}>Contact before pickup: {(item.should_contact == 0)? "No" : "Yes"}</Text>
         <Text style={styles.stock}>Approx. Stock: {item.stock_num ? item.stock_num : "-"}</Text>
-        <Text style={styles.stock}>Address: {item.address}</Text>
+        <Text style={styles.address}>Address: {item.address}</Text>
         <View style={styles.tagContainer}>
           <Tags tagString={item.tags}></Tags>
         </View>
@@ -54,6 +55,10 @@ const styles = StyleSheet.create({
   },
   stock: {
     flex: 0.5,
+    fontSize: 16,
+  },
+  address: {
+    flex: 1,
     fontSize: 16,
   },
 });

@@ -1,43 +1,158 @@
-import React, {useRef, useEffect, useState} from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import {
   View,
   StyleSheet,
-  Text
+  Text,
+  ScrollView,
+  Alert
 } from 'react-native';
 import TagDropdown from '../components/TagDropdown';
-import { CaptionedTextBox, Description } from '../components/Text';
+import { Caption, CaptionedTextBox, CaptionedTextBoxWithIcon, Description } from '../components/Text';
 import { appStyles } from '../components/Styles';
 import { PrimaryButton } from '../components/Buttons';
+import { useFocusEffect } from '@react-navigation/native';
+import { RadioGroup } from 'react-native-radio-buttons-group';
+import { useAuth } from '../contexts/AuthContext';
+const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
 
 const MyListingEditScreen = ({ route, navigation }) => {
+
+  const [boolCheck, setBoolCheck]  = useState(true);
   const { item } = route.params;
+  const { returnCoord } = route.params;
+
   const multiSelectRef = useRef(null);
   const tagArray = item.tags.split(',');
-  
-  const [address, setAddress] = useState(null);
-  
-  const selectAddress = (newAddress) =>{
-    setAddress(newAddress);
-  }
 
-  const navLocScreen = () => {}
+  const [address, setAddress] = useState(null);
 
   useEffect(() => {
-    if (multiSelectRef.current){
-      console.log("edit screen useEffect ", tagArray)
+    if (multiSelectRef.current) {
       multiSelectRef.current.setSelectedItems(tagArray);
+      console.log(item);
     }
   }, []);
 
+  const resolveNewAddress = async (lat, lon) => {
+    var URL = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + "," + lon + '&key=' + process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+    var data;
+    try {
+      data = await fetch(URL);
+    }
+    catch (err) {
+      console.error(err);
+    }
+    var jsonAddress = await data.json();
+    if (jsonAddress.status === "ZERO_RESULTS")
+      return
+    console.log("address resolved ", jsonAddress.results[0].formatted_address);
+    setAddress(jsonAddress.results[0].formatted_address);
+  }
+
+  useFocusEffect(() => {
+    if (returnCoord) {
+      if (boolCheck){
+        setBoolCheck(false);
+        resolveNewAddress(returnCoord.latitude, returnCoord.longitude);
+      }
+    }
+    else {
+    }
+  });
+
+  const cleanNumbers = (text) => {
+    if (text == "")
+      onChangeStockNum("-");
+    else {
+      text = text.replace(/[^0-9]/g, '')
+      onChangeStockNum(text);
+    }
+  }
+
+  const [selectedID, setSelectedID] = useState(item.should_contact ? "1" : "0");
+  const radioButtons = useMemo(() => ([
+    {
+      id: '1',
+      label: 'Yes',
+      value: '1'
+    },{
+      id: '0',
+      label: 'No',
+      value: '0'
+    }
+  ]), []);
+
+  const [title, onChangeTitle] = useState("");
+  const [desc, onChangeDesc] = useState("");
+  const [stockNum, onChangeStockNum] = useState("");
+
+  const { getJwt } = useAuth();
+  const submitChanges = async () => {
+    try {
+      setIsLoading(true);
+      console.log("entering on submit");
+      var newData = {};
+      if (address)
+        {newData.address = address; item.address = address;}
+      if (desc)
+        {newData.description = desc; item.description = desc;}
+      if (title)
+        {newData.title = title; item.title = title;}
+      if (selectedID == "1")
+        {newData.should_contact = 1; item.should_contact = 1;}
+      else
+        {newData.should_contact = 0; item.should_contact = 0;}
+      if (stockNum)
+        {newData.stock_num = stockNum; item.stock_num = stockNum;}
+      var tagString = "";
+      if (multiSelectRef.current) {
+        var selectedTags = multiSelectRef.current.getSelectedItems();
+        if (selectedTags.length != 0) {
+          selectedTags.forEach(x => tagString += ',' + x);
+          tagString = tagString.slice(1);
+        }
+      }
+      if (tagString != "")
+        {newData.tags = tagString; item.tags = tagString;}
+      newData = JSON.stringify(newData);
+
+      console.log("test submit", newData);
+      const response = await fetch(
+        API_ENDPOINT + "/listing/" + item.listing_ID, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer ' + await getJwt()
+        },
+        body: newData
+      })
+    }
+    catch (error) {
+      console.log(error);
+    }
+    finally {
+      setIsLoading(false);
+      console.log(item);
+      Alert.alert("Listing updated", "", [{text: "OK", onPress: ()=>{navigation.navigate('MyListingDetailScreen', {item: item})}}]);
+    }
+  }
+
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
-    <View style={appStyles.container}>
-      <Description text="Fill out the listing details" style={{flex:0.2, textAlign: 'left'}} />
-      <CaptionedTextBox caption="Title/Name of Listing *" value={item.title} />
-      <CaptionedTextBox caption="Address *" value={item.address} />
-      <CaptionedTextBox caption="Description" value={item.description} />
-      <TagDropdown ref={multiSelectRef}></TagDropdown>
-      <PrimaryButton text={"fire thing"} onPress={() => navigation.navigate('LocationSelectScreen')}></PrimaryButton>
-    </View>
+    <ScrollView>
+      <View style={appStyles.container}>
+        <Description text="Fill out the listing details" style={{ flex: 0.2, textAlign: 'left' }} />
+        <CaptionedTextBox caption="Title/Name of Listing *" defaultValue={item.title} onChangeText={onChangeTitle} />
+        <CaptionedTextBoxWithIcon maxLength={40} onPress={() => {setBoolCheck(true); navigation.navigate('LocationSelectScreen', { address: { lat: item.lat, lon: item.lon }, returnScreen: 'MyListingEditScreen', item: item }) }} caption="Address *" readOnly={true} defaultValue={address? address : item.address} />
+        <CaptionedTextBox caption="Description" defaultValue={item.description} onChangeText={onChangeDesc} />
+        <CaptionedTextBox caption="Stock Number" keyboardType="numeric" defaultValue={item.stock_num ? item.stock_num.toString() : "-"} onChangeText={cleanNumbers} />
+        <Caption text={"Should you be contacted before a pickup?"}></Caption>
+        <RadioGroup layout={'row'}radioButtons={radioButtons} onPress={setSelectedID} selectedId={selectedID}/>
+        <TagDropdown ref={multiSelectRef}></TagDropdown>
+        <PrimaryButton isLoading={isLoading} text={"Submit Changes"} onPress={() => submitChanges()}></PrimaryButton>
+      </View>
+    </ScrollView>
   );
 };
 

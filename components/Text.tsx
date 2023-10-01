@@ -2,7 +2,9 @@ import React, { forwardRef } from "react";
 import {
 	StyleSheet,
 	Text,
-	TextInput
+	TextInput, 
+	View,
+	Pressable
 } from "react-native";
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -140,10 +142,26 @@ const CaptionedTextBox = forwardRef(({ caption, ...props }, ref) => {
 	)
 });
 
+const CaptionedTextBoxWithIcon = forwardRef(({ caption, onPress, ...props }, ref) => {
+	return (
+		<>
+    <Text style={styles.caption}>{caption}</Text>
+		<View style={{flexDirection: 'row'}}>
+			<TextInput ref={ref} placeholderTextColor="gray" {...props} style={[styles.input, props.style, {flex: 7}]} />
+			<Pressable
+              onPress={onPress}
+			  style={{flex:1, alignSelf:'center'}}>
+              <Icon name="edit-location" size={40} color="red"/>
+            </Pressable>
+		</View>
+		</>
+	)
+});
+
 const TextBox = forwardRef(({ ...props }, ref) => {
 	return (
 		<TextInput ref={ref} placeholderTextColor="gray" {...props} style={[styles.input, props.style]} />
 	)
 });
 
-export { DynamicIcon, Snatched, SmallSnatched, Title, Header, Caption, Description, Hint, TextBox, CaptionedTextBox }
+export { DynamicIcon, Snatched, SmallSnatched, Title, Header, Caption, Description, Hint, TextBox, CaptionedTextBox, CaptionedTextBoxWithIcon }
