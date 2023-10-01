@@ -5,15 +5,17 @@ import {
   Text,
   Pressable,
   Button,
-  Modal
+  Modal,
+  Linking
 } from "react-native";
 import { useAuth } from '../contexts/AuthContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { exchangeText } from "../exchangeProtocol";
+import { PrimaryButton } from '../components/Buttons';
 import { Title, Caption, Description } from '../components/Text';
 const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
 
-const ProtocolModal = ({ visible, toggleModal, contactOptions }) => {
+const ProtocolModal = ({ visible, toggleModal, listing }) => {
 
   const { getJwt } = useAuth();  
   const [isContactModalVisible, setContactModalVisible] = useState(false);
@@ -24,12 +26,13 @@ const ProtocolModal = ({ visible, toggleModal, contactOptions }) => {
   const makeBullet = (bulletList) => {
     var output = bulletList.map((element, index) => {
       return(
-      <View style={styles.bulletWrapper} key={index}>
-        <Text style={styles.bulletBullet} key={0}> • </Text>
-        <Text style={styles.bulletText} key={1}>
+        <View style={styles.bulletWrapper} key={index}>
+          <Text style={styles.bulletBullet} key={0}> • </Text>
+          <Text style={styles.bulletText} key={1}>
           <Text style={{fontWeight: 'bold'}}>{element.bold} </Text>
           {element.rest}</Text>
-      </View>);
+        </View>
+      );
     });
     return (<View style={styles.exchange}>{output}</View>);
   };
@@ -41,14 +44,14 @@ const ProtocolModal = ({ visible, toggleModal, contactOptions }) => {
     setContact(null);
   };
 
-  const getContactContent = async (contactOptions) => {
-    console.log(contactOptions);
+  const getContactContent = async (listing) => {
+    console.log(listing);
     console.log("contact modal making request");
     try {
-      if (contactOptions.should_contact) {
+      if (listing.should_contact) {
         console.log("contact modal fetching contact details")
         const userResponse = await fetch(
-          API_ENDPOINT + "/user/" + contactOptions.user_ID, {
+          API_ENDPOINT + "/user/" + listing.user_ID, {
           headers: {
             'Content-Type': 'application/json',
             "Authorization": 'Bearer ' + await getJwt()
@@ -62,9 +65,9 @@ const ProtocolModal = ({ visible, toggleModal, contactOptions }) => {
         }
       }
       console.log("contact modal fetvhing listing address");
-      console.log(contactOptions.listing_ID);
+      console.log(listing.listing_ID);
       const listingReponse = await fetch(
-        API_ENDPOINT + "/listing/" + contactOptions.listing_ID, {
+        API_ENDPOINT + "/listing/" + listing.listing_ID, {
         headers: {
           'Content-Type': 'application/json',
           "Authorization": 'Bearer ' + await getJwt()
@@ -124,9 +127,9 @@ const ProtocolModal = ({ visible, toggleModal, contactOptions }) => {
       fontSize: 14
     },
     bulletWrapper: {
-      flex: 1,
       width: '100%',
       flexDirection: 'row',
+      marginBottom: 16
     },
     buttonText: {
       fontSize: 16,
@@ -226,11 +229,10 @@ const ProtocolModal = ({ visible, toggleModal, contactOptions }) => {
             </Pressable>
             <Text style={styles.title}>Exchange Protocol</Text>
             {makeBullet(exchangeText)}
-            <Pressable
-              style={styles.buttonContact}
-              onPress={() => { toggleModal(); setContactModalVisible(); getContactContent(contactOptions);}}>
-              <Text style={styles.buttonText}>Contact Producer</Text>
-            </Pressable>
+            <PrimaryButton
+              onPress={() => { toggleModal(); setContactModalVisible(); getContactContent(listing);}}
+              text="Contact Producer"
+            />
           </View>
         </View>
       </Modal>
@@ -250,6 +252,17 @@ const ProtocolModal = ({ visible, toggleModal, contactOptions }) => {
             </Pressable>
             <Title style={{fontWeight: 'bold', flex: 1}} text={"Contact Information"}></Title>
             <View style={{flex: 4}}>{address && contactModalText(address, contact)}</View>
+            <PrimaryButton text="Navigate" onPress={() => {
+              const scheme = Platform.select({ ios: 'maps://0,0?q=', android: 'geo:0,0?q=' });
+              const latLng = `${listing.lat},${listing.lon}`;
+              const label = `${listing.title} via Snatched`;
+              const url = Platform.select({
+                ios: `${scheme}${label}@${latLng}`,
+                android: `${scheme}${latLng}(${label})`
+              });
+
+              Linking.openURL(url);
+            }}/>
           </View>
         </View>
       </Modal>

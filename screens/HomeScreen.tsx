@@ -80,15 +80,12 @@ function HomeScreen( {route, navigation} ) {
   const handleSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);}, []);
 
-  const [contactOptions, setContactOptions] = useState(null);
-
   //this function is passed to each marker, so that when a marker is tapped it sends back up it's listing data for us to populate the bottom sheet
   //we will use the buttons to open detailed listing views etc
   const onSelectMarker = (listing) => {
     setSelectedMarker(listing);
 
     bottomSheetRef.current.snapToIndex(0);
-    setContactOptions({should_contact: (listing.should_contact == 1) ? true : false, user_ID: listing.userUserID, listing_ID: listing.listing_ID});
     setBottomSheetContent(
       <ListingInfoSheet
         item={listing}
@@ -235,7 +232,7 @@ function HomeScreen( {route, navigation} ) {
       <ProtocolModal
         visible={isProtocolModalVisible}
         toggleModal={toggleProtocolModal}
-        contactOptions={contactOptions}
+        listing={selectedMarker}
       />
    </View>
   );
