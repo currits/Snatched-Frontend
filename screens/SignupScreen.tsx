@@ -16,9 +16,9 @@ import { useAuth } from '../contexts/AuthContext';
 const SignupScreen = ({ route, navigation }) => {
   const { signup } = useAuth();
 
-  const [email, onChangeEmail] = useState("");
-  const [password, onChangePassword] = useState("");
-  const [confirmPassword, onChangeConfirmPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   
@@ -36,16 +36,16 @@ const SignupScreen = ({ route, navigation }) => {
           <Caption text="Create your Account" />
         </View>
 
-        <TextBox placeholder="Email" 
-          onChangeText={onChangeEmail}
+        <TextBox placeholder="Email"
+          onChangeText={setEmail}
           value={email} />
         <TextBox placeholder="Password"
           secureTextEntry={true}
-          onChangeText={onChangePassword}
+          onChangeText={setPassword}
           value={password} />
         <TextBox placeholder="Confirm Password"
           secureTextEntry={true}
-          onChangeText={onChangeConfirmPassword}
+          onChangeText={setConfirmPassword}
           value={confirmPassword} />
 
         <PrimaryButton

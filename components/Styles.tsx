@@ -64,8 +64,8 @@ const appStyles = StyleSheet.create({
     padding: 32
   },
   bottomContainer: {
-    marginBottom: 48,
     alignItems: 'center',
+    marginBottom: 32
   }
 });
 

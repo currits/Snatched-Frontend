@@ -69,32 +69,32 @@ const MyListingsScreen = ({ navigation }) => {
   }, [])
 
   return (
-    <View style={{flex: 1 }}>
-      <View style={appStyles.container}>
-        <Title text="My Listings" />
-        {/* Display a loading spinner while data is loading */}
-        {!listingContent ? (
-          <ActivityIndicator style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}/>
-        ) : listingContent.length === 0 ? (
-          // Display a message if listingContent is empty
-          <Text style={{ textAlign: 'center' }}>You have made no listings.</Text>
-        ) : (
-          <FlatList
-            style={{ margin: 0 }}
-            data={listingContent}
-            renderItem={({ item }) =>
-              <MyListing item={item}
-                onPress={() => navigation.push('MyListingDetailScreen', { item })}
-                onEditPress={() => navigation.push('MyListingEditScreen', { item })} style={{flex: 1}}
-              />
-            }
-          />
-        )}
+      <View style={{ flex: 1 }}>
+        <View style={appStyles.container}>
+          <Title text="My Listings" />
+          {/* Display a loading spinner while data is loading */}
+          {!listingContent ? (
+            <ActivityIndicator style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}/>
+          ) : listingContent.length === 0 ? (
+            // Display a message if listingContent is empty
+            <Text style={{ textAlign: 'center' }}>You have made no listings.</Text>
+          ) : (
+            <FlatList
+              style={{ margin: 0 }}
+              data={listingContent}
+              renderItem={({ item }) =>
+                <MyListing item={item}
+                  onPress={() => navigation.push('MyListingDetailScreen', { item })}
+                  onEditPress={() => navigation.push('MyListingEditScreen', { item })} style={{flex: 1}}
+                />
+              }
+            />
+          )}
+        </View>
+        <View style={appStyles.bottomContainer}>
+          <PrimaryButton text="Add new Listing" icon="add" onPress={() => navigation.push('MyListingAddScreen')}/>
+        </View>
       </View>
-      <View style={appStyles.bottomContainer}>
-        <PrimaryButton text="Add new Listing" icon="add" onPress={() => navigation.push('MyListingAddScreen')}/>
-      </View>
-    </View>
   );
 }
 

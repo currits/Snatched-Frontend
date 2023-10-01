@@ -18,8 +18,8 @@ import { useAuth } from '../contexts/AuthContext';
 const LoginScreen = ({ route, navigation }) => {
   const { login } = useAuth();
 
-  const [email, onChangeEmail] = useState("");
-  const [password, onChangePassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,12 +35,12 @@ const LoginScreen = ({ route, navigation }) => {
           <Caption text="Log into your Account" />
 
           <TextBox placeholder="Email" 
-            onChangeText={onChangeEmail}
+            onChangeText={setEmail}
             value={email}
           />
           <TextBox placeholder="Password"
             secureTextEntry={true}
-            onChangeText={onChangePassword}
+            onChangeText={setPassword}
             value={password}
             style={{ marginBottom: 0 }}
           />

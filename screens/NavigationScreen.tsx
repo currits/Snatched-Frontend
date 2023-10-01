@@ -39,6 +39,7 @@ import { HomeScreen } from './HomeScreen'
 import { SearchScreen } from './SearchScreen'
 import { MyListingsScreen } from './MyListingsScreen'
 import { SettingsScreen } from './SettingsScreen'
+import { AccountEditScreen } from './AccountEditScreen'
 
 // Sub screens
 import { MyListingDetailScreen } from './MyListingDetailScreen'
@@ -198,6 +199,10 @@ function NavigationScreen() {
             <Stack.Screen options={{
                 title: "Listing Details",
             }} name="ListingDetailScreen" component={ListingDetailScreen}
+            />
+            <Stack.Screen options={{
+                title: "My Account",
+            }} name="AccountEditScreen" component={AccountEditScreen}
             />
             <Stack.Screen options={{
                 title: "About",

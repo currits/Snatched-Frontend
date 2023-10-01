@@ -135,14 +135,18 @@ const CaptionedTextBox = forwardRef(({ caption, ...props }, ref) => {
 	return (
 		<>
     <Text style={styles.caption}>{caption}</Text>
-		<TextInput ref={ref} placeholderTextColor="gray" {...props} style={[styles.input, props.style]} />
+		<TextBox ref={ref} {...props} />
 		</>
 	)
 });
 
-const TextBox = forwardRef(({ ...props }, ref) => {
+const TextBox = forwardRef(({ isLoading, ...props }, ref) => {
 	return (
-		<TextInput ref={ref} placeholderTextColor="gray" {...props} style={[styles.input, props.style]} />
+		<TextInput ref={ref} {...props}
+			placeholder={isLoading ? "Loading..." : props.placeholder}
+			value={isLoading ? "" : props.value}
+			style={[styles.input, props.style]}
+		/>
 	)
 });
 
