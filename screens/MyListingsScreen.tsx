@@ -53,9 +53,13 @@ const MyListingsScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-    console.log("MyListings listing data call");
-    getListingData();
-  }, [])
+    const unsubscribe = navigation.addListener('focus', () => {
+      getListingData();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, []);
 
   return (
     <View style={{flex: 1 }}>

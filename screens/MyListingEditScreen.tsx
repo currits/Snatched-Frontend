@@ -22,7 +22,7 @@ const MyListingEditScreen = ({ route, navigation }) => {
   const { returnCoord } = route.params;
 
   const multiSelectRef = useRef(null);
-  const tagArray = item.tags.split(',');
+  const tagArray = item.tags;
 
   const [address, setAddress] = useState(null);
 
@@ -104,16 +104,11 @@ const MyListingEditScreen = ({ route, navigation }) => {
         {newData.should_contact = 0; item.should_contact = 0;}
       if (stockNum)
         {newData.stock_num = stockNum; item.stock_num = stockNum;}
-      var tagString = "";
       if (multiSelectRef.current) {
         var selectedTags = multiSelectRef.current.getSelectedItems();
-        if (selectedTags.length != 0) {
-          selectedTags.forEach(x => tagString += ',' + x);
-          tagString = tagString.slice(1);
-        }
       }
-      if (tagString != "")
-        {newData.tags = tagString; item.tags = tagString;}
+      if (selectedTags.length > 0)
+        {newData.tags = selectedTags; item.tags = selectedTags;}
       newData = JSON.stringify(newData);
 
       console.log("test submit", newData);
@@ -126,14 +121,21 @@ const MyListingEditScreen = ({ route, navigation }) => {
         },
         body: newData
       })
+
+      if (response.ok){
+        Alert.alert("Listing updated", "", [{text: "OK", onPress: ()=>{navigation.navigate('MyListingDetailScreen', {item: item})}}]);
+      }
+      else{
+        throw await response.text();
+      }
     }
     catch (error) {
       console.log(error);
+      Alert.alert("There was a server side error updating the Listing.", "Try again, or submit a response on the bug report form and we'll do it manually.", [{text: "OK"}])
     }
     finally {
       setIsLoading(false);
       console.log(item);
-      Alert.alert("Listing updated", "", [{text: "OK", onPress: ()=>{navigation.navigate('MyListingDetailScreen', {item: item})}}]);
     }
   }
 

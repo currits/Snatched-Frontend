@@ -1,21 +1,64 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 import { PrimaryButton } from '../components/Buttons';
 import { appStyles } from '../components/Styles';
 import { Title, Description } from '../components/Text';
 import Tags from '../components/Tags';
+const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
+import { useAuth } from '../contexts/AuthContext';
 
 const MyListingDetailScreen = ({ route, navigation }) => {
   const { item } = route.params;
+  const { getJwt } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   React.useEffect(() => {
     navigation.setOptions({ title: item.title })
   }, [navigation, item.title]);
+
+  const deleteListing = async () => {
+
+    Alert.alert("Are you sure you want to delete this listing?",
+      "This action cannot be undone.",
+      [
+        {
+          text: "Yes", onPress: async () => {
+            
+    try{
+      setIsLoading(true);
+      const response = await fetch(
+        API_ENDPOINT + "/listing/" + item.listing_ID, {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer ' + await getJwt()
+        }}
+      )
+        
+      if (response.ok) {
+        Alert.alert("Listings has been deleted.", "", [{text: "OK", onPress: () =>{navigation.goBack()}}])
+      } else {
+        throw await response.text();
+      }
+    }
+    catch(error){
+      Alert.alert("There was a server side error deleting the Listing.", "Try again, or submit a response on the bug report form and we'll do it manually.", [{text: "OK"}])
+    }
+    finally{
+      setIsLoading(false);
+    }
+    
+          }
+        },
+        { text: "Cancel" },
+      ]);
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -25,7 +68,7 @@ const MyListingDetailScreen = ({ route, navigation }) => {
         <Text style={styles.stock}>Approx. Stock: {item.stock_num ? item.stock_num : "-"}</Text>
         <Text style={styles.address}>Address: {item.address}</Text>
         <View style={styles.tagContainer}>
-          <Tags tagString={item.tags}></Tags>
+          <Tags tags={item.tags}></Tags>
         </View>
         <Description text={item.description} style={styles.description}/>
       </View>
@@ -34,6 +77,13 @@ const MyListingDetailScreen = ({ route, navigation }) => {
           text="Edit Listing"
           icon="edit"
           onPress={() => navigation.push('MyListingEditScreen', { item })}
+        />
+        <PrimaryButton
+          text="Delete Listing"
+          icon="delete-forever"
+          style={{backgroundColor: 'red'}}
+          onPress={() => deleteListing()}
+          isLoading={isLoading}
         />
       </View>
     </View>

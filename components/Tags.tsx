@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 
-const Tags = ({ tagString }) => {
-    console.log(tagString);
-    var tags = tagString.split(',');
+const Tags = ({ tags }) => {
+    console.log(tags);
     var tagsAsText = tags.map((text, index) => {
       var view = <View style={styles.tagBox} key={index}>
         <Text style={styles.tag}>{text}</Text>

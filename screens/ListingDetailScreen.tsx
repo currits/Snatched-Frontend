@@ -92,7 +92,7 @@ const ListingDetailScreen = ({ route, navigation }) => {
       </View>
       <Text style={styles.stock}>Approx. Stock: {listingContent ? listingContent.stock_num : "-"}</Text>
       <View style={styles.tagContainer}>
-        {listingContent && <Tags tagString={listingContent.tags}></Tags>}
+        {listingContent && <Tags tags={listingContent.tags}></Tags>}
       </View>
       <Text style={styles.description}>{listing.description}</Text>
       {/* Add more details here */}
