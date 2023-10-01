@@ -80,7 +80,7 @@ function CustomDrawerContent(props) {
           icon={({ name, size }) => <Icon color="red" size={size} name="bug-report" /> }
           label="Bug Report/Feedback"
           labelStyle={{ color: "red" }}
-          onPress={() => { Linking.openURL("https://forms.google.com"); }}
+          onPress={() => { Linking.openURL("https://docs.google.com/forms/d/e/1FAIpQLSfqBSbFNh4jS6z7nGxM6-7MOnuWTTITd3YkSJXoPD4o2TdnXA/viewform?usp=sf_link"); }}
         />
         <DrawerItem
           icon={({ name, color, size }) => <Icon color={color} size={size} name="settings" /> }

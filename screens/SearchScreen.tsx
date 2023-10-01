@@ -81,18 +81,23 @@ function SearchScreen({ navigation }) {
 
   const [userCoords, setUserCoords] = useState(null);
 	useEffect(() => {
-		Geolocation.getCurrentPosition(
-			position => {
-				var coords = { latitude: position.coords.latitude, longitude: position.coords.longitude };
-				setUserCoords(coords);
-				console.log(position);
-				console.log(userCoords);
-			},
-			error => {
-				console.log(error.code, error.message);
-			},
-			{ enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-		);
+    const unsubscribe = navigation.addListener('focus', () => {
+      Geolocation.getCurrentPosition(
+        position => {
+          var coords = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+          setUserCoords(coords);
+          console.log(position);
+          console.log(userCoords);
+        },
+        error => {
+          console.log(error.code, error.message);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+      );
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
 	}, []);
 
 	var userLocation = userCoords;

@@ -104,7 +104,7 @@ const SecondaryButton = ({ text, icon, style, styleText, ...props }) => {
 const Link = ({ text, onPress, style }) => {
 	return (
 		<Text
-			style={[style, styles.link]}
+			style={[styles.link, style]}
 			onPress={onPress}
 		>
 			{text}
