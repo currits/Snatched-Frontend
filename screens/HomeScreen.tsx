@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { CreateMarker } from '../components/CreateMarker';
+import { ListingMarker } from '../components/ListingMarker';
 import BottomSheet from '@gorhom/bottom-sheet'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MapView, { Marker } from 'react-native-maps';
@@ -84,7 +84,9 @@ function HomeScreen( {route, navigation} ) {
 
   //this function is passed to each marker, so that when a marker is tapped it sends back up it's listing data for us to populate the bottom sheet
   //we will use the buttons to open detailed listing views etc
-  const displayListingInfo = (listing) => {
+  const onSelectMarker = (listing) => {
+    setSelectedMarker(listing);
+
     bottomSheetRef.current.snapToIndex(0);
     setContactOptions({should_contact: (listing.should_contact == 1) ? true : false, user_ID: listing.userUserID, listing_ID: listing.listing_ID});
     setBottomSheetContent(
@@ -138,6 +140,7 @@ function HomeScreen( {route, navigation} ) {
 
   //marker state for list of markers.
   const [markers, setMarkers] = useState([]);
+  const [selectedMarker, setSelectedMarker] = useState(null);
 
   //this is how we can manage updating markers as we scroll
   //this sets up a 'center' state for us to use to send requests to the DB
@@ -208,7 +211,14 @@ function HomeScreen( {route, navigation} ) {
         }}
         onRegionChangeComplete={handleCenterMove}
       >
-        {markers.map(listing => CreateMarker(listing, displayListingInfo))}
+        {/* TODO: somehow render the selected marker on top when panning map */}
+        {markers.map(listing => (
+          <ListingMarker 
+            key={listing.id}
+            listing={listing}
+            onSelectMarker={onSelectMarker}
+            isSelected={selectedMarker.listing_ID === listing.listing_ID} />
+        ))}
       </MapView>
       <BottomSheet
         ref={bottomSheetRef}
