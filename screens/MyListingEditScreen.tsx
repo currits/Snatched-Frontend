@@ -7,7 +7,7 @@ import {
   Alert
 } from 'react-native';
 import TagDropdown from '../components/TagDropdown';
-import { Caption, CaptionedTextBox, CaptionedTextBoxWithIcon, Description } from '../components/Text';
+import { Caption, CaptionedTextBox, Description } from '../components/Text';
 import { appStyles } from '../components/Styles';
 import { PrimaryButton } from '../components/Buttons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -146,16 +146,64 @@ const MyListingEditScreen = ({ route, navigation }) => {
   return (
     <ScrollView>
       <View style={appStyles.container}>
-        <Description text="Fill out the listing details" style={{ flex: 0.2, textAlign: 'left' }} />
-        <CaptionedTextBox caption="Title/Name of Listing *" defaultValue={item.title} onChangeText={onChangeTitle} />
-        <CaptionedTextBoxWithIcon multiline={true} numberOfLines={3} style={{height:70}} onPress={() => {setBoolCheck(true); navigation.navigate('LocationSelectScreen', { returnScreen: 'MyListingEditScreen', item: item }) }} caption="Address *" readOnly={true} defaultValue={address? address : item.address} />
-        <CaptionedTextBox multiline={true} numberOfLines={4} style={{height:100}}caption="Description" defaultValue={item.description} onChangeText={onChangeDesc} />
-        <CaptionedTextBox caption="Stock Number" keyboardType="numeric" defaultValue={item.stock_num ? item.stock_num.toString() : "-"} onChangeText={cleanNumbers} />
-        <Caption text={"Should you be contacted before a pickup?"}></Caption>
-        <RadioGroup layout={'row'}radioButtons={radioButtons} onPress={setSelectedID} selectedId={selectedID}/>
-        <CaptionedTextBox multiline={true} numberOfLines={3} style={{height:70}} caption="Pickup instructions" defaultValue={item.pickup_instructions} onChangeText={onChangePickupInstructions} />
-        <TagDropdown ref={multiSelectRef}></TagDropdown>
-        <PrimaryButton isLoading={isLoading} text={"Submit Changes"} onPress={() => submitChanges()}></PrimaryButton>
+        <Description
+          text="Fill out the listing details"
+          style={{ flex: 0.2, textAlign: 'left' }} />
+
+        <CaptionedTextBox
+          caption="Title/Name of Listing *"
+          defaultValue={item.title} onChangeText={onChangeTitle} />
+        
+        <CaptionedTextBox
+          icon="edit-location"
+          iconColor="red"
+          multiline={true}
+          numberOfLines={3}
+          style={{height:70}}
+          onIconPress={() => {
+            setBoolCheck(true);
+            navigation.navigate('LocationSelectScreen', { returnScreen: 'MyListingEditScreen', item: item })
+          }}
+          caption="Address *"
+          readOnly={true}
+          defaultValue={address? address : item.address} />
+        
+        <CaptionedTextBox
+          multiline={true}
+          numberOfLines={4}
+          style={{height:100}}
+          caption="Description"
+          defaultValue={item.description}
+          onChangeText={onChangeDesc} />
+        
+        <CaptionedTextBox
+          caption="Stock Number"
+          keyboardType="numeric"
+          defaultValue={item.stock_num ? item.stock_num.toString() : "-"}
+          onChangeText={cleanNumbers} />
+        
+        <Caption
+          text={"Should you be contacted before a pickup?"} />
+        <RadioGroup
+          layout={'row'}
+          radioButtons={radioButtons}
+          onPress={setSelectedID}
+          selectedId={selectedID} />
+        
+        <CaptionedTextBox
+          multiline={true}
+          numberOfLines={3}
+          style={{height:70}}
+          caption="Pickup instructions"
+          defaultValue={item.pickup_instructions}
+          onChangeText={onChangePickupInstructions} />
+        
+        <TagDropdown ref={multiSelectRef} />
+        
+        <PrimaryButton
+          isLoading={isLoading}
+          text={"Submit Changes"}
+          onPress={() => submitChanges()} />
       </View>
     </ScrollView>
   );

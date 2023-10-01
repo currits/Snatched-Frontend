@@ -1,3 +1,3 @@
 module.exports = {
-	API_ENDPOINT: 'http://10.0.2.2:5000'
+	API_ENDPOINT: 'https://snatched.ddns.net:3000'
 }

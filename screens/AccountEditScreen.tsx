@@ -79,7 +79,7 @@ const AccountEditScreen = ({ route, navigation }) => {
   return (
     <View style={{flex: 1}}>
       <KeyboardAwareScrollView
-          extraScrollHeight={Platform.OS === 'ios' ? -80 : 0} // Adjust as needed
+        extraScrollHeight={Platform.OS === 'ios' ? -80 : 0} // Adjust as needed
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardShouldPersistTaps="handled"
       >
