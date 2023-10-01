@@ -20,7 +20,6 @@ const Tags = ({ tags }) => {
         alignItems: 'center',
         justifyContent: 'center',
         height: 40,
-        width: 80,
         borderRadius: 4,
         borderWidth: 1, 
         borderColor: 'lightgray',
