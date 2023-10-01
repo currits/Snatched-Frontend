@@ -6,7 +6,8 @@ import {
   Button,
   FlatList,
   TouchableOpacity,
-  Pressable
+  Pressable,
+  ActivityIndicator
 } from 'react-native';
 import { NavigationContainer, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -53,24 +54,36 @@ const MyListingsScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-    console.log("MyListings listing data call");
-    getListingData();
+    const unsubscribe = navigation.addListener('focus', () => {
+      getListingData();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
   }, [])
 
   return (
     <View style={{flex: 1 }}>
       <View style={appStyles.container}>
         <Title text="My Listings" />
-        <FlatList
-          style={{ margin: 0 }}
-          data={listingContent}
-          renderItem={({ item }) =>
-            <MyListing item={item}
-              onPress={() => navigation.push('MyListingDetailScreen', { item })}
-              onEditPress={() => navigation.push('MyListingEditScreen', { item })} style={{flex: 1}}
-            />
-          }
-        />
+        {/* Display a loading spinner while data is loading */}
+        {!listingContent ? (
+          <ActivityIndicator style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}/>
+        ) : listingContent.length === 0 ? (
+          // Display a message if listingContent is empty
+          <Text style={{ textAlign: 'center' }}>You have made no listings.</Text>
+        ) : (
+          <FlatList
+            style={{ margin: 0 }}
+            data={listingContent}
+            renderItem={({ item }) =>
+              <MyListing item={item}
+                onPress={() => navigation.push('MyListingDetailScreen', { item })}
+                onEditPress={() => navigation.push('MyListingEditScreen', { item })} style={{flex: 1}}
+              />
+            }
+          />
+        )}
       </View>
       <View style={appStyles.bottomContainer}>
         <PrimaryButton text="Add new Listing" icon="add" onPress={() => navigation.push('MyListingAddScreen')}/>

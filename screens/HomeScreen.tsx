@@ -214,10 +214,10 @@ function HomeScreen( {route, navigation} ) {
         {/* TODO: somehow render the selected marker on top when panning map */}
         {markers.map(listing => (
           <ListingMarker 
-            key={listing.id}
+            key={listing.listing_ID}
             listing={listing}
             onSelectMarker={onSelectMarker}
-            isSelected={selectedMarker.listing_ID === listing.listing_ID} />
+            isSelected={selectedMarker ? selectedMarker.listing_ID === listing.listing_ID : false} />
         ))}
       </MapView>
       <BottomSheet
