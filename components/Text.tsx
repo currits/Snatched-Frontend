@@ -137,7 +137,7 @@ const CaptionedTextBox = forwardRef(({ caption, ...props }, ref) => {
 	return (
 		<>
     <Text style={styles.caption}>{caption}</Text>
-		<TextInput ref={ref} placeholderTextColor="gray" {...props} style={[styles.input, props.style]} />
+		<TextBox ref={ref} {...props} />
 		</>
 	)
 });
@@ -149,18 +149,23 @@ const CaptionedTextBoxWithIcon = forwardRef(({ caption, onPress, ...props }, ref
 		<View style={{flexDirection: 'row'}}>
 			<TextInput ref={ref} placeholderTextColor="gray" {...props} style={[styles.input, props.style, {flex: 7}]} />
 			<Pressable
-              onPress={onPress}
-			  style={{flex:1, alignSelf:'center'}}>
-              <Icon name="edit-location" size={50} color="red"/>
-            </Pressable>
+				onPress={onPress}
+				style={{flex:1, alignSelf:'center'}}
+			>
+				<Icon name="edit-location" size={50} color="red"/>
+			</Pressable>
 		</View>
 		</>
 	)
 });
 
-const TextBox = forwardRef(({ ...props }, ref) => {
+const TextBox = forwardRef(({ isLoading, ...props }, ref) => {
 	return (
-		<TextInput ref={ref} placeholderTextColor="gray" {...props} style={[styles.input, props.style]} />
+		<TextInput ref={ref} {...props}
+			placeholder={isLoading ? "Loading..." : props.placeholder}
+			value={isLoading ? "" : props.value}
+			style={[styles.input, props.style]}
+		/>
 	)
 });
 
