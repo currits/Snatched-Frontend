@@ -33,6 +33,7 @@ const SettingsScreen = ({ route, navigation }) => {
   //const [isEnabled, setIsEnabled] = useState(false);
 
   const [userData, setUserData] = useState(null);
+  const [isRefreshing, setRefreshing] = useState(false);
 
   async function getUserData() {
     try {
@@ -53,36 +54,42 @@ const SettingsScreen = ({ route, navigation }) => {
     catch (error) {
       alert(error);
     }
+
   };
 
   useEffect(() => {
-    getUserData().then((data) => {
-      setUserData(data);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getUserData().then((data) => {
+        setUserData(data);
+      });
     });
-  }, []);
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [])
 
   const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
     getUserData().then((data) => {
       setUserData(data);
     });
+    
+    setRefreshing(false);
   }, []);
-
-  const onAccountUpdate = (newUserData) => {
-    setUserData(newUserData);
-  }
 
   return (
     <ScrollView
       contentContainerStyle={{ flex: 1}}
       refreshControl={
-        <RefreshControl refreshing={!userData} onRefresh={onRefresh} />
+        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
       }
     >
       <View style={appStyles.container}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
           <Header text="My Account"/>
           { userData &&
-            <Pressable onPress={() => { navigation.navigate('AccountEditScreen', { userData, onGoBack: onAccountUpdate }); }}>
+            <Pressable onPress={() => { navigation.navigate('AccountEditScreen', { userData }) }}>
                 <DynamicIcon name="edit" size={20} />
             </Pressable>
           }

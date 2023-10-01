@@ -63,18 +63,8 @@ const AccountEditScreen = ({ route, navigation }) => {
       if (response.ok) {
         alert("Changes saved");
         // The API doesn't return the updated resource after the PUT is complete
-        // - so update using the local data. Ideally it would send back the updated object
-        // Also the API has inconsistent use of username & name
-        // Alternatively, we could get SettingsScreen to issue another GET request
-        
-        // If not empty, send it back to SettingsScreen to update
-        // (server ignores (doesn't update) empty strings, so we are not going to send empty strings back
-        // to SettingsScreen)
-        route.params.onGoBack({
-          "username": name ? name : userData.username,
-          "email": email ? email : userData.email,
-          "phone": phone ? phone : userData.phone
-        });
+        // Ideally it would send back the updated object
+        // We get SettingsScreen to issue another GET request
       } else {
         throw await response.text();
       }
@@ -89,6 +79,7 @@ const AccountEditScreen = ({ route, navigation }) => {
   return (
     <View style={{flex: 1}}>
       <KeyboardAwareScrollView
+          extraScrollHeight={Platform.OS === 'ios' ? -80 : 0} // Adjust as needed
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardShouldPersistTaps="handled"
       >

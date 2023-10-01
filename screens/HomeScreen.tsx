@@ -74,11 +74,6 @@ function HomeScreen( {route, navigation} ) {
   const bottomSheetRef = useRef<BottomSheet>(null);
   //memo is a thing that lets a component not be rerendered when its parent is rerendered -> optimisation
   const snapPoints = useMemo(() => ['35%'], []);
-  
-  //retaining this code from bottomsheet usage description for now
-  //we likely wont have use for tracking bottomsheet changes
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);}, []);
 
   //this function is passed to each marker, so that when a marker is tapped it sends back up it's listing data for us to populate the bottom sheet
   //we will use the buttons to open detailed listing views etc
@@ -228,7 +223,6 @@ function HomeScreen( {route, navigation} ) {
         index={0}
         snapPoints={snapPoints}
         enablePanDownToClose={true}
-        onChange={handleSheetChanges}
         handleIndicatorStyle={{backgroundColor: dynamicStyles.color}}
         backgroundStyle={dynamicBackgroundStyles}
       >
