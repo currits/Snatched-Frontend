@@ -13,10 +13,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: '#ccc',
     marginVertical: 8,
-    elevation: 1
+    elevation: 1,
+    backgroundColor: 'white'
   },
   textContainer: {
     flex: 10,
