@@ -19,7 +19,6 @@ import Geolocation from 'react-native-geolocation-service';
 
 import { useAuth } from '../contexts/AuthContext';
 
-import { useDummyList } from '../contexts/DummyContext';
 import ListingInfoSheet from '../components/ListingInfoSheet';
 import ProtocolModal from '../components/ProtocolModal';
 import { Description, Title } from '../components/Text';
