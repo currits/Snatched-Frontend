@@ -77,7 +77,6 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
         listingReponse.json().then((json) => {
           console.log(json);
           setAddress(json.address);
-          setContact(json.should_contact);
         });
       }
     }
