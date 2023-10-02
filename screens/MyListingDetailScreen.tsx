@@ -75,6 +75,7 @@ const MyListingDetailScreen = ({ route, navigation }) => {
           <Tags tags={item.tags}></Tags>
         </View>
         <Description text={item.description} style={styles.description}/>
+        <Description text={item.pickup_instructions} style={styles.description}/>
       </View>
       <View style={appStyles.bottomContainer}>
         <PrimaryButton
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   description: {
-    flex: 5,
+    flex: 3,
     fontSize: 16,
     marginTop: 8,
   },

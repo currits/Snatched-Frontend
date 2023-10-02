@@ -77,7 +77,6 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
         listingReponse.json().then((json) => {
           console.log(json);
           setAddress(json.address);
-          setContact(json.should_contact);
         });
       }
     }
@@ -162,7 +161,8 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
       flex: 1,
       flexDirection: 'column',
       width: '80%',
-      margin: 20,
+      marginTop: '20%',
+      marginBottom: '35%',
       backgroundColor: 'white',
       borderRadius: 20,
       padding: 35,
