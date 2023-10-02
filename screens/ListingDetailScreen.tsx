@@ -95,7 +95,7 @@ const ListingDetailScreen = ({ route, navigation }) => {
         {listingContent && <Tags tags={listingContent.tags}></Tags>}
       </View>
       <Text style={styles.description}>{listing.description}</Text>
-      {/* Add more details here */}
+      <Text style={styles.pickup}>{listing.pickup_instructions}</Text>
       <PrimaryButton onPress={() =>{toggleProtocolModal()}} text="Snatch!" style={{ margin: 12, flex: 0.5 }}/>
       <ProtocolModal
         visible={isProtocolModalVisible}
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   description: {
-    flex: 5,
+    flex: 3,
     fontSize: 16,
     marginTop: 8,
   },
@@ -138,6 +138,11 @@ const styles = StyleSheet.create({
   tagContainer: {
     flex: 1,
   },
+  pickup :{
+    flex: 3,
+    fontSize: 16,
+    marginTop: 8,
+  }
 });
 
 export { ListingDetailScreen }
