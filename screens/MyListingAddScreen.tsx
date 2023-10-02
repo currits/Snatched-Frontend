@@ -1,4 +1,4 @@
-import React, {useRef, useState, useMemo} from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import {
   View,
   ScrollView,
@@ -134,7 +134,13 @@ const MyListingAddScreen = ({ route, navigation }) => {
       })
 
       if (response.ok){
-        Alert.alert("Listing Created", "Your new listing has successfuly been created.", [{text: "OK", onPress: ()=>{navigation.goBack()}}]);
+        Alert.alert(
+          "Listing Created",
+          "Your new listing has successfuly been created.",
+          [{text: "OK", onPress: () => {
+            navigation.goBack()
+          }}]
+        );
       }
       else{
         throw await response.text();
@@ -142,7 +148,11 @@ const MyListingAddScreen = ({ route, navigation }) => {
     }
     catch(error){
       console.log(error);
-      Alert.alert("There was a server side error creating the Listing.", "You can try to submit again, but successive submissions will create duplicate listings. If you run into any more trouble, submit a response on the bug report form and we'll reach out to help.", [{text: "OK"}])
+      Alert.alert(
+        "There was a server side error creating the Listing.",
+        "You can try to submit again, but successive submissions will create duplicate listings. If you run into any more trouble, submit a response on the bug report form and we'll reach out to help.",
+        [{text: "OK"}]
+      );
     }
     finally{
       setIsLoading(false);

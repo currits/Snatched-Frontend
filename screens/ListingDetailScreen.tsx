@@ -100,7 +100,7 @@ const ListingDetailScreen = ({ route, navigation }) => {
       <ProtocolModal
         visible={isProtocolModalVisible}
         toggleModal={toggleProtocolModal}
-        listing={contactOptions}
+        listing={listing}
       />
     </View>
   );

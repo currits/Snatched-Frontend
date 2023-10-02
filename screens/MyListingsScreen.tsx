@@ -14,7 +14,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { MyListingDetailScreen } from './MyListingDetailScreen';
-import { useDummyList } from '../contexts/DummyContext';
 import { appStyles } from '../components/Styles';
 import { PrimaryButton } from '../components/Buttons';
 import { MyListing } from '../components/MyListing';
