@@ -74,9 +74,11 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
         }
       });
       if (listingReponse.ok) {
-        listingReponse.json().then((json)=> {
+        listingReponse.json().then((json) => {
           console.log(json);
-          setAddress(json.address);});
+          setAddress(json.address);
+          setContact(json.should_contact);
+        });
       }
     }
     catch (error) {

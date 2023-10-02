@@ -23,41 +23,45 @@ const MyListingDetailScreen = ({ route, navigation }) => {
   }, [navigation, item.title]);
 
   const deleteListing = async () => {
-
-    Alert.alert("Are you sure you want to delete this listing?",
+    return Alert.alert(
+      "Are you sure you want to delete this listing?",
       "This action cannot be undone.",
       [
+        // Does nothing but dismiss the dialog when tapped
         {
-          text: "Yes", onPress: async () => {
-            
-    try{
-      setIsLoading(true);
-      const response = await fetch(
-        API_ENDPOINT + "/listing/" + item.listing_ID, {
-        method: "DELETE",
-        headers: {
-          'Content-Type': 'application/json',
-          "Authorization": 'Bearer ' + await getJwt()
-        }}
-      )
-        
-      if (response.ok) {
-        Alert.alert("Listings has been deleted.", "", [{text: "OK", onPress: () =>{navigation.goBack()}}])
-      } else {
-        throw await response.text();
-      }
-    }
-    catch(error){
-      Alert.alert("There was a server side error deleting the Listing.", "Try again, or submit a response on the bug report form and we'll do it manually.", [{text: "OK"}])
-    }
-    finally{
-      setIsLoading(false);
-    }
-    
-          }
+          text: "Cancel",
         },
-        { text: "Cancel" },
-      ]);
+        {
+          text: "Delete",
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              setIsLoading(true);
+              const response = await fetch(
+                API_ENDPOINT + "/listing/" + item.listing_ID, {
+                method: "DELETE",
+                headers: {
+                  'Content-Type': 'application/json',
+                  "Authorization": 'Bearer ' + await getJwt()
+                }}
+              )
+                
+              if (response.ok) {
+                Alert.alert("Listings has been deleted.", "", [{text: "OK", onPress: () =>{navigation.goBack()}}])
+              } else {
+                throw await response.text();
+              }
+            }
+            catch(error){
+              Alert.alert("There was a server side error deleting the Listing.", "Try again, or submit a response on the bug report form and we'll do it manually.", [{text: "OK"}])
+            }
+            finally{
+              setIsLoading(false);
+            }
+          },
+        }
+      ]
+    );
   }
 
   return (

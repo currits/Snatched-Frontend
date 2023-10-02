@@ -44,17 +44,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 8,
   },
+  multilineInput : {
+  	paddingTop: 10
+  },
   input: {
   	...dynamicStyles,
+    borderWidth: 0,
+    borderRadius: 8,
+    backgroundColor: 'white',
+
     height: 40,
     marginTop: 12,
     marginBottom: 12,
-    borderWidth: 1,
-    padding: 10,
+
+    textAlignVertical: 'top',
     paddingLeft: 16,
-    borderRadius: 8,
-    backgroundColor: 'white',
-    borderWidth: 0,
 
     // Shadows
     /* iOS
@@ -133,40 +137,44 @@ const Hint = ({ text, style }) => {
 	)
 }
 
-const CaptionedTextBox = forwardRef(({ caption, ...props }, ref) => {
+const CaptionedTextBox = forwardRef(({ caption, icon, iconColor, onIconPress, ...props }, ref) => {
 	return (
 		<>
     <Text style={styles.caption}>{caption}</Text>
-		<TextBox ref={ref} {...props} />
-		</>
-	)
-});
-
-const CaptionedTextBoxWithIcon = forwardRef(({ caption, onPress, ...props }, ref) => {
-	return (
-		<>
-    <Text style={styles.caption}>{caption}</Text>
-		<View style={{flexDirection: 'row'}}>
-			<TextInput ref={ref} placeholderTextColor="gray" {...props} style={[styles.input, props.style, {flex: 7}]} />
-			<Pressable
-				onPress={onPress}
-				style={{flex:1, alignSelf:'center'}}
-			>
-				<Icon name="edit-location" size={50} color="red"/>
-			</Pressable>
-		</View>
+    {icon ? (
+			<View style={{flexDirection: 'row'}}>
+				<TextBox ref={ref} {...props} style={[ props.style, { flex: 6 }]}/>
+	    	<Pressable
+					onPress={onIconPress}
+					style={{ flex:1, alignSelf: 'center' }}
+				>
+					<Icon name={icon} size={50} color={iconColor}/>
+				</Pressable>
+			</View>
+    ) : (
+			<TextBox ref={ref} {...props} />
+		)}
 		</>
 	)
 });
 
 const TextBox = forwardRef(({ isLoading, ...props }, ref) => {
+	const inputStyles = [
+    styles.input, // Default style
+    props.style, // Any additional styles passed in props
+  ];
+
+  if (props.multiline) {
+    inputStyles.push(styles.multilineInput);
+  }
+
 	return (
 		<TextInput ref={ref} {...props}
 			placeholder={isLoading ? "Loading..." : props.placeholder}
 			value={isLoading ? "" : props.value}
-			style={[styles.input, props.style]}
+			style={inputStyles}
 		/>
 	)
 });
 
-export { DynamicIcon, Snatched, SmallSnatched, Title, Header, Caption, Description, Hint, TextBox, CaptionedTextBox, CaptionedTextBoxWithIcon }
+export { DynamicIcon, Snatched, SmallSnatched, Title, Header, Caption, Description, Hint, TextBox, CaptionedTextBox }

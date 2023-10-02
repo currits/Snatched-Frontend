@@ -2,14 +2,17 @@ import React, {useRef, useState, useMemo} from 'react';
 import {
   View,
   ScrollView,
-  KeyboardAvoidingView,
-  Alert
+  TouchableWithoutFeedback,
+  Alert,
+  Keyboard
 } from 'react-native';
 
-import { CaptionedTextBox, Description, CaptionedTextBoxWithIcon, Caption } from '../components/Text';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { RadioGroup } from 'react-native-radio-buttons-group';
+
+import { CaptionedTextBox, Description, Caption } from '../components/Text';
 import { appStyles } from '../components/Styles';
 import { PrimaryButton } from '../components/Buttons';
-import { RadioGroup } from 'react-native-radio-buttons-group';
 import { useAuth } from '../contexts/AuthContext';
 import TagDropdown from '../components/TagDropdown';
 import { useFocusEffect } from '@react-navigation/native';
@@ -91,7 +94,7 @@ const MyListingAddScreen = ({ route, navigation }) => {
       return;
     }
     else {
-      Alert.alert("Submit Listing?","For " + title + " at " + address, [{text: "Confirm", onPress: () => submitListing()}, {text: "Cancel"}])
+      Alert.alert("Submit Listing?", "For " + title + " at " + address, [{text: "Confirm", onPress: () => submitListing()}, {text: "Cancel"}])
     }
   }
 
@@ -147,22 +150,81 @@ const MyListingAddScreen = ({ route, navigation }) => {
   }
 
   return (
-    <ScrollView>
-      <Caption text={"Fields marked * are required"} style={{textAlign: 'center', marginTop: 10}}></Caption>
-      <View style={appStyles.container}>
-      <CaptionedTextBox caption="Title/Name of Listing *" placeholder={"Enter a fitting name for your listing"} onChangeText={onChangeTitle} />
-      <CaptionedTextBoxWithIcon multiline={true} numberOfLines={3} style={{height:70}} onPress={() => {setBoolCheck(true); navigation.navigate('LocationSelectScreen', { returnScreen: 'MyListingAddScreen', item: null }) }} caption="Address *" readOnly={true} placeholder={"Press the red button to go to the map. Tap the map to drop a pin, and tap confirm when you're ready."} value={address? address : null} />
-      <CaptionedTextBox multiline={true} numberOfLines={4} style={{height:100}} caption="Description *" placeholder={"Enter a description"} onChangeText={onChangeDesc} />
-      <CaptionedTextBox caption="Stock Number" keyboardType="numeric" placeholder={"Enter an approx. number, or leave blank."} onChangeText={cleanNumbers} />
-      <Caption text={"Should you be contacted before a pickup?"}></Caption>
-        <RadioGroup layout={'row'}radioButtons={radioButtons} onPress={handleRadionChange} selectedId={selectedID}/>
-      <Description style={{marginBottom: 10}} text={willDisplayPhNum? "Your account phone number and username will be available to viewers of your listing." : "Your account phone number and username will not be available to viewers of your listing."} />
-      <CaptionedTextBox multiline={true} numberOfLines={4} style={{height:100}} caption="Pickup instructions *" placeholder={"Include things like; where on the property to find the produce, obstacles that may be encountered, best times to collect, any pets to keep in mind"} onChangeText={onChangePickupInstructions} />
-      <Caption text={"Add tags to categorise the listing."}></Caption>
-      <TagDropdown ref={multiSelectRef}></TagDropdown>
-      <PrimaryButton style={{backgroundColor : 'green'}} isLoading={isLoading} text={"Submit new Listing"} onPress={() => runCheck()}></PrimaryButton>
-      </View>
-    </ScrollView>
+    <KeyboardAwareScrollView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardShouldPersistTaps="handled"
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={appStyles.container}>
+          <Caption 
+            text={"Fields marked * are required"}
+            style={{textAlign: 'center', marginTop: 10}} />
+          
+          <CaptionedTextBox
+            caption="Title/Name of Listing *"
+            placeholder={"Enter a fitting name for your listing"}
+            onChangeText={onChangeTitle} />
+          <CaptionedTextBox
+            multiline={true}
+            numberOfLines={3}
+            style={{height:70}}
+            icon="edit-location"
+            iconColor="red"
+            onIconPress={() => {
+              setBoolCheck(true);
+              navigation.navigate('LocationSelectScreen', { returnScreen: 'MyListingAddScreen', item: null })
+            }}
+            caption="Address *"
+            readOnly={true}
+            placeholder={"Press the red button to go to the map. Tap the map to drop a pin, and tap confirm when you're ready."}
+            value={address? address : null} />
+          
+          <CaptionedTextBox
+            multiline={true}
+            numberOfLines={4}
+            style={{height:100}}
+            caption="Description *"
+            placeholder={"Enter a description"}
+            onChangeText={onChangeDesc} />
+          
+          <CaptionedTextBox
+            caption="Stock Number"
+            keyboardType="numeric"
+            placeholder={"Enter an approx. number, or leave blank."}
+            onChangeText={cleanNumbers} />
+          
+          <Caption text={"Should you be contacted before a pickup?"} />
+          <RadioGroup
+            layout={'row'}
+            radioButtons={radioButtons}
+            onPress={handleRadionChange}
+            selectedId={selectedID} />
+          <Description
+            style={{marginBottom: 10}}
+            text={willDisplayPhNum ?
+              "Your account phone number and username will be available to viewers of your listing." :
+              "Your account phone number and username will not be available to viewers of your listing."} />
+          
+          <CaptionedTextBox
+            multiline={true}
+            numberOfLines={4}
+            style={{height:100}}
+            caption="Pickup instructions *"
+            placeholder={"Include things like; where on the property to find the produce, obstacles that may be encountered, best times to collect, any pets to keep in mind"}
+            onChangeText={onChangePickupInstructions} />
+          
+          <Caption
+            text={"Add tags to categorise the listing."} />
+          <TagDropdown ref={multiSelectRef} />
+          
+          <PrimaryButton
+            style={{backgroundColor : 'green'}}
+            isLoading={isLoading}
+            text={"Submit new Listing"}
+            onPress={() => runCheck()} />
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAwareScrollView>
   );
 };
 
