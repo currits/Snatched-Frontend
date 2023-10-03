@@ -102,6 +102,7 @@ const AccountEditScreen = ({ route, navigation }) => {
                   value={confirmPassword !== null ? confirmPassword : "Password"}
                   onChangeText={setConfirmPassword}/>
                 <CaptionedTextBox caption="Phone Number" placeholder="Phone Number"
+                  keyboardType="phone-pad"
                   value={phone}
                   onChangeText={setPhone}/>
             </View>

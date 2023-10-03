@@ -51,7 +51,7 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
       if (listing.should_contact) {
         console.log("contact modal fetching contact details")
         const userResponse = await fetch(
-          API_ENDPOINT + "/user/" + listing.user_ID, {
+          API_ENDPOINT + "/user/" + listing.userUserID, {
           headers: {
             'Content-Type': 'application/json',
             "Authorization": 'Bearer ' + await getJwt()
@@ -59,9 +59,13 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
         });
         if (userResponse.ok) {
           userResponse.json().then((json) => {
+            console.log("VRMMM");
             console.log(json);
             setContact({username: json.username, phone: json.phone});
           })
+        }
+        else {
+          throw await userResponse.text();
         }
       }
       console.log("contact modal fetvhing listing address");
@@ -78,6 +82,9 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
           console.log(json);
           setAddress(json.address);
         });
+      }
+      else {
+        throw await listingReponse.text();
       }
     }
     catch (error) {
@@ -100,7 +107,7 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
             <Text key={1} style={styles.modalText}>Phone: {contact.phone}</Text>
           </View>) : (
           <View style={{flex:1}}>
-            <Text style={styles.modalText}>The Producer has specified they do not need to be contacted before pickup.</Text>
+            <Text style={styles.modalText}>The producer has specified they do not need to be contacted before pickup.</Text>
           </View>
         )}
       </View>
@@ -254,7 +261,7 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
             </Pressable>
             <Title style={{fontWeight: 'bold', flex: 1}} text={"Contact Information"}></Title>
             <View style={{flex: 4}}>{address && contactModalText(address, contact)}</View>
-            <PrimaryButton text="Navigate" onPress={() => {
+            <PrimaryButton text="Open in Maps" onPress={() => {
               const scheme = Platform.select({ ios: 'maps://0,0?q=', android: 'geo:0,0?q=' });
               const latLng = `${listing.lat},${listing.lon}`;
               const label = `${listing.title} via Snatched`;
