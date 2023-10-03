@@ -502,6 +502,7 @@
 				DEVELOPMENT_TEAM = NFW2U638MT;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Snatched/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -533,7 +534,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamy.Snatched;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamy.snatched;
 				PRODUCT_NAME = Snatched;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -550,6 +551,7 @@
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = NFW2U638MT;
 				INFOPLIST_FILE = Snatched/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -580,7 +582,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamy.Snatched;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamy.snatched;
 				PRODUCT_NAME = Snatched;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
