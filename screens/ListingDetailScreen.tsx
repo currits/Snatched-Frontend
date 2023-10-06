@@ -9,7 +9,7 @@ import {
 
 import { PrimaryButton } from '../components/Buttons';
 import { appStyles } from '../components/Styles';
-import { Title, Header } from '../components/Text';
+import { Title, Header, Caption, Description } from '../components/Text';
 import ProtocolModal from '../components/ProtocolModal';
 import Tags from '../components/Tags';
 import {getDistance} from 'geolib';
@@ -90,13 +90,20 @@ const ListingDetailScreen = ({ route, navigation }) => {
         <Text style={styles.title}>{listing.title}</Text>
         {userCoords && <Text style={styles.distance}>{(getDistance(userLocation, targetCoords, 100)/1000)}km</Text>}
       </View>
-      <Text style={styles.stock}>Approx. Stock: {listingContent ? listingContent.stock_num : "-"}</Text>
+
+      <Description style={styles.stock} text={"Approx. Stock: " + (listingContent ? listingContent.stock_num : "-")} />
+      
+      <Caption text="Tags" />
       <View style={styles.tagContainer}>
         {listingContent && <Tags tags={listingContent.tags}></Tags>}
       </View>
+
+      <Caption text="Description" />
       <Text style={styles.description}>{listing.description}</Text>
+        
+      <Caption text="Pickup instructions" />
       <Text style={styles.pickup}>{listing.pickup_instructions}</Text>
-      <PrimaryButton onPress={() =>{toggleProtocolModal()}} text="Snatch!" style={{ margin: 12, flex: 0.5 }}/>
+      <PrimaryButton onPress={() =>{toggleProtocolModal()}} text="Snatch!" style={{ margin: 12 }}/>
       <ProtocolModal
         visible={isProtocolModalVisible}
         toggleModal={toggleProtocolModal}
@@ -136,6 +143,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   tagContainer: {
+    marginTop: 6,
     flex: 1,
   },
   pickup :{
