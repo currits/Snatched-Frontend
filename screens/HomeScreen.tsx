@@ -143,8 +143,8 @@ function HomeScreen( {route, navigation} ) {
   //this sets up a 'center' state for us to use to send requests to the DB
   const [requestCenter, setRequestCenter] = useState({
     //later change this to the map/users' starting coords
-    latitude: -37.791545,
-    longitude: 175.289350,
+    latitude: -38.220234,
+    longitude: 175.862656,
     latitudeDelta: 0.015,
     longitudeDelta: 0.0121,
   });
@@ -201,8 +201,8 @@ function HomeScreen( {route, navigation} ) {
         showsUserLocation={true}
         showsMyLocationButton={false}
         region={{
-          latitude: -37.791545,
-          longitude: 175.289350,
+          latitude: -38.220234,
+          longitude: 175.862656,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
