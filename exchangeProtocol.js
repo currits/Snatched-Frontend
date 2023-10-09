@@ -6,7 +6,7 @@ export const exchangeText =[
     },
     {
         id: "container section",
-        bold: "Bring your own containers, bas, or boces to collect produce.",
+        bold: "Bring your own containers, bags, or boxes to collect produce.",
         rest: "Make sure your containers are clean and suitable for transporting the produce safely.",
     },
      {
