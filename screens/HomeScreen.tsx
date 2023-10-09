@@ -200,12 +200,6 @@ function HomeScreen( {route, navigation} ) {
         style={styles.map}
         showsUserLocation={true}
         showsMyLocationButton={false}
-        region={{
-          latitude: -38.220234,
-          longitude: 175.862656,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
-        }}
         onRegionChangeComplete={handleCenterMove}
       >
         {/* TODO: somehow render the selected marker on top when panning map */}
