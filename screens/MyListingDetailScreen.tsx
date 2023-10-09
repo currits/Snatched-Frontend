@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { PrimaryButton } from '../components/Buttons';
 import { appStyles } from '../components/Styles';
-import { Title, Description } from '../components/Text';
+import { Title, Caption, Description } from '../components/Text';
 import Tags from '../components/Tags';
 const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
 import { useAuth } from '../contexts/AuthContext';
@@ -68,13 +68,19 @@ const MyListingDetailScreen = ({ route, navigation }) => {
     <View style={{ flex: 1 }}>
       <View style={styles.container}>
         <Title text={item.title} style={{flex: 1}}/>
-        <Text style={styles.stock}>Contact before pickup: {(item.should_contact == 0)? "No" : "Yes"}</Text>
-        <Text style={styles.stock}>Approx. Stock: {item.stock_num ? item.stock_num : "-"}</Text>
-        <Text style={styles.address}>Address: {item.address}</Text>
+        <Description style={styles.stock} text={"Contact before pickup: " + ((item.should_contact == 0)? "No" : "Yes")} />
+        <Description style={styles.stock} text={"Approx. Stock: " + (item.stock_num ? item.stock_num : "-")} />
+        <Description style={styles.address} text={"Address: " + item.address} />
+        
+        <Caption text="Tags" />
         <View style={styles.tagContainer}>
           <Tags tags={item.tags}></Tags>
         </View>
+        
+        <Caption text="Description" />
         <Description text={item.description} style={styles.description}/>
+        
+        <Caption text="Pickup instructions" />
         <Description text={item.pickup_instructions} style={styles.description}/>
       </View>
       <View style={appStyles.bottomContainer}>
@@ -101,6 +107,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   tagContainer: {
+    marginTop: 6,
     flex: 1,
   },
   description: {
