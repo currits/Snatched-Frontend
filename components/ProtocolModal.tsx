@@ -264,7 +264,7 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
             <PrimaryButton text="Open in Maps" onPress={() => {
               const scheme = Platform.select({ ios: 'maps://0,0?q=', android: 'geo:0,0?q=' });
               const latLng = `${listing.lat},${listing.lon}`;
-              const label = `${listing.title} via Snatched`;
+              const label = `${listing.title} (via Snatched)`;
               const url = Platform.select({
                 ios: `${scheme}${label}@${latLng}`,
                 android: `${scheme}${latLng}(${label})`
