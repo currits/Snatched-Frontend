@@ -28,6 +28,11 @@ const styles = StyleSheet.create({
   }
 });
 
+/**
+ * A touchable component that displays the name and description of a user's own listings in their MyListings screen.
+ * @param param0 Listing JSON, onPress funcion, onPress function for edit icon
+ * @returns 
+ */
 const MyListing = ({ item, onPress, onEditPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>

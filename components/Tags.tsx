@@ -1,6 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 
+/**
+ * Simple component for formatting and rendering a Tag.
+ * @param param0 Tag text to render
+ * @returns View containing a the Tag text in a box
+ */
 const Tags = ({ tags }) => {
     console.log(tags);
     var tagsAsText = tags.map((text, index) => {

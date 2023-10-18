@@ -68,18 +68,19 @@ function HomeScreen( {route, navigation} ) {
   };
 
   //    Bottom Sheet Code   //
-  //below is the code for the menu that can be dragged up from the bottom of the interface.
-  //we will use it to display listing info when a makrer is tapped
+  // The code for the menu that can be dragged up from the bottom of the interface.
+  // We will use it to display listing info when a marker is tapped
   const bottomSheetRef = useRef<BottomSheet>(null);
-  //memo is a thing that lets a component not be rerendered when its parent is rerendered -> optimisation
+  // Defines the proportion of the screen the bottom sheet occupies when open
   const snapPoints = useMemo(() => ['35%'], []);
 
-  //this function is passed to each marker, so that when a marker is tapped it sends back up it's listing data for us to populate the bottom sheet
-  //we will use the buttons to open detailed listing views etc
+  // This function is passed to each marker, so that when a marker is tapped it sends back up it's listing data for us to populate the bottom sheet
+  // We use the buttons to open detailed listing views etc
   const onSelectMarker = (listing) => {
     setSelectedMarker(listing);
-
+    // Bring up the bottom sheet
     bottomSheetRef.current.snapToIndex(0);
+    // Set it's content using state so it renders
     setBottomSheetContent(
       <ListingInfoSheet
         item={listing}
@@ -89,8 +90,8 @@ function HomeScreen( {route, navigation} ) {
     );
   }
 
-  // We prolly wanna hide this until a marker is selected
-  // OR set this to a 'welcome, scroll around to find listings in ur area' type thing
+  // Inital state of the bottom sheet
+  // On first load, shows a welcome message
   const [bottomSheetContent, setBottomSheetContent] = useState((
     <View style={[{marginTop: -50}, appStyles.centeredContainer]}>
       <Title text="Welcome to Snatched!" style={{ textAlign: 'center' }} />
@@ -100,12 +101,12 @@ function HomeScreen( {route, navigation} ) {
     </View>
   ));
 
+  // Setup auth for fetching from the api
   const { getJwt } = useAuth();
   
   //    Marker Code   //
-  //basic code for communicating with api
-  //note that the ip address is just what the emulator uses, will need to present an actual address later
-  //fetch is passed a signal object so it can be aborted if the user tries to make another, different request
+  // This method handles finding any listings within a certain distance of the center point of the mapview
+  // The data retrieved is then used to drop markers onto the map that correspond to the listings
   const getListingsInArea = async (lat, lon) => {
     try {
       const response = await fetch(
@@ -135,32 +136,34 @@ function HomeScreen( {route, navigation} ) {
     }
   }
 
-  //marker state for list of markers.
+  // Marker state for list of markers.
   const [markers, setMarkers] = useState([]);
+  // state for knowing which marker is selected, if any
   const [selectedMarker, setSelectedMarker] = useState(null);
 
-  //this is how we can manage updating markers as we scroll
-  //this sets up a 'center' state for us to use to send requests to the DB
+  // State to handle changing map center as the user manipulates it
+  // Has an initial value for now
   const [requestCenter, setRequestCenter] = useState({
-    //later change this to the map/users' starting coords
     latitude: -38.220234,
     longitude: 175.862656,
     latitudeDelta: 0.015,
     longitudeDelta: 0.0121,
   });
 
-  //and this will be called after every map scroll completes, to update the 'center'
-  //(should also be called when map first created to get the initial markers)
+  // This method is used to set the new center of the map after a user finished dragging it
+  // then tries to get the listings from this new center
+  // Is also called on load to populate the map with any listings around the user
   const handleCenterMove = async (newCenter, gestureObject) => {
     console.log('New map center:', newCenter);
+    // If the user is 'moving' the map away after viewing a marker, close the bottom sheet
     if (gestureObject.isGesture) 
       bottomSheetRef.current.close();
     setRequestCenter(newCenter);
     console.log("attempting to contact server.");
     getListingsInArea(requestCenter.latitude, requestCenter.longitude);
-    //here we would use setMarkers to change the list of markers we need to display and it s h o u l d update on map on its own if im interpreting states right
   }
 
+  // This method gets the users location and animates the map to center on them on load.
   const scrollToUserLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
@@ -179,20 +182,17 @@ function HomeScreen( {route, navigation} ) {
     );
   }
 
-  // Request location on load
+  // Request location permissions on load
   useEffect(() => {
     request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
     request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
 
     scrollToUserLocation();
   }, []);
-
+  
+  // Reference for manipulating the map view
   const mapRef = useRef();
 
-  //added lines for logging on map ready and on region change complete events
-  //included in this wall are two new modals, basically the popups. when i understand more i'd like to perhaps split these out into their own const functions
-  //inside this file, so the home screen function is less bloated. I would instead split them into new files but we need to keep them in (i think) as they
-  //need to be accessed by the onPress call for the pressables inside the onPress for the map markers (so many layers omg)
   return (
     <View style={styles.container}>
       <MapView
@@ -202,7 +202,7 @@ function HomeScreen( {route, navigation} ) {
         showsMyLocationButton={false}
         onRegionChangeComplete={handleCenterMove}
       >
-        {/* TODO: somehow render the selected marker on top when panning map */}
+        {/* Here we use the ListingMarker component to create listing on the map using the raw data from the api */}
         {markers.map(listing => (
           <ListingMarker 
             key={listing.listing_ID}
@@ -211,6 +211,7 @@ function HomeScreen( {route, navigation} ) {
             isSelected={selectedMarker ? selectedMarker.listing_ID === listing.listing_ID : false} />
         ))}
       </MapView>
+      {/* The bottom sheet, for displaying listing information when a user selects a map marker */}
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
@@ -221,7 +222,7 @@ function HomeScreen( {route, navigation} ) {
       >
         {bottomSheetContent}
       </BottomSheet>
-      
+      {/* The protocol modal, for displaying protocol and contact detail popups when the user presses Snatch! */}
       <ProtocolModal
         visible={isProtocolModalVisible}
         toggleModal={toggleProtocolModal}

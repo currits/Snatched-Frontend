@@ -6,8 +6,16 @@ import { MultiSelect } from 'react-native-element-dropdown';
 
 const data = tagList;
 
+/**
+ * This returns an instance of the multiselect component from the react-native-element-dropdown module.
+ * It is used for the 'Tags' functionality.
+ * It is wrapped in a forwardRef method to allow the parent component to set and retrieve the currently selected list items.
+ * @returns 
+ */
 const TagDropdown = forwardRef((props, ref) => {
 
+    // This opens two methods for access by the parent component, getSelectedItems and setSelectedItems
+    // For manipulating the selected items (Tags) of the list.
     useImperativeHandle(ref, () =>({
         getSelectedItems, setSelectedItems,
     }));

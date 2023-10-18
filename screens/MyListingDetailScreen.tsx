@@ -13,15 +13,28 @@ import Tags from '../components/Tags';
 const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
 import { useAuth } from '../contexts/AuthContext';
 
+/**
+ * Screen for user to view the details of their own individual listings.
+ * Makes requests to the api.
+ * Here is where deletion of user listings is actioned.
+ * @param param0 Route, Navigation
+ * @returns The MyListingDetail screen
+ */
 const MyListingDetailScreen = ({ route, navigation }) => {
+  // Extract the listing from the route
   const { item } = route.params;
+  // Setup auth for fetching to the api
   const { getJwt } = useAuth();
+  // create state for showing system feedback to the user (loading swirl on delete button)
   const [isLoading, setIsLoading] = useState(false);
 
+  // on load, dynamically set the title of the screen
   React.useEffect(() => {
     navigation.setOptions({ title: item.title })
   }, [navigation, item.title]);
 
+  // Method for deleting a listing for the database.
+  // Destructive, Idempotent.
   const deleteListing = async () => {
     return Alert.alert(
       "Are you sure you want to delete this listing?",

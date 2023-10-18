@@ -11,6 +11,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { dynamicStyles } from "./Styles";
 
+/*
+This component holds various pre-styles text components that are used throughout the app.
+ */
+
 const styles = StyleSheet.create({
 	snatched: {
   	...dynamicStyles,

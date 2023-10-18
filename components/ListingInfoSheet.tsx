@@ -12,6 +12,14 @@ import Geolocation from 'react-native-geolocation-service';
 import { Title, Caption, Description } from '../components/Text';
 import { PrimaryButton, SecondaryButton } from '../components/Buttons';
 
+
+/**
+ * A formatted component that contains the formatted content for a BottomSheet component on the HomeScreen screen.
+ * It can use three params; the listing JSON, and two callback functions for each button.
+ * This component makes requests to Geolocation service to calculate distance.
+ * @param param0 Listing JSON, Info press callback, Snatch press callback
+ * @returns A view containing bottom sheet content
+ */
 const ListingInfoSheet = ({item, onInfoPress, onSnatchPress}) => {
 	const styles = StyleSheet.create({
 		contentContainer: {
@@ -33,6 +41,7 @@ const ListingInfoSheet = ({item, onInfoPress, onSnatchPress}) => {
 		}
 	});
 
+	// Here we get user location to make distance to listing calculation
 	const [userCoords, setUserCoords] = useState(null);
 	useEffect(() => {
 		Geolocation.getCurrentPosition(

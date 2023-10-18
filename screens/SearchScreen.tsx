@@ -19,15 +19,28 @@ import {getDistance} from 'geolib';
 import Geolocation from 'react-native-geolocation-service';
 const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
 
+/**
+ * This screen is for allowing the user to run searches for listings within the database
+ * and display the results.
+ * Make requests to geolocation, api.
+ * @param param0 Navigation
+ * @returns The Search screen
+ */
 function SearchScreen({ navigation }) {
+  // Setup auth for fetching from api
   const { getJwt } = useAuth();  
+  // State to track entered search terms
   const [searchPhrase, setSearchPhrase] = useState("");
+  // State for searchbar component
   const [clicked, setClicked] = useState(false);
   const isFocused = useIsFocused();
+  // Reference for reading from the TagDropdown multiselect
   const multiSelectRef = useRef(null);
-
+  // State for storing and rendering search results
   const [searchResults, setSearchResults] = useState(null);
   
+  // Method to conduct the search of the database
+  // Actual logic for search is handled server side by it's own controller
   const doSearch = async (phrase) => {
     // retrieve tags, assemble them into a ',' string
     var selectedTags = [];
@@ -74,6 +87,8 @@ function SearchScreen({ navigation }) {
         }
         else if (response.status == 200) {
           response.json().then((json) => {
+            // Here we calculate the distance of each listing from the user
+            // and sort the results by nearest
             console.log("search results: ", json);
             json.forEach(x => {
               x.distance = (getDistance(userCoords, {latitude: x.lat, longitude: x.lon}, 100)/1000);
@@ -85,6 +100,7 @@ function SearchScreen({ navigation }) {
                 return -1;
               return 0;            
             });
+            // use the search results state to render the data 
             setSearchResults(json);
           })
         }
@@ -95,6 +111,8 @@ function SearchScreen({ navigation }) {
     }
   }
 
+  // on load of the search page, we need to know where the user is (for distance calucations)
+  // so get and store their coordinates
   const [userCoords, setUserCoords] = useState(null);
 	useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -155,6 +173,11 @@ const styles = StyleSheet.create({
   }
 });
 
+/**
+ * This component is used to render each search result in the flatList
+ * @param param0 
+ * @returns 
+ */
 const Listing = ({ item, navigation, userLoc }) => {
   const handlePress = () => {
     navigation.push('ListingDetailScreen', { listing: item });

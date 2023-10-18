@@ -10,6 +10,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { dynamicStyles } from "./Styles";
 
+/*
+This component contians the declarations and styling for the various buttons used in the app.
+Uses React native pressable module as a base.
+*/
+
 const styles = StyleSheet.create({
 	contentContainer: {
 		flex: 1,

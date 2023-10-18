@@ -8,12 +8,16 @@ import {
 import MapView, { Callout, Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+/**
+ * A react-native-maps Marker component, using passed Listing JSON data.
+ * This component is called in the HomeScreen screen, where it creates markers to place on the map.
+ * @param param0 Listing JSON, marker onPress callback, boolean value to determine if this marker is currently selected
+ * @returns A react native maps Marker object
+ */
 const ListingMarker = ({ listing, onSelectMarker, isSelected }) => {
     return (
         <Marker
             coordinate={{latitude: parseFloat(listing.lat), longitude: parseFloat(listing.lon)}}
-            //this for now just logs the marker (or text above) being pressed. later this can be used as the call to go to the listing details for this marker.
-            //onCalloutPress={e =>(onSelectMarker(listing))}
             onPress={() => {onSelectMarker(listing);}}
             key={listing.listing_ID}
         >
@@ -32,10 +36,6 @@ const ListingMarker = ({ listing, onSelectMarker, isSelected }) => {
             </View>
         </Marker>
     )
-    //we will need to decide if we want to have text floating above markers, saying what the listing is, when they are drwan or have to make the user
-    //click on each one.
-    //if we do, we'll need to do our own marker SVG (any addition of text means replacing default marker graphics with custom SVG + the text) <- this will be easiest i imagine
-    //nonetheless, should look at instead finding a way to call showCallout() on marker list to make them show their callouts. would need to be able to handle: markers moving off and back on screen, markers outside the screen coming onto the screen (isVisible flag? how in react?)
 }
 
 export { ListingMarker }

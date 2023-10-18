@@ -10,11 +10,20 @@ import {
 } from "react-native";
 import { useAuth } from '../contexts/AuthContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+// Note that the protocol text is defined in a seperate file as a JSON, so that it can be more easily changed.
+// The file is located in the root directory of the project, as exchangeProtocol.js
 import { exchangeText } from "../exchangeProtocol";
 import { PrimaryButton } from '../components/Buttons';
 import { Title, Caption, Description } from '../components/Text';
 const API_ENDPOINT = require("../contexts/Constants").API_ENDPOINT;
 
+/**
+ * Modal component for displaying both the Protocol popup as well as the Contact Producer popup to the user when pressing the Snatch! button.
+ * Uses the react-native Modal component as a base.
+ * Makes requests to the Snatched API.
+ * @param param0 Boolean to control inital visibility, boolean to toggle visibility, Listing JSON 
+ * @returns 
+ */
 const ProtocolModal = ({ visible, toggleModal, listing }) => {
 
   const { getJwt } = useAuth();  
@@ -68,7 +77,7 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
           throw await userResponse.text();
         }
       }
-      console.log("contact modal fetvhing listing address");
+      console.log("contact modal fetching listing address");
       console.log(listing.listing_ID);
       const listingReponse = await fetch(
         API_ENDPOINT + "/listing/" + listing.listing_ID, {
@@ -261,6 +270,7 @@ const ProtocolModal = ({ visible, toggleModal, listing }) => {
             </Pressable>
             <Title style={{fontWeight: 'bold', flex: 1}} text={"Contact Information"}></Title>
             <View style={{flex: 4}}>{address && contactModalText(address, contact)}</View>
+            {/* Note that the Contact modal also contains features to launch navigation using device's default map application */}
             <PrimaryButton text="Open in Maps" onPress={() => {
               const scheme = Platform.select({ ios: 'maps://0,0?q=', android: 'geo:0,0?q=' });
               const latLng = `${listing.lat},${listing.lon}`;

@@ -11,14 +11,27 @@ import {
 } from 'react-native';
 import { PrimaryButton } from '../components/Buttons';
 
+/**
+ * Screen for selecting an address by dropping on a pin on a map.
+ * Used in creating and editing a user's own listings.
+ * Makes requests to geolocation
+ * @param param0 Route, Navigation, null
+ * @returns LocationSelect screen
+ */
 function LocationSelectScreen({ route, navigation, onSubmit }) {
     const { address } = route.params;
+    // As this screen be navigated to from two different routes, we need to find where we came from to properly return to after
+    // Cannot use goBack() method, must pass data along to previous screen
     const { returnScreen } = route.params;
 
+    // State for dropping a pin
     const [marker, setMarker] = useState(null);
+    // State for keeping an updated set of coords from user dropped markers
     const [returnCoord, setReturnCoords] = useState(null);
+    // Map ref to be able to manipulate the mapview component.
     const mapRef = useRef();
 
+    // On load, get center the camera on the user
     useEffect(() => {
         Geolocation.getCurrentPosition(
             position => {
@@ -37,6 +50,7 @@ function LocationSelectScreen({ route, navigation, onSubmit }) {
         );
     }, []);
 
+    // Method for creating a marker when the user taps
     const makeMarker = (lat, lon, callback) => {
         return(
             <Marker
@@ -47,10 +61,12 @@ function LocationSelectScreen({ route, navigation, onSubmit }) {
         );
     }
 
+    // Method for removing old marker when new marker is made
     const clearMarker = () => {
         setMarker(null);
     }
 
+    // Method to drop markers when the user taps, record the tapped location for return
     const tapMap = (latlng) => {
         clearMarker();
         var marker = makeMarker(latlng.coordinate.latitude, latlng.coordinate.longitude, clearMarker);
@@ -85,6 +101,7 @@ function LocationSelectScreen({ route, navigation, onSubmit }) {
             >
             {marker ? marker : null}
             </MapView>
+            {/* Note that because the screen that navigate here need a passed item in the route, we must also require it to be passed to this screen, to then pass it back. Hot potato. */}
             <PrimaryButton text={"Confirm"} style={styles.button} onPress={() => {navigation.navigate(returnScreen, {returnCoord: returnCoord, item: route.params.item})}}></PrimaryButton>
         </View>
     );

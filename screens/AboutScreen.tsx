@@ -16,7 +16,11 @@ const styles = StyleSheet.create({
     marginBottom: 12
   }
 });
-
+/**
+ * Simple screen showing us Developers and the Orgs associated with this project.
+ * @param param0 
+ * @returns 
+ */
 const AboutScreen = ({ route, navigation }) => {
   return (
     <ScrollView contentContainerStyle={[{alignItems: 'center'}, appStyles.centeredContainer]}>
