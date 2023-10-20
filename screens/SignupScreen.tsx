@@ -59,6 +59,8 @@ const SignupScreen = ({ route, navigation }) => {
 
             try {
               setIsLoading(true); // Set loading to true, disabling the button.
+              // Use the signup function from the AuthContext to perform the signup + login, will also dismiss
+              // this view because of conditional rendering logic in NavigationScreen.tsx
               await signup(email, password);
             } catch (error) {
               alert('API error: ' + error);

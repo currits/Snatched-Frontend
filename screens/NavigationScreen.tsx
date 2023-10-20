@@ -57,6 +57,7 @@ function CustomDrawerContent(props) {
 
   return (
     <SafeAreaView style={{flex: 1}}>
+      {/* Drawer header */}
       <View
         style={{
           height: 80,
@@ -66,10 +67,13 @@ function CustomDrawerContent(props) {
       >
         <SmallSnatched />
       </View>
+
+      {/* Regular (top) drawer items */}
       <DrawerContentScrollView {...props} contentContainerStyle={{ paddingTop: 0 }}>
           <DrawerItemList {...props} footer={true}/>
       </DrawerContentScrollView>
       
+      {/* Bottom drawer items */}
       <View>
         {/*<DrawerItem
           icon={({ name, size }) => <Icon color="#1575FC" size={size} name="email" /> }
@@ -98,6 +102,7 @@ function CustomDrawerContent(props) {
   );
 }
 
+// The topmost drawer items are defined here
 function MainDrawer() {
   const navigation = useNavigation();
 
@@ -140,6 +145,7 @@ function MainDrawer() {
   );
 }
 
+// Define which screens are available given the authentication context
 function NavigationScreen() {
   var theme = useColorScheme();
   // for now cause it's slightly buggy aye

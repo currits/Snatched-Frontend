@@ -59,6 +59,8 @@ const LoginScreen = ({ route, navigation }) => {
           onPress={async () => {
             try {
               setIsLoading(true); // Set loading to true, disabling the button.
+              // Use the login function from the AuthContext to perform the login, will also dismiss
+              // this view because of conditional rendering logic in NavigationScreen.tsx
               await login(email, password);
             } catch (error) {
               alert('API error: ' + error);

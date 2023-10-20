@@ -68,6 +68,11 @@ const styles = StyleSheet.create({
 	}
 });
 
+/**
+ * A colored and shadowed button used for primary actions
+ * @param param0 Text, Loading Indicator Shown, Icon, style, styleText
+ * @returns A formatted button
+ */
 const PrimaryButton = ({ text, isLoading, icon, style, styleText, ...props }) => {
 	return (
 		<Pressable {...props} style={[styles.button, styles.buttonPrimary, style]} disabled={isLoading}>
@@ -90,6 +95,12 @@ const PrimaryButton = ({ text, isLoading, icon, style, styleText, ...props }) =>
 	)
 }
 
+/**
+ * A colored and shadowed button used for secondary actions
+ * Color differes slightly from the primary button
+ * @param param0 Text, Icon, style, styleText
+ * @returns A formatted button
+ */
 const SecondaryButton = ({ text, icon, style, styleText, ...props }) => {
 	return (
 		<Pressable {...props} style={[styles.button, styles.buttonSecondary, style]}>
@@ -106,6 +117,11 @@ const SecondaryButton = ({ text, icon, style, styleText, ...props }) => {
 	)
 }
 
+/**
+ * A text link similar to <a> tag in HTML
+ * @param param0 Text, On Press
+ * @returns A link
+ */
 const Link = ({ text, onPress, style }) => {
 	return (
 		<Text

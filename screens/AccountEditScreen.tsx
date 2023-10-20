@@ -25,10 +25,12 @@ const AccountEditScreen = ({ route, navigation }) => {
   const { getJwt } = useAuth();
   const { userData, onUpdate } = route.params;
 
+  // Set navigation header title
   useEffect(() => {
     navigation.setOptions({ title: "My Account" })
   }, [navigation]);
 
+  // States for the form
   const [name, setName] = useState(userData?.username);
   const [email, setEmail] = useState(userData?.email);
   const [password, setPassword] = useState(null);
@@ -37,6 +39,7 @@ const AccountEditScreen = ({ route, navigation }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  // Make API request when 'update' button is pressed
   async function saveUserData() {
     if (password !== confirmPassword) {
       alert("Passwords don't match");
@@ -78,8 +81,9 @@ const AccountEditScreen = ({ route, navigation }) => {
 
   return (
     <View style={{flex: 1}}>
+      {/* Stop keyboard from covering textboxes on iOS */}
       <KeyboardAwareScrollView
-        extraScrollHeight={Platform.OS === 'ios' ? -80 : 0} // Adjust as needed
+        extraScrollHeight={Platform.OS === 'ios' ? -80 : 0}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardShouldPersistTaps="handled"
       >

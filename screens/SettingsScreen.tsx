@@ -35,6 +35,7 @@ const SettingsScreen = ({ route, navigation }) => {
   const [userData, setUserData] = useState(null);
   const [isRefreshing, setRefreshing] = useState(false);
 
+  // Get the user data from the API upon rendering this screen
   async function getUserData() {
     try {
       const response = await fetch(API_ENDPOINT + "/user", {

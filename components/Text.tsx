@@ -99,18 +99,26 @@ const DynamicIcon = ({ ...props }) => {
 	)
 }
 
+/**
+ * The word 'Snatched' in a large font, suitable for branding pages
+ */
 const Snatched = ({ text, style }) => {
 	return (
 		<Text style={[styles.snatched, style]}>{text}</Text>
 	)
 }
 
+/**
+ * The word 'Snatched' in a medium font, suitable for subtle branding, such as the drawer
+ */
 const SmallSnatched = ({ style }) => {
 	return (
 		<Text style={[styles.snatchedSmall, style]}>SNATCHED</Text>
 	)
 }
 
+// These are all different styles of text used throughout various screens
+// for consistency
 const Title = ({ text, style }) => {
 	return (
 		<Text style={[styles.title, style]}>{text}</Text>
@@ -141,6 +149,10 @@ const Hint = ({ text, style }) => {
 	)
 }
 
+/**
+ * A textbox with a text caption above it
+ * May accept an icon button to the left of the texbox
+ */
 const CaptionedTextBox = forwardRef(({ caption, icon, iconColor, onIconPress, ...props }, ref) => {
 	return (
 		<>
@@ -162,6 +174,9 @@ const CaptionedTextBox = forwardRef(({ caption, icon, iconColor, onIconPress, ..
 	)
 });
 
+/**
+ * A textbox styled appropriately, may include "Loading..." placeholder text
+ */
 const TextBox = forwardRef(({ isLoading, ...props }, ref) => {
 	const inputStyles = [
     styles.input, // Default style

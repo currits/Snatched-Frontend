@@ -19,6 +19,8 @@ function parseJwt(token) {
 
 // Should be using a state manager for this sort of thing
 export function AuthProvider({ children }) {
+  // Using this state so the app doesn't briefly pause on the login screen while
+  // it retrieves the JWT/determines whether the user is logged in. Instead, it'll be on a blank screen.
   const [isInitializing, setInitializing] = useState(true);
 
   const getJwt = async () => {
@@ -100,7 +102,7 @@ export function AuthProvider({ children }) {
         const data = await response.json();
         await AsyncStorage.setItem('token', data.token);
         setIsLoggedIn(true);
-        return data; // You can return data if needed.
+        return data;
       } else {
         throw await response.text();
       }
